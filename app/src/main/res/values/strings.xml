@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">GroupProject</string>
+    <string name="app_name">Pinned</string>
+    <string name="facebook_app_id">126332898053767</string>
+    <string name="fb_login_protocol_scheme">fb126332898053767</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
