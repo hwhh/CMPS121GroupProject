@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="6dp"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/eventpic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                app:srcCompat="@drawable/eventpic"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <Button
+                android:id="@+id/changephoto"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:background="@null"
+                android:text="Change Event Photo"
+                android:textAllCaps="false"
+                android:textColor="#85b6da" />
+
+            <TextView
+                android:id="@+id/eventname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:padding="4dp"
+                android:text="Name of Event"
+                android:textColor="#85b6da"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="153dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/eventname"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Insert name"
+                android:textColor="#85b6da"
+                tools:layout_editor_absoluteX="153dp"
+                tools:layout_editor_absoluteY="31dp" />
+
+            <TextView
+                android:id="@+id/datetext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Date of Event"
+                android:textColor="#85b6da"
+                android:textStyle="bold" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="43dp">
+
+                <Spinner
+                    android:id="@+id/Month"
+                    android:layout_width="122dp"
+                    android:layout_height="39dp" />
+
+                <Spinner
+                    android:id="@+id/Day"
+                    android:layout_width="122dp"
+                    android:layout_height="39dp" />
+
+                <Spinner
+                    android:id="@+id/Year"
+                    android:layout_width="122dp"
+                    android:layout_height="39dp" />
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/timetext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Time of Event"
+                android:textColor="#85b6da"
+                android:textStyle="bold" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="39dp">
+
+                <Spinner
+                    android:id="@+id/Hours"
+                    android:layout_width="185dp"
+                    android:layout_height="39dp" />
+
+                <Spinner
+                    android:id="@+id/Minutes"
+                    android:layout_width="185dp"
+                    android:layout_height="39dp" />
+            </GridLayout>
+
+            <Button
+                android:id="@+id/savebutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="#85b6da"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
