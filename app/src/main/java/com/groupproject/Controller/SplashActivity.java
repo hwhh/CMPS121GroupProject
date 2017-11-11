@@ -1,4 +1,4 @@
-package com.groupproject;
+package com.groupproject.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,20 +11,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo(
-//                    "com.groupproject",
-//                    PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("YourKeyHash :", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        } catch (NameNotFoundException e) {
-//
-//        } catch (NoSuchAlgorithmException e) {
-//
-//        }
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         Intent intent;
         if (accessToken == null) {

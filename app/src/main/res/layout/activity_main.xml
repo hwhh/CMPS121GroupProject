@@ -4,7 +4,7 @@
     android:id="@android:id/tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.groupproject.MainActivity">
+    tools:context="com.groupproject.Controller.MainActivity">
 
     <LinearLayout
         android:orientation="vertical"

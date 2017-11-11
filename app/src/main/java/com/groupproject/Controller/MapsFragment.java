@@ -1,4 +1,4 @@
-package com.groupproject;
+package com.groupproject.Controller;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.groupproject.R;
 
 
 public class MapsFragment extends Fragment {

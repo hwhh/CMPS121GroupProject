@@ -1,4 +1,4 @@
-package com.groupproject;
+package com.groupproject.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.groupproject.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +28,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(getApplication());
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager,
@@ -39,7 +39,7 @@ public class LoginActivity extends Activity {
                         GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
-                                    @Override
+                                    @Override //TODO MATTHEO refactor
                                     public void onCompleted(JSONObject object, GraphResponse response) {
                                         Log.v("LoginActivityRe", response.toString());
                                         String[] dataToRetrieve =
@@ -50,7 +50,7 @@ public class LoginActivity extends Activity {
                                             for (int i = 0; i < dataToRetrieve.length; i++) {
                                                 data[i] = object.getString(dataToRetrieve[i]);
                                             }
-                                            //TODO: create user on db based on above data
+                                            //TODO: HENRY create user on db based on above data
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

@@ -1,8 +1,10 @@
-package com.groupproject;
+package com.groupproject.Controller;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.os.Bundle;
+
+import com.groupproject.R;
 
 public class MainActivity extends FragmentActivity {
 
