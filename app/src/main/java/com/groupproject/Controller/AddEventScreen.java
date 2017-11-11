@@ -1,4 +1,4 @@
-package com.groupproject.View;
+package com.groupproject.Controller;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
