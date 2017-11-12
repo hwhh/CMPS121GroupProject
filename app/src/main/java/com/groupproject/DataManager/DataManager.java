@@ -1,12 +1,13 @@
 package com.groupproject.DataManager;
 
-/**
- * Created by henryhargreaves on 10/11/2017.
- */
 
-public interface DataManager {
+public abstract class DataManager {
 
+    private DataBaseAPI dataBaseAPI;
 
+    public DataManager(DataBaseAPI dataBaseAPI) {
+        this.dataBaseAPI = DataBaseAPI.getInstance();
+    }
 
 
 }
