@@ -57,8 +57,7 @@ public class LoginActivity extends Activity {
                                     }
                                 });
                         Bundle parameters = new Bundle();
-                        parameters.putString("fields", "id, first_name, last_name, email, " +
-                                "birthday");
+                        parameters.putString("fields", "id, first_name, last_name, email, birthday");
                         request.setParameters(parameters);
                         request.executeAsync();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
