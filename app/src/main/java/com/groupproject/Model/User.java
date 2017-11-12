@@ -1,5 +1,7 @@
 package com.groupproject.Model;
 
+import com.groupproject.DataManager.DataManager;
+
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
@@ -16,7 +18,7 @@ import java.util.List;
         @Index(value = "location", fields = @Field("location"))
 })
 
-public class User {
+public class User extends DataManager {
 
     @Id
     private ObjectId id;
@@ -37,10 +39,12 @@ public class User {
 
 
     public User() {
+        super();
         init();
     }
 
     public User(String userName, String password) {
+        super();
         this.userName = userName;
         this.password = password;
         init();
@@ -51,6 +55,10 @@ public class User {
         activities= new ArrayList<>();
         goingEvents= new ArrayList<>();
         interestedEvents= new ArrayList<>();
+    }
+
+    public void save(){
+        persist(this);
     }
 
     public void setLocation(Location location) {

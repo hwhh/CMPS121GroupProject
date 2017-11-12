@@ -12,10 +12,10 @@ import org.bson.Document;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-public class DataBaseAPI {
+class DataBaseAPI {
 
     //TODO hide credentials
-    private static final String uri =  "mongodb://admin:admin@cluster0-shard-00-00-x1fap.mongodb.net:27017," +
+    private static final String uri = "mongodb://admin:admin@cluster0-shard-00-00-x1fap.mongodb.net:27017," +
             "cluster0-shard-00-01-x1fap.mongodb.net:27017," +
             "cluster0-shard-00-02-x1fap.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
 
@@ -28,30 +28,26 @@ public class DataBaseAPI {
     private static Morphia morphia;
 
 
-
     private DataBaseAPI() {
         init();
     }
 
-    public static DataBaseAPI getInstance(){
+    static DataBaseAPI getInstance() {
         if (dataBaseAPI == null)
             dataBaseAPI = new DataBaseAPI();
         return dataBaseAPI;
     }
 
-    private static void init(){
+    private static void init() {
         mongoClient = new MongoClient(uri);
         database = mongoClient.getDatabase("Pinned");
-//        collection = database.getCollection("NewCollection");
-       morphia = new Morphia();
-       morphia.map(User.class, Activity.class, Event.class);//TODO Update with a method call
-       datastore = morphia.createDatastore(mongoClient, "morphia_example");
+//      collection = database.getCollection("NewCollection");
+        morphia = new Morphia();
+        morphia.map(User.class, Activity.class, Event.class);//TODO Update with a method call
+        datastore = morphia.createDatastore(mongoClient, database.getName());
     }
 
-//    private static void addMorphia(Class c){
-//        morphia.add
-//    }
-
-
-
+    public Datastore getDataStore() {
+        return datastore;
+    }
 }

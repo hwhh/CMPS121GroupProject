@@ -1,6 +1,8 @@
 package com.groupproject.Model;
 
 
+import com.groupproject.DataManager.DataManager;
+
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Field;
@@ -21,14 +23,13 @@ import java.util.List;
         @Index(value = "relatedActivities", fields = @Field("relatedActivities")),
 })
 
-public class Event {
+public class Event extends DataManager {
 
     enum VISIBILITY {
         INVITE_ONLY,
         FRIENDS,
         PUBLIC
     }
-
 
     @Id
     private ObjectId id;
@@ -49,10 +50,12 @@ public class Event {
 
 
     public Event() {
+        super();
         init();
     }
 
     public Event(String name, String description) {
+        super();
         this.name = name;
         this.description = description;
         init();
@@ -63,6 +66,10 @@ public class Event {
         going = new ArrayList<>();
         interested= new ArrayList<>();
         relatedActivities= new ArrayList<>();
+    }
+
+    public void save(){
+        persist(this);
     }
 
     public void setVisibility(VISIBILITY visibility) {
