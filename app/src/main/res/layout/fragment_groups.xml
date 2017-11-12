@@ -9,7 +9,7 @@
     tools:context="com.groupproject.Controller.GroupsFragment">
 
     <LinearLayout
-        android:id="@+id/left_fragment"
+        android:id="@+id/public_fragment"
         android:layout_width="match_parent"
         android:layout_height="255.5dp"
         android:layout_weight="1"
@@ -130,6 +130,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
                 android:src="@drawable/eventpic" />
+
         </LinearLayout>
 
     </LinearLayout>
