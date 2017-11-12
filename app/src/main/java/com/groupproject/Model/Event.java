@@ -33,17 +33,16 @@ public class Event extends DataManager {
 
     @Id
     private ObjectId id;
-
-    private VISIBILITY visibility;
-
-    @Reference
-    private Location location;
     @Reference
     private List<User> going;
     @Reference
     private List<User> interested;
     @Reference
-    private List<Activity> relatedActivities;
+    private List<EventActivity> relatedActivities;
+
+    private Location location;
+
+    private VISIBILITY visibility;
 
     private String name;
     private String description;
@@ -100,7 +99,7 @@ public class Event extends DataManager {
         return interested;
     }
 
-    public List<Activity> getRelatedActivities() {
+    public List<EventActivity> getRelatedActivities() {
         return relatedActivities;
     }
 }

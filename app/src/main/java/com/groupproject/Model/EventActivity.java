@@ -20,11 +20,10 @@ import java.util.List;
         @Index(value = "users", fields = @Field("users")),
 })
 
-public class Activity extends DataManager {
+public class EventActivity extends DataManager {
 
     @Id
     private ObjectId id;
-
     @Reference
     private List<Event> eventList;
     @Reference
@@ -33,12 +32,12 @@ public class Activity extends DataManager {
     private String name;
     private String description;
 
-    public Activity() {
+    public EventActivity() {
         super();
         init();
     }
 
-    public Activity(String name, String description) {
+    public EventActivity(String name, String description) {
         super();
         this.name = name;
         this.description = description;

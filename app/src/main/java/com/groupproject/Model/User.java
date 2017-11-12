@@ -22,16 +22,15 @@ public class User extends DataManager {
 
     @Id
     private ObjectId id;
-
     @Reference
     private List<User> connection;
     @Reference
-    private List<Activity> activities;
+    private List<EventActivity> activities;
     @Reference
     private List<Event> goingEvents;
     @Reference
     private List<Event> interestedEvents;//TODO If interested cant be going and vice versa
-    @Reference
+
     private Location location;
 
     private String userName;
@@ -70,7 +69,7 @@ public class User extends DataManager {
         return connection;
     }
 
-    public List<Activity> getActivities() {
+    public List<EventActivity> getActivities() {
         return activities;
     }
 

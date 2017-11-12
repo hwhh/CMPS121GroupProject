@@ -1,6 +1,6 @@
 package com.groupproject.DataManager;
 
-import com.groupproject.Model.Activity;
+import com.groupproject.Model.EventActivity;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
 
@@ -12,15 +12,15 @@ public class test {
         User user2 = new User("2", "2");
         User user3 = new User("3", "3");
 
-        Activity activity1 = new Activity("1", "1");
-        Activity activity2 = new Activity("2", "2");
+        EventActivity something1 = new EventActivity("1", "1");
+        EventActivity something2 = new EventActivity("2", "2");
 
         Event event1 = new Event("1", "1");
         Event event2 = new Event("2", "2");
 
-        activity1.getUsers().add(user1);
-        activity1.getUsers().add(user2);
-        activity2.getUsers().add(user1);
+        something1.getUsers().add(user1);
+        something1.getUsers().add(user2);
+        something2.getUsers().add(user1);
 
         event1.getGoing().add(user1);
         event1.getInterested().add(user2);
@@ -30,6 +30,11 @@ public class test {
         user2.save();
         user3.save();
 
+        something1.save();
+        something2.save();
+
+        event1.save();
+        event2.save();
 
     }
 
