@@ -1,19 +1,24 @@
 package com.groupproject.Controller;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.groupproject.R;
 
 
@@ -56,6 +61,26 @@ public class MapsFragment extends Fragment {
                     return;
                 }
                 createMap();
+            }
+        });
+
+        FloatingActionButton createEvent
+                = (FloatingActionButton) rootView.findViewById(R.id.create_event_fab);
+        createEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Tap to add a pin!", Toast.LENGTH_LONG).show();
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng point) {
+                        MarkerOptions marker = new MarkerOptions().position(
+                                new LatLng(point.latitude, point.longitude)).title("");
+                        googleMap.addMarker(marker);
+                        googleMap.setOnMapClickListener(null);
+//                        Intent intent = new Intent(getActivity(), AddEventScreen.class);
+//                        startActivity(intent);
+                    }
+                });
             }
         });
 
