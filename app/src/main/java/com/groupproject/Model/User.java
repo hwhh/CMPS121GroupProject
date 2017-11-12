@@ -30,7 +30,7 @@ public class User extends DataManager {
     @Reference
     private List<Event> goingEvents;
     @Reference
-    private List<Event> interestedEvents;
+    private List<Event> interestedEvents;//TODO If interested cant be going and vice versa
     @Reference
     private Location location;
 
@@ -60,6 +60,7 @@ public class User extends DataManager {
     public void save(){
         persist(this);
     }
+
 
     public void setLocation(Location location) {
         this.location = location;
