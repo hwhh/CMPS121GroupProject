@@ -1,13 +1,65 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical"
     tools:context="com.groupproject.Controller.GroupsFragment">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Page with private/public groups, search bar, etc." />
+    <LinearLayout
+        android:id="@+id/left_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="255.5dp"
+        android:layout_weight="1"
+        android:background="#85b6da"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Public"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="81dp"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textColor="#ffffff"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Right side fragment -->
+    <LinearLayout
+        android:id="@+id/private_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="255.5dp"
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Private"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="81dp"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textColor="#85b6da"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+    </LinearLayout>
+</LinearLayout>
