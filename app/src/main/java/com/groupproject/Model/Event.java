@@ -1,29 +1,13 @@
 package com.groupproject.Model;
 
 
-import com.groupproject.DataManager.DataManager;
-
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Field;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Index;
-import org.mongodb.morphia.annotations.Indexes;
-import org.mongodb.morphia.annotations.Reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Indexes({
-        @Index(value = "location", fields = @Field("location")),
-        @Index(value = "visibility", fields = @Field("visibility")),
-        @Index(value = "going", fields = @Field("going")),
-        @Index(value = "interested", fields = @Field("interested")),
-        @Index(value = "relatedActivities", fields = @Field("relatedActivities")),
-})
 
-public class Event extends DataManager {
+
+public class Event {
 
     enum VISIBILITY {
         INVITE_ONLY,
@@ -31,13 +15,10 @@ public class Event extends DataManager {
         PUBLIC
     }
 
-    @Id
-    private ObjectId id;
-    @Reference
+
+
     private List<User> going;
-    @Reference
     private List<User> interested;
-    @Reference
     private List<EventActivity> relatedActivities;
 
     private Location location;
@@ -49,12 +30,10 @@ public class Event extends DataManager {
 
 
     public Event() {
-        super();
         init();
     }
 
     public Event(String name, String description) {
-        super();
         this.name = name;
         this.description = description;
         init();
@@ -68,7 +47,7 @@ public class Event extends DataManager {
     }
 
     public void save(){
-        persist(this);
+
     }
 
     public void setVisibility(VISIBILITY visibility) {

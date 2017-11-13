@@ -1,44 +1,25 @@
 package com.groupproject.Model;
 
 
-import com.groupproject.DataManager.DataManager;
-
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Field;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Index;
-import org.mongodb.morphia.annotations.Indexes;
-import org.mongodb.morphia.annotations.Reference;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Indexes({
-        @Index(value = "eventList", fields = @Field("eventList")),
-        @Index(value = "users", fields = @Field("users")),
-})
 
-public class EventActivity extends DataManager {
 
-    @Id
-    private ObjectId id;
-    @Reference
+public class EventActivity  {
+
+
     private List<Event> eventList;
-    @Reference
     private List<User> users;
 
     private String name;
     private String description;
 
     public EventActivity() {
-        super();
         init();
     }
 
     public EventActivity(String name, String description) {
-        super();
         this.name = name;
         this.description = description;
         init();
@@ -51,7 +32,7 @@ public class EventActivity extends DataManager {
 
 
     public void save(){
-        persist(this);
+
     }
 
     public void setName(String name) {
