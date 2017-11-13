@@ -8,9 +8,9 @@ import com.groupproject.Model.User;
 public class test {
 
     public static void main(String[] args) {
-        User user1 = new User("1", "1");
-        User user2 = new User("2", "2");
-        User user3 = new User("3", "3");
+        User user1 = new User("1");
+        User user2 = new User("2");
+        User user3 = new User("3");
 
         EventActivity something1 = new EventActivity("1", "1");
         EventActivity something2 = new EventActivity("2", "2");

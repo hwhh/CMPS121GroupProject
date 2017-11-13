@@ -1,5 +1,7 @@
 package com.groupproject.Model;
 
+import android.support.annotation.Nullable;
+
 import com.groupproject.DataManager.DataManager;
 
 import org.bson.types.ObjectId;
@@ -42,10 +44,9 @@ public class User extends DataManager {
         init();
     }
 
-    public User(String userName, String password) {
+    public User(String userName) {
         super();
         this.userName = userName;
-        this.password = password;
         init();
     }
 

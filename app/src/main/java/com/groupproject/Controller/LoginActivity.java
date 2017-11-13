@@ -15,6 +15,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.groupproject.R;
+import com.groupproject.Model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +51,8 @@ public class LoginActivity extends Activity {
                                             for (int i = 0; i < dataToRetrieve.length; i++) {
                                                 data[i] = object.getString(dataToRetrieve[i]);
                                             }
+//                                            User user = new User(data[2]);
+//                                            user.save();
                                             //TODO: HENRY create user on db based on above data
                                         } catch (JSONException e) {
                                             e.printStackTrace();
