@@ -15,16 +15,24 @@ public class User  {
 
     private Location location;
 
-    private String userName;
-    private String password;
+    private String name;
+    private String email;
+    private String id;
 
 
     public User() {
         init();
     }
 
-    public User(String userName) {
-        this.userName = userName;
+    public User(String id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        init();
+    }
+
+    public User(String name) {
+        this.name = name;
         init();
     }
 
@@ -38,7 +46,6 @@ public class User  {
     public void save(){
 
     }
-
 
     public void setLocation(Location location) {
         this.location = location;
@@ -58,5 +65,21 @@ public class User  {
 
     public List<Event> getInterestedEvents() {
         return interestedEvents;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getId() {
+        return id;
     }
 }

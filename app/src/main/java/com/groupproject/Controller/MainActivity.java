@@ -3,7 +3,9 @@ package com.groupproject.Controller;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.os.Bundle;
+import android.view.View;
 
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 public class MainActivity extends FragmentActivity {
@@ -29,4 +31,9 @@ public class MainActivity extends FragmentActivity {
         super.onBackPressed();
     }
 
+
+    public void onNewGame(View v) {
+        DataBaseAPI dataBaseAPI = new DataBaseAPI();
+        dataBaseAPI.addUser();
+    }
 }

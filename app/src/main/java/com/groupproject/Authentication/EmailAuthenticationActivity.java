@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.groupproject.Model.User;
 import com.groupproject.R;
 
 public class EmailAuthenticationActivity extends AppCompatActivity implements
@@ -39,7 +41,7 @@ public class EmailAuthenticationActivity extends AppCompatActivity implements
         mDetailTextView = (TextView) findViewById(R.id.detail);
         mEmailField = (EditText) findViewById(R.id.field_email);
         mPasswordField = (EditText) findViewById(R.id.field_password);
-        
+
         // Buttons
         findViewById(R.id.email_sign_in_button).setOnClickListener(this);
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
@@ -69,6 +71,12 @@ public class EmailAuthenticationActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                User user1 = new User(user.getUid(), user.getDisplayName(), user.getEmail());
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("users").document(user.getUid()).set(user1);
+
+                            }
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
