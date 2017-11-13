@@ -11,7 +11,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
 
-
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
 
@@ -85,8 +84,6 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
-
-
 
 
 </resources>

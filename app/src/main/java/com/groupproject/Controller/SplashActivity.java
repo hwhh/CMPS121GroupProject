@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
-import com.groupproject.Authentication.FacebookAuthentication;
+import com.groupproject.Authentication.FacebookAuthenticationActivity;
+import com.groupproject.Authentication.GoogleAuthenticationActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class SplashActivity extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         Intent intent;
         if (accessToken == null) {
-            intent = new Intent(this, FacebookAuthentication.class);
+            intent = new Intent(this, GoogleAuthenticationActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);
         }

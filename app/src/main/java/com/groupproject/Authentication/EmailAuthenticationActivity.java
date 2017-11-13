@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.R;
 
-public class EmailSignInActivity extends AppCompatActivity implements
+public class EmailAuthenticationActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
@@ -32,7 +32,7 @@ public class EmailSignInActivity extends AppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.email_sign_in);
+        setContentView(R.layout.email_auth);
         mAuth = FirebaseAuth.getInstance();
 
         mStatusTextView = (TextView) findViewById(R.id.status);
@@ -73,7 +73,7 @@ public class EmailSignInActivity extends AppCompatActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(EmailSignInActivity.this, "Authentication failed.",
+                            Toast.makeText(EmailAuthenticationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -97,7 +97,7 @@ public class EmailSignInActivity extends AppCompatActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(EmailSignInActivity.this, "Authentication failed.",
+                            Toast.makeText(EmailAuthenticationActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -115,12 +115,12 @@ public class EmailSignInActivity extends AppCompatActivity implements
                         findViewById(R.id.verify_email_button).setEnabled(true);
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(EmailSignInActivity.this,
+                            Toast.makeText(EmailAuthenticationActivity.this,
                                     "Verification email sent to " + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(EmailSignInActivity.this,
+                            Toast.makeText(EmailAuthenticationActivity.this,
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
                         }
