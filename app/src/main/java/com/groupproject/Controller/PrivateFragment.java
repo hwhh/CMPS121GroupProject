@@ -17,7 +17,9 @@ public class PrivateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.private_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.private_fragment, container, false);
+
+        return rootView;
     }
 
 }
