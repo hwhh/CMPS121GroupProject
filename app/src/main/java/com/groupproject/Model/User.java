@@ -58,7 +58,7 @@ public class User {
 
 
     //Path for events -> /users/{user.id}/interestedEvents
-
+    //TODO Make an interface to extract db calls
     public void addEvent(Event event, EVENT_TYPE event_type){
         if(event_type == EVENT_TYPE.INTERESTED) {
             interestedEvents.add(event);
@@ -72,11 +72,8 @@ public class User {
         }
 
         String key = ref.child("users").push().getKey();
-
         Map<String, Object> eventMap = event.toMap();
-
         Map<String, Object> childUpdates = new HashMap<>();
-
         childUpdates.put("/users/" + id + "/interestedEvents", eventMap);
         childUpdates.put("/events/" + event.getId() + "/" + key, eventMap);
 
