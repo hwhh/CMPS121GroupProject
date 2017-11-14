@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setUpFaceBook(){
+
         AppEventsLogger.activateApp(getApplication());
         CallbackManager mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager,
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onError(FacebookException exception) {
                         //TODO Deal with this
                     }
-            });
+                });
     }
 
     private void setUpGoogle(){
@@ -142,13 +143,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             onSuccessfulSignUp();
-
-
-                            //TODO save the user if not saved already
-                            //TODO Move to new intent
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed. "+task.getException(),
+                            Toast.makeText(LoginActivity.this, "Authentication failed. "+task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -158,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void signInFacebook(AccessToken token) {
+
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -166,11 +164,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             onSuccessfulSignUp();
-                            //TODO save the user if not saved already
-                            //TODO Move to new intent
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed. "+task.getException(),
+                            Toast.makeText(LoginActivity.this, "Authentication failed.. "+task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -189,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                             onSuccessfulSignUp();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed. "+task.getException(),
+                            Toast.makeText(LoginActivity.this, "Authentication failed. . "+task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
