@@ -1,11 +1,31 @@
 package com.groupproject.Model;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Observable;
 
-public class User  {
+public class User {
 
+    private static final String PATH = "/user/";
+    private FirebaseFirestore db;
+    private DatabaseReference ref;
+
+
+
+
+    enum EVENT_TYPE {
+        INTERESTED,
+        GOING,
+    }
+
+    private DataBaseAPI api = DataBaseAPI.DataBaseAPI();
 
     private List<User> connection;
 
@@ -20,10 +40,6 @@ public class User  {
     private String id;
 
 
-    public User() {
-        init();
-    }
-
     public User(String id, String name, String email) {
         this.id = id;
         this.name = name;
@@ -31,10 +47,7 @@ public class User  {
         init();
     }
 
-    public User(String name) {
-        this.name = name;
-        init();
-    }
+
 
     private void init(){
         connection = new ArrayList<>();
@@ -43,9 +56,36 @@ public class User  {
         interestedEvents= new ArrayList<>();
     }
 
-    public void save(){
+
+    //Path for events -> /users/{user.id}/interestedEvents
+
+    public void addEvent(Event event, EVENT_TYPE event_type){
+        if(event_type == EVENT_TYPE.INTERESTED) {
+            interestedEvents.add(event);
+            event.getInterested().add(this);
+        }else {
+            goingEvents.add(event);
+            if(event.getInterested().contains(this)){
+                event.getInterested().remove(this);
+            }
+            event.getGoing().add(this);
+        }
+
+        String key = ref.child("users").push().getKey();
+
+        Map<String, Object> eventMap = event.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put("/users/" + id + "/interestedEvents", eventMap);
+        childUpdates.put("/events/" + event.getId() + "/" + key, eventMap);
+
+        ref.updateChildren(childUpdates);
+
+
 
     }
+
 
     public void setLocation(Location location) {
         this.location = location;

@@ -27,11 +27,9 @@ public class EmailSignUpActivity extends AppCompatActivity {
     private EditText mName;
     private EditText mEmailField;
     private EditText mPasswordField;
-    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_sign_up);
         mEmailField = (EditText) findViewById(R.id.InputEmail);
@@ -49,7 +47,7 @@ public class EmailSignUpActivity extends AppCompatActivity {
              });
     }
 
-    private void createAccount(String email, String password, String name) {
+    private void createAccount(final String email, String password, final String name) {
         if (!validateForm()) {
             return;
         }
@@ -62,13 +60,12 @@ public class EmailSignUpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                                User user1 = new User(user.getUid(), user.getDisplayName(), user.getEmail());
+                                User newUser = new User(user.getUid(), name, email);
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("users").document(user.getUid()).set(user1);
+                                db.collection("users").document(user.getUid()).set(newUser);
                             }
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(EmailSignUpActivity.this, "Authentication failed.",
+                            Toast.makeText(EmailSignUpActivity.this, "Authentication failed. "+task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -107,6 +104,14 @@ public class EmailSignUpActivity extends AppCompatActivity {
 
         String email = mEmailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required.");
+            valid = false;
+        } else {
+            mEmailField.setError(null);
+        }
+
+        String name = mName.getText().toString();
+        if (TextUtils.isEmpty(name)) {
             mEmailField.setError("Required.");
             valid = false;
         } else {

@@ -32,8 +32,4 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public void onNewGame(View v) {
-        DataBaseAPI dataBaseAPI = new DataBaseAPI();
-        dataBaseAPI.addUser();
-    }
 }

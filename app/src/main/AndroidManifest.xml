@@ -83,7 +83,10 @@
         <activity android:name=".Authentication.GoogleAuthenticationActivity" />
         <activity android:name=".Authentication.EmailAuthenticationActivity" />
         <activity android:name=".Authentication.LoginActivity" />
-        <activity android:name=".Authentication.EmailSignUpActivity"></activity>
+        <activity android:name=".Authentication.EmailSignUpActivity" />
+        <activity
+            android:name=".Controller.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>
