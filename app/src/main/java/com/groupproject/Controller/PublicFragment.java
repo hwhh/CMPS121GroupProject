@@ -16,8 +16,8 @@ import com.groupproject.R;
 
 public class PublicFragment extends Fragment {
 
-    RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
+//    RecyclerView mRecyclerView;
+//    RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
 
     @Override
@@ -26,13 +26,13 @@ public class PublicFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.public_fragment, container, false);
 
-        // Calling the RecyclerView
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
-        // The number of Columns
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+//        // Calling the RecyclerView
+//        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+//        mRecyclerView.setHasFixedSize(true);
+//
+//        // The number of Columns
+//        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
 
 //        mAdapter = new HLVAdapter(MainActivity.this, alName, alImage);
 //        mRecyclerView.setAdapter(mAdapter);
