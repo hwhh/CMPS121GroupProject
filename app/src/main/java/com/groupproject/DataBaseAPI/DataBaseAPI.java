@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class DataBaseAPI {
 
-    private FirebaseFirestore db;
+    private  DatabaseReference mDatabase;
     private FirebaseUser currentUser;
     private DatabaseReference ref;
 
@@ -32,7 +32,7 @@ public class DataBaseAPI {
 
 
     private DataBaseAPI(){
-        db = FirebaseFirestore.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         ref = FirebaseDatabase.getInstance().getReference();
     }
