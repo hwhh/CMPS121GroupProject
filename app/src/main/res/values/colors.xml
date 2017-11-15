@@ -5,4 +5,5 @@
     <color name="colorAccent">#3f9de2</color>
     <color name="backgroundColour">#85b6da</color>
     <color name="white">#ffffff</color>
+    <color name="floating_action_button_color">#CD0000</color>
 </resources>
