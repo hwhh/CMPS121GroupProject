@@ -14,7 +14,7 @@ import java.util.Calendar;
  * Created by haileypun on 31/10/2017.
  */
 
-public class AddEventScreen extends AppCompatActivity {
+public class AddEventView extends AppCompatActivity {
 
     ArrayList<String> years = new ArrayList<>();
     ArrayList<String> days = new ArrayList<>();
