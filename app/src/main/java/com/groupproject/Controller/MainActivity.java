@@ -52,10 +52,7 @@ public class MainActivity extends FragmentActivity {
         FirebaseUser user =  mAuth.getCurrentUser();
 
 
-//
-    }
-
-}
+//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 //
 //        String key = mDatabase.child("events").push().getKey();
 //        Event e = new Event();
@@ -87,3 +84,7 @@ public class MainActivity extends FragmentActivity {
 ////                        "age", 13,
 ////                        ".color", "Red"
 ////                );
+
+    }
+
+}

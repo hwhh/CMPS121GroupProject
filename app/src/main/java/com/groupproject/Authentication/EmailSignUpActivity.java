@@ -1,6 +1,5 @@
 package com.groupproject.Authentication;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.groupproject.Controller.MainActivity;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -60,9 +59,7 @@ public class EmailSignUpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                                User newUser = new User(user.getUid(), name, email);
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("users").document(user.getUid()).set(newUser);
+                               new User(user.getUid(), name, email);
                             }
                         } else {
                             Toast.makeText(EmailSignUpActivity.this, "Authentication failed. "+task.getException().getMessage(),

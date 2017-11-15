@@ -37,71 +37,63 @@ public class DataBaseAPI {
         ref = FirebaseDatabase.getInstance().getReference();
     }
 
-    public static DataBaseAPI DataBaseAPI() {
-        if (single_instance == null){
+    public static DataBaseAPI getDataBase() {
+        if (single_instance == null) {
             single_instance = new DataBaseAPI();
         }
         return single_instance;
     }
 
 
-    public void somthing(User user){
-        FirebaseFirestore db =FirebaseFirestore.getInstance();
-        Map<String, Object> map = new HashMap<>();
-        Event e = new Event();
-        Event b = new Event();
-        Event c = new Event();
-        map.put("activities", e);
-        db.collection("user").document(user.getId()).update(map);
-        map.put("activities", b);
-        db.collection("user").document(user.getId()).update(map);
-        map.put("activities", c);
-        db.collection("user").document(user.getId()).update(map);
-
+    //TODO Validate user
+    public void writeNewUser(User user) {
+        mDatabase.collection("users").document(user.getId())
+                .set(user);
     }
 
 
-    public void updateElement(String collection, String child) {
-        ref.child(collection).child(child).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // use "username" already exists
-                } else {
-                    // "username" does not exist yet.
-                }
-            }
+    public void addEventToUser() {
+        String key = mDatabase.child("posts").push().getKey();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
-
-
-
-
 
 
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//    public void somthing(User user){
+//        FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
+//        Map<String, Object> map = new HashMap<>();
+//        Event e = new Event();
+//        Event b = new Event();
+//        Event c = new Event();
+//        map.put("activities", e);
+//        mDatabase.collection("user").document(user.getId()).update(map);
+//        map.put("activities", b);
+//        mDatabase.collection("user").document(user.getId()).update(map);
+//        map.put("activities", c);
+//        mDatabase.collection("user").document(user.getId()).update(map);
+//
+//    }
+//
+//
+//    public void updateElement(String collection, String child) {
+//        ref.child(collection).child(child).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    // use "username" already exists
+//                } else {
+//                    // "username" does not exist yet.
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 
 //
@@ -110,7 +102,7 @@ public class DataBaseAPI {
 //        user.put("name", currentUser.getDisplayName());
 //        user.put("email", currentUser.getEmail());
 //
-//        db.collection("users")
+//        mDatabase.collection("users")
 //                .document("some id")
 //                .set(user);
 //    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());

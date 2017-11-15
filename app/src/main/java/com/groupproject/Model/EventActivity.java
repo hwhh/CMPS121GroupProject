@@ -9,26 +9,26 @@ import java.util.List;
 public class EventActivity  {
 
 
-    private List<Event> eventList;
-    private List<User> users;
+//    private List<Event> eventList;
+//    private List<User> users;
 
     private String name;
     private String description;
 
     public EventActivity() {
-        init();
+
     }
 
     public EventActivity(String name, String description) {
         this.name = name;
         this.description = description;
-        init();
+//        init();
     }
 
-    private void init(){
-        eventList = new ArrayList<>();
-        users= new ArrayList<>();
-    }
+//    private void init(){
+//        eventList = new ArrayList<>();
+//        users= new ArrayList<>();
+//    }
 
 
     public void save(){
@@ -43,13 +43,13 @@ public class EventActivity  {
         this.description = description;
     }
 
-    public List<Event> getEventList() {
-        return eventList;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
+//    public List<Event> getEventList() {
+//        return eventList;
+//    }
+//
+//    public List<User> getUsers() {
+//        return users;
+//    }
 
 
 }

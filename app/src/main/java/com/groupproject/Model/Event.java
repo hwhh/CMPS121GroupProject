@@ -1,11 +1,7 @@
 package com.groupproject.Model;
 
-
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -14,9 +10,9 @@ public class Event {
     public Map<String, Object> toMap() {
         Map<String, Object> eventMap = new HashMap<>();
         eventMap.put("date", eventDate);
-        eventMap.put("going", going);
-        eventMap.put("interested", interested);
-        eventMap.put("relatedActivities", relatedActivities);
+//        eventMap.put("going", going);
+//        eventMap.put("interested", interested);
+//        eventMap.put("relatedActivities", relatedActivities);
         eventMap.put("location", location);
         eventMap.put("visibility", visibility);
         eventMap.put("name", name);
@@ -34,9 +30,9 @@ public class Event {
 
     private Date eventDate;
 
-    private List<User> going;
-    private List<User> interested;
-    private List<EventActivity> relatedActivities;
+//    private List<User> going;
+//    private List<User> interested;
+//    private List<EventActivity> relatedActivities;
 
     private Location location;
 
@@ -49,7 +45,7 @@ public class Event {
 
 
     public Event() {
-        init();
+//        init();
     }
 
     public Event(Date eventDate, Location location, VISIBILITY visibility, String name, String description, String id) {
@@ -59,14 +55,14 @@ public class Event {
         this.name = name;
         this.description = description;
         this.id = id;
-        init();
+//        init();
     }
 
-    private void init(){
-        going = new ArrayList<>();
-        interested= new ArrayList<>();
-        relatedActivities= new ArrayList<>();
-    }
+//    private void init(){
+//        going = new ArrayList<>();
+//        interested= new ArrayList<>();
+//        relatedActivities= new ArrayList<>();
+//    }
 
     public void save(){
 
@@ -88,17 +84,17 @@ public class Event {
         return eventDate;
     }
 
-    public List<User> getGoing() {
-        return going;
-    }
-
-    public List<User> getInterested() {
-        return interested;
-    }
-
-    public List<EventActivity> getRelatedActivities() {
-        return relatedActivities;
-    }
+//    public List<User> getGoing() {
+//        return going;
+//    }
+//
+//    public List<User> getInterested() {
+//        return interested;
+//    }
+//
+//    public List<EventActivity> getRelatedActivities() {
+//        return relatedActivities;
+//    }
 
     public Location getLocation() {
         return location;
