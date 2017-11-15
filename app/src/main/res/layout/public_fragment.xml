@@ -15,16 +15,23 @@
             android:id="@+id/publicText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/josefin_sans_semibold"
+            android:gravity="center"
             android:paddingTop="10dp"
             android:text="Public"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:textColor="#ffffff"/>
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recycler_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:id="@+id/buttonPanel"
+            android:orientation="horizontal"/>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

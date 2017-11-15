@@ -15,17 +15,25 @@
             android:id="@+id/privateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/josefin_sans_semibold"
+            android:gravity="center"
             android:paddingTop="10dp"
             android:text="Private"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:textColor="#85b6da"/>
+            android:textColor="#85b6da"
+            android:textSize="30sp" />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/cardView"
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/cardView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:id="@+id/buttonPanel"
+            android:orientation="horizontal"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
