@@ -3,6 +3,7 @@ package com.groupproject.Controller;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,17 @@ public class PrivateFragment extends Fragment {
             button.setPadding(15, 15, 15, 15 );
             button.setTag(i);
             button.setId(i);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventInfoFragment eventInfoFragment = new EventInfoFragment();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.private_frag, eventInfoFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
             buttonPanel.addView(eventButton[i]);
 
         }
