@@ -14,7 +14,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Duration of splash screen in milliseconds
-        int SPLASH_DISPLAY_LENGTH = 2000;
+        int SPLASH_DISPLAY_LENGTH = 1000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

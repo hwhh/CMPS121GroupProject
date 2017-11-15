@@ -14,10 +14,6 @@ import android.widget.TextView;
 
 import com.groupproject.R;
 
-/**
- * Created by haileypun on 12/11/2017.
- */
-
 public class PrivateFragment extends Fragment {
 
     ImageButton[] eventButton = new ImageButton[3];
@@ -36,6 +32,7 @@ public class PrivateFragment extends Fragment {
         LinearLayout buttonPanel = (LinearLayout) rootView.findViewById(R.id.buttonPanel);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+        //TODO: Cycle through events user is going to from db
         for (int i = 0; i < 3; i++ ){
 
             eventButton[i] = new ImageButton(getContext());
@@ -49,12 +46,15 @@ public class PrivateFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventInfoFragment eventInfoFragment = new EventInfoFragment();
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.private_frag, eventInfoFragment)
-                            .addToBackStack(null)
-                            .commit();
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    //TODO: pass event as argument
+                    mainActivity.switchToMaps(null);
+//                    EventInfoFragment eventInfoFragment = new EventInfoFragment();
+//                    FragmentManager fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .replace(R.id.private_frag, eventInfoFragment)
+//                            .addToBackStack(null)
+//                            .commit();
                 }
             });
             buttonPanel.addView(eventButton[i]);

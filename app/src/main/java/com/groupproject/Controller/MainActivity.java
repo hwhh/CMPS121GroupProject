@@ -8,6 +8,7 @@ import com.groupproject.R;
 
 public class MainActivity extends FragmentActivity {
 
+    private static final int MAPS_INDEX = 1;
     // Fragment TabHost as mTabHost
     private FragmentTabHost mTabHost;
 
@@ -27,6 +28,11 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void switchToMaps(Event event) {
+        mTabHost.setCurrentTab(MAPS_INDEX);
+        //TODO: Open maps on event's location
     }
 
 }
