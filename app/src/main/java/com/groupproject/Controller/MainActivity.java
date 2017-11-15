@@ -52,39 +52,38 @@ public class MainActivity extends FragmentActivity {
         FirebaseUser user =  mAuth.getCurrentUser();
 
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        String key = mDatabase.child("events").push().getKey();
-        Event e = new Event();
-        Map<String, Object> postValues = e.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/events/" + key, postValues);
-        childUpdates.put("/users/" + user.getUid() + "/goingEvents/" + key, postValues);
-
-        mDatabase.updateChildren(childUpdates);
-
-//        User u = db.collection("users").document(user.getUid());
-//        Map<String, Object> map = new HashMap<>();
-//        Event b = new Event();
-//        Event c = new Event();
 //
-//        Map<String, Object> data = new HashMap<>();
-//        DocumentReference newEventRef = db.collection("events").document();
-//        newEventRef.set(data);
-
-//        map.put("goingEvents", e.toMap());
-////        db.collection("users").document(e.getUid()).set(newUser);
-//        map.put("goingEvents", b.toMap());
-//        map.put("goingEvents", c.toMap());
-////        db.collection("users").document(user.getUid()).update(map, SetOptions.merge());
-//
-//        db.collection("users").document(user.getUid())
-//                .update(
-//                        "age", 13,
-//                        ".color", "Red"
-//                );
-
     }
 
 }
+//
+//        String key = mDatabase.child("events").push().getKey();
+//        Event e = new Event();
+//        Map<String, Object> postValues = e.toMap();
+//
+//        Map<String, Object> childUpdates = new HashMap<>();
+//        childUpdates.put("/events/" + key, postValues);
+//        childUpdates.put("/users/" + user.getUid() + "/goingEvents/" + key, postValues);
+//
+//        mDatabase.updateChildren(childUpdates);
+//
+////        User u = db.collection("users").document(user.getUid());
+////        Map<String, Object> map = new HashMap<>();
+////        Event b = new Event();
+////        Event c = new Event();
+////
+////        Map<String, Object> data = new HashMap<>();
+////        DocumentReference newEventRef = db.collection("events").document();
+////        newEventRef.set(data);
+//
+////        map.put("goingEvents", e.toMap());
+//////        db.collection("users").document(e.getUid()).set(newUser);
+////        map.put("goingEvents", b.toMap());
+////        map.put("goingEvents", c.toMap());
+//////        db.collection("users").document(user.getUid()).update(map, SetOptions.merge());
+////
+////        db.collection("users").document(user.getUid())
+////                .update(
+////                        "age", 13,
+////                        ".color", "Red"
+////                );
