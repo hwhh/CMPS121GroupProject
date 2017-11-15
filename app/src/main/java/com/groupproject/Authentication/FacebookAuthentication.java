@@ -1,4 +1,4 @@
-package com.groupproject.Controller;
+package com.groupproject.Authentication;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,12 +8,12 @@ import android.util.Log;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.groupproject.Controller.MainActivity;
 import com.groupproject.R;
 
 import org.json.JSONException;
@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class LoginActivity extends Activity {
+public class FacebookAuthentication extends Activity {
 
     CallbackManager callbackManager;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppEventsLogger.activateApp(getApplication());
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.facebook_sign_in);
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -50,6 +50,8 @@ public class LoginActivity extends Activity {
                                             for (int i = 0; i < dataToRetrieve.length; i++) {
                                                 data[i] = object.getString(dataToRetrieve[i]);
                                             }
+//                                            User user = new User(data[2]);
+//                                            user.save();
                                             //TODO: HENRY create user on db based on above data
                                         } catch (JSONException e) {
                                             e.printStackTrace();
