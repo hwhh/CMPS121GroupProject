@@ -47,7 +47,7 @@
                 android:background="@null"
                 android:text="Change Event Photo"
                 android:textAllCaps="false"
-                android:textColor="#85b6da" />
+                android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/eventname"
@@ -56,7 +56,7 @@
                 android:paddingRight="10dp"
                 android:padding="4dp"
                 android:text="Name of Event"
-                android:textColor="#85b6da"
+                android:textColor="#000000"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="16dp" />
@@ -69,7 +69,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Insert name"
-                android:textColor="#85b6da"
+                android:textColor="#ff0000"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="31dp" />
 
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="Date of Event"
-                android:textColor="#85b6da"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <GridLayout
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="Time of Event"
-                android:textColor="#85b6da"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <GridLayout
@@ -133,7 +133,7 @@
                 android:background="@null"
                 android:text="Save"
                 android:textAllCaps="false"
-                android:textColor="#85b6da"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
         </LinearLayout>
