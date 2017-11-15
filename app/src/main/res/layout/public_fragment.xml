@@ -18,7 +18,7 @@
             android:fontFamily="@font/josefin_sans_semibold"
             android:gravity="center"
             android:paddingTop="10dp"
-            android:text="Public"
+            android:text="@string/public_events"
             android:textColor="#ffffff"
             android:textSize="30sp" />
 

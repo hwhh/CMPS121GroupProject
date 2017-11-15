@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import com.groupproject.R;
 
-public class GroupsFragment extends Fragment {
+public class EventsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_groups, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_events, container, false);
 
         PublicFragment publicFragment = new PublicFragment();
         FragmentManager fragmentManager = getFragmentManager();
