@@ -32,7 +32,7 @@
             <ImageButton
                 android:id="@+id/eventpic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="82dp"
                 android:background="@null"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
@@ -52,12 +52,12 @@
                 android:textColor="#85b6da" />
 
             <TextView
-                android:id="@+id/eventname"
+                android:id="@+id/eventname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="10dp"
                 android:padding="4dp"
-                android:text="Name of Event"
+                android:paddingRight="10dp"
+                android:text="Name"
                 android:textColor="#85b6da"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="153dp"
@@ -68,66 +68,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/eventname"
+                android:layout_below="@+id/eventname_txt"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Insert name"
                 android:textColor="#85b6da"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="31dp" />
 
             <TextView
-                android:id="@+id/datetext"
+                android:id="@+id/desc_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="Date of Event"
-                android:textColor="#85b6da"
-                android:textStyle="bold" />
+                android:text="Description" />
 
-            <GridLayout
+            <EditText
+                android:id="@+id/desc"
                 android:layout_width="match_parent"
-                android:layout_height="43dp">
-
-                <Spinner
-                    android:id="@+id/Month"
-                    android:layout_width="122dp"
-                    android:layout_height="39dp" />
-
-                <Spinner
-                    android:id="@+id/Day"
-                    android:layout_width="122dp"
-                    android:layout_height="39dp" />
-
-                <Spinner
-                    android:id="@+id/Year"
-                    android:layout_width="122dp"
-                    android:layout_height="39dp" />
-            </GridLayout>
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/timetext"
+                android:id="@+id/startdate_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="Time of Event"
-                android:textColor="#85b6da"
-                android:textStyle="bold" />
+                android:text="Start date" />
 
-            <GridLayout
+            <EditText
+                android:id="@+id/start_date"
                 android:layout_width="match_parent"
-                android:layout_height="39dp">
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:inputType="none"
+                android:ems="10"
+                android:focusable="false" />
 
-                <Spinner
-                    android:id="@+id/Hours"
-                    android:layout_width="185dp"
-                    android:layout_height="39dp" />
+            <TextView
+                android:id="@+id/enddate_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="End date" />
 
-                <Spinner
-                    android:id="@+id/Minutes"
-                    android:layout_width="185dp"
-                    android:layout_height="39dp" />
-            </GridLayout>
+            <EditText
+                android:id="@+id/end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:clickable="true"
+                android:inputType="none"
+                android:focusable="false" />
 
             <Button
                 android:id="@+id/savebutton"

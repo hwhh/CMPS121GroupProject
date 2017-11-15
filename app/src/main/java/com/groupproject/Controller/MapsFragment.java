@@ -77,8 +77,8 @@ public class MapsFragment extends Fragment {
                                 new LatLng(point.latitude, point.longitude)).title("");
                         googleMap.addMarker(marker);
                         googleMap.setOnMapClickListener(null);
-//                        Intent intent = new Intent(getActivity(), AddEventScreen.class);
-//                        startActivity(intent);
+                        Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                        startActivity(intent);
                     }
                 });
             }
