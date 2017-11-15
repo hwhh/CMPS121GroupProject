@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.groupproject.Controller.MainActivity;
 import com.groupproject.Model.User;
@@ -61,8 +63,8 @@ public class EmailSignUpActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 User newUser = new User(user.getUid(), name, email);
-                                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("users").document(user.getUid()).set(newUser);
+                                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                mDatabase.child("users").child(user.getUid()).setValue(newUser);
                             }
                         } else {
                             Toast.makeText(EmailSignUpActivity.this, "Authentication failed. "+task.getException().getMessage(),

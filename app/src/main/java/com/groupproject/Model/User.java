@@ -71,13 +71,15 @@ public class User {
             event.getGoing().add(this);
         }
 
-        String key = ref.child("users").push().getKey();
-        Map<String, Object> eventMap = event.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + id + "/interestedEvents", eventMap);
-        childUpdates.put("/events/" + event.getId() + "/" + key, eventMap);
 
-        ref.updateChildren(childUpdates);
+
+//        String key = ref.child("users").push().getKey();
+//        Map<String, Object> eventMap = event.toMap();
+//        Map<String, Object> childUpdates = new HashMap<>();
+//        childUpdates.put("/users/" + id + "/interestedEvents", eventMap);
+//        childUpdates.put("/events/" + event.getId() + "/" + key, eventMap);
+//
+//        ref.updateChildren(childUpdates);
 
 
 

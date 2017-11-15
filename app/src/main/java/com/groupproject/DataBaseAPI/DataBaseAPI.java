@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
 
 import java.util.HashMap;
@@ -43,6 +44,21 @@ public class DataBaseAPI {
         return single_instance;
     }
 
+
+    public void somthing(User user){
+        FirebaseFirestore db =FirebaseFirestore.getInstance();
+        Map<String, Object> map = new HashMap<>();
+        Event e = new Event();
+        Event b = new Event();
+        Event c = new Event();
+        map.put("activities", e);
+        db.collection("user").document(user.getId()).update(map);
+        map.put("activities", b);
+        db.collection("user").document(user.getId()).update(map);
+        map.put("activities", c);
+        db.collection("user").document(user.getId()).update(map);
+
+    }
 
 
     public void updateElement(String collection, String child) {
