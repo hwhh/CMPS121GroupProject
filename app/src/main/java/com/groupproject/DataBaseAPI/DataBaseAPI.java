@@ -29,7 +29,7 @@ public class DataBaseAPI {
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
 
         eventListener = new EventLister();
-        mEventRef.addValueEventListener(eventListener);
+//        mEventRef.addValueEventListener(eventListener);
 
 
     }
