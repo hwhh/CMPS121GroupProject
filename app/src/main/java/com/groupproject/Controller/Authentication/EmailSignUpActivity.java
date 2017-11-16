@@ -64,8 +64,6 @@ public class EmailSignUpActivity extends AppCompatActivity {
                             Toast.makeText(EmailSignUpActivity.this, "Authentication failed. "+task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
-
-
                     }
                 });
     }

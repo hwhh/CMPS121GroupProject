@@ -1,26 +1,15 @@
 package com.groupproject.Controller;
 
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
-import com.groupproject.Model.User;
 import com.groupproject.R;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 

@@ -58,24 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
         /////////FACEBOOK LOGIN/////////
         final Activity activity = this;
-
-        AppEventsLogger.activateApp(getApplication());
-        CallbackManager mCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        signInFacebook(loginResult.getAccessToken());
-                    }
-                    @Override
-                    public void onCancel() {
-                        //TODO Deal with this
-                    }
-                    @Override
-                    public void onError(FacebookException exception) {
-                        //TODO Deal with this
-                    }
-                });
+        setUpFaceBook();
 
         /////////GOOGLE LOGIN/////////
         setUpGoogle();
@@ -125,6 +108,23 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setUpFaceBook(){
 
+        AppEventsLogger.activateApp(getApplication());
+        CallbackManager mCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(mCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        signInFacebook(loginResult.getAccessToken());
+                    }
+                    @Override
+                    public void onCancel() {
+                        //TODO Deal with this
+                    }
+                    @Override
+                    public void onError(FacebookException exception) {
+                        //TODO Deal with this
+                    }
+                });
     }
 
     private void setUpGoogle(){
@@ -198,6 +198,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplication(), MainActivity.class);
         if (user != null) {
            new User(user.getUid(), user.getDisplayName(), user.getEmail());
+
         }
         startActivity(intent);
     }
