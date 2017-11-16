@@ -23,7 +23,9 @@ import java.util.Map;
 
 public class DataBaseAPI {
 
-    private  DatabaseReference mDatabase;
+    private  DatabaseReference mEventRef;
+    private  DatabaseReference mUserRef;
+    private  DatabaseReference mGroupRef;
     private FirebaseUser currentUser;
     private DatabaseReference ref;
 
@@ -32,7 +34,9 @@ public class DataBaseAPI {
 
 
     private DataBaseAPI(){
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mUserRef = FirebaseDatabase.getInstance().getReference("users");
+        mEventRef = FirebaseDatabase.getInstance().getReference("events");
+        mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         ref = FirebaseDatabase.getInstance().getReference();
     }
@@ -47,7 +51,7 @@ public class DataBaseAPI {
 
     //TODO Validate user
     public void writeNewUser(User user) {
-        mDatabase.collection("users").document(user.getId())
+        mGroupRef("users").document(user.getId())
                 .set(user);
     }
 
