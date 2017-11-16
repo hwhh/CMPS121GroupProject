@@ -1,10 +1,11 @@
 package com.groupproject.Model;
 
-import com.groupproject.Controller.Location;
+import com.google.android.gms.maps.model.LatLng;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class Event {
 
     public Map<String, Object> toMap() {
         Map<String, Object> eventMap = new HashMap<>();
-        eventMap.put("date", eventDate);
+        eventMap.put("date", startDate);
 //        eventMap.put("going", going);
 //        eventMap.put("interested", interested);
 //        eventMap.put("relatedActivities", relatedActivities);
@@ -30,14 +31,15 @@ public class Event {
         return eventMap;
     }
 
-    enum VISIBILITY {
+    public enum VISIBILITY {
         INVITE_ONLY,
         FRIENDS,
         PUBLIC
     }
 
 
-    private Date eventDate;
+    private DateTime startDate;
+    private DateTime endDate;
 
     private List<User> going;
     private List<String> goingIDs;
@@ -45,7 +47,7 @@ public class Event {
     private List<Groups> relatedActivities;
     private List<String> relatedActivitiesIDs;
 
-    private Location location;
+    private LatLng location;
 
     private VISIBILITY visibility;
 
@@ -53,13 +55,14 @@ public class Event {
     private String description;
     private String id;
 
+
     public Event() {
-        init();
-        dataBaseAPI.writeNewEvent(this);
+
     }
 
-    public Event(Date eventDate, Location location, VISIBILITY visibility, String name, String description) {
-        this.eventDate = eventDate;
+    public Event(DateTime startDate, DateTime endDate, LatLng location, VISIBILITY visibility, String name, String description) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
         this.visibility = visibility;
         this.name = name;
@@ -94,7 +97,7 @@ public class Event {
         this.visibility = visibility;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LatLng location) {
         this.location = location;
     }
 
@@ -102,12 +105,12 @@ public class Event {
         this.name = name;
     }
 
-    public Date getEventDate() {
-        return eventDate;
+    public DateTime getStartDate() {
+        return startDate;
     }
 
 
-    public Location getLocation() {
+    public LatLng getLocation() {
         return location;
     }
 
@@ -126,4 +129,10 @@ public class Event {
     public String getId() {
         return id;
     }
+
+    public DateTime getEndDate() {
+        return endDate;
+    }
 }
+
+

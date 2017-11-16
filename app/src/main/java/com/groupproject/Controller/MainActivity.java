@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity {
 
         //TODO change back to Events frag
         mTabHost.addTab(mTabHost.newTabSpec("events").setIndicator("events"),
-                        GroupsFragment.class, null);
+                        EventsFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("maps").setIndicator("maps"),
                         MapsFragment.class, null);
     }

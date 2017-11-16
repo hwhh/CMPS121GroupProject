@@ -12,6 +12,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 import java.text.DateFormat;
@@ -20,6 +23,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import com.groupproject.Model.Event;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class AddEventActivity extends AppCompatActivity {
 
@@ -34,7 +42,7 @@ public class AddEventActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LatLng eventLocation;
+        final LatLng eventLocation;
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
         } else {
@@ -120,7 +128,11 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (allDataEntered()) {
-                    //TODO: Create new event, store in DB
+                    Event e = new Event(stringToDate(startDate.getText().toString()), stringToDate(endDate.getText().toString()),
+                            eventLocation, Event.VISIBILITY.PUBLIC, name.getText().toString(), description.getText().toString());
+                    DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    dataBaseAPI.addEventToUser(firebaseUser, e);
                     //return to map
                     onBackPressed();
                 } else {
@@ -129,6 +141,12 @@ public class AddEventActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    public DateTime stringToDate(String date){
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yy HH:mm");
+        return formatter.parseDateTime(date);
     }
 
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
