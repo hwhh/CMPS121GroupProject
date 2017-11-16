@@ -24,8 +24,9 @@ public class MainActivity extends FragmentActivity {
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
+        //TODO change back to Events frag
         mTabHost.addTab(mTabHost.newTabSpec("events").setIndicator("events"),
-                        EventsFragment.class, null);
+                        GroupsFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("maps").setIndicator("maps"),
                         MapsFragment.class, null);
     }
@@ -47,9 +48,6 @@ public class MainActivity extends FragmentActivity {
         mTabHost.setCurrentTab(MAPS_INDEX);
         //TODO: Open maps on event's location
     }
-
-}
-
 
 
 

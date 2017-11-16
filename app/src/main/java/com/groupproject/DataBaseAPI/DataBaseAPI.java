@@ -43,7 +43,7 @@ public class DataBaseAPI {
 
     //TODO Validate user
     public void writeNewUser(User user) {
-        mUserRef.child(user.getId()).child(user.getId())
+        mUserRef.child(user.getId())
                 .setValue(user);
     }
 

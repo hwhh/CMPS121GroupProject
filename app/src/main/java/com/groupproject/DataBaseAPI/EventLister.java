@@ -11,8 +11,8 @@ public class EventLister implements ValueEventListener {
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        Event event = dataSnapshot.getValue(Event.class);
-        System.out.println();
+//        Event event = dataSnapshot.getValue(Event.class);
+
     }
 
     @Override
