@@ -1,8 +1,11 @@
 package com.groupproject.Controller;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -27,8 +30,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.groupproject.R;
 
-import static com.google.android.gms.plus.PlusOneDummyView.TAG;
-
 
 public class MapsFragment extends Fragment {
 
@@ -36,8 +37,9 @@ public class MapsFragment extends Fragment {
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location mLastKnownLocation;
+    Context mContext;
 
-    private final LatLng mDefaultLocation = new LatLng(36.9916, -122.0578);
+    private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
@@ -77,7 +79,17 @@ public class MapsFragment extends Fragment {
                                     Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
                     return;
                 }
-                createMap();
+
+
+                Criteria criteria = new Criteria();
+                LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                String provider = locationManager.getBestProvider(criteria, false);
+                Location location = locationManager.getLastKnownLocation(provider);
+                double lat =  location.getLatitude();
+                double lng = location.getLongitude();
+                LatLng coordinate = new LatLng(lat, lng);
+
+                createMap(googleMap);
             }
         });
 
@@ -145,7 +157,7 @@ public class MapsFragment extends Fragment {
             case 1: {
                 if ((grantResults.length > 0) && (grantResults[0] +
                         grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
-                    createMap();
+                    createMap(googleMap);
                 } else {
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
@@ -155,8 +167,8 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    private void createMap() {
-        googleMap.setMyLocationEnabled(true);
+    private void createMap(GoogleMap mMap) {
+        mMap.setMyLocationEnabled(true);
         //TODO: Get user's location and zoom in on it using the code below
 
         // For zooming automatically to the location of the marker
@@ -164,10 +176,11 @@ public class MapsFragment extends Fragment {
 //                .target(new LatLng(location.getLatitude(),
 //                        location.getLongitude())).zoom(12).build();
 //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(36.9916, -122.0578));
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
 
-        googleMap.moveCamera(center);
-        googleMap.animateCamera(zoom);
+        CameraUpdate center = CameraUpdateFactory.newLatLng(mDefaultLocation);
+        CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
+
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom);
     }
 }
