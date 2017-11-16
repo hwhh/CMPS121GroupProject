@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.groupproject.R;
 
 import java.text.DateFormat;
@@ -33,6 +34,12 @@ public class AddEventActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LatLng eventLocation;
+        if (getIntent().hasExtra("event_location")) {
+            eventLocation = getIntent().getExtras().getParcelable("event_location");
+        } else {
+            throw new IllegalArgumentException("Activity cannot find  extras event_location");
+        }
         setContentView(R.layout.create_event);
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();

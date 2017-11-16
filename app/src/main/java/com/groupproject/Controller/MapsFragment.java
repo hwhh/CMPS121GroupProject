@@ -96,11 +96,15 @@ public class MapsFragment extends Fragment {
                         googleMap.addMarker(marker);
                         googleMap.setOnMapClickListener(null);
                         Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                        intent.putExtra("event_location",
+                                new LatLng(point.latitude, point.longitude));
                         startActivity(intent);
                     }
                 });
             }
         });
+
+        //TODO: Populate map with markers based on events in DB
 
         return rootView;
     }
