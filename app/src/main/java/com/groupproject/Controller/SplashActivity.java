@@ -2,8 +2,10 @@ package com.groupproject.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.Controller.Authentication.LoginActivity;
@@ -18,16 +20,24 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            intent = new Intent(this, MainActivity.class);
-        } else {
-            intent = new Intent(this, LoginActivity.class);
-            // No user is signed in
-        }
-
-        startActivity(intent);
-        finish();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //Duration of splash screen in milliseconds
+        int SPLASH_DISPLAY_LENGTH = 1000;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                Intent intent;
+                if (user != null) {
+                    // User is signed in
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    // No user is signed in
+                }
+                startActivity(intent);
+                finish();
+            }
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }
