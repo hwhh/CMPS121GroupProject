@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
@@ -36,6 +37,7 @@ public class MapsFragment extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    GoogleApiClient googleApiClient;
     private Location mLastKnownLocation;
     Context mContext;
 
@@ -176,7 +178,7 @@ public class MapsFragment extends Fragment {
 //                .target(new LatLng(location.getLatitude(),
 //                        location.getLongitude())).zoom(12).build();
 //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+        Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         CameraUpdate center = CameraUpdateFactory.newLatLng(mDefaultLocation);
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
 
