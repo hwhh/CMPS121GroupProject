@@ -36,9 +36,9 @@ public class MapsFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
     GoogleApiClient googleApiClient;
     private Location mLastKnownLocation;
+    private FusedLocationProviderClient mFusedLocationClient;
     Context mContext;
 
     private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
@@ -83,14 +83,14 @@ public class MapsFragment extends Fragment {
                 }
 
 
-                Criteria criteria = new Criteria();
-                LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                String provider = locationManager.getBestProvider(criteria, false);
-                Location location = locationManager.getLastKnownLocation(provider);
-                double lat =  location.getLatitude();
-                double lng = location.getLongitude();
-                LatLng coordinate = new LatLng(lat, lng);
-
+                //Criteria criteria = new Criteria();
+                //LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+                //String provider = locationManager.getBestProvider(criteria, false);
+                //Location location = locationManager.getLastKnownLocation(provider);
+                //double lat =  location.getLatitude();
+                //double lng = location.getLongitude();
+                //LatLng coordinate = new LatLng(lat, lng);
+                //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
                 createMap(googleMap);
             }
         });
@@ -178,9 +178,20 @@ public class MapsFragment extends Fragment {
 //                .target(new LatLng(location.getLatitude(),
 //                        location.getLongitude())).zoom(12).build();
 //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        LatLng newLatLng = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
-        CameraUpdate center = CameraUpdateFactory.newLatLng(newLatLng);
+        //Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        //LatLng newLatLng = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+
+        
+        Location location = new Location("dummyprovider");
+        location.setLatitude(36.9980751);
+        location.setLongitude(-122.0575037);
+
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+
+        CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
 
         mMap.moveCamera(center);
