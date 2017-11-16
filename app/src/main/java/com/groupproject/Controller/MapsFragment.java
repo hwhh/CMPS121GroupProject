@@ -179,7 +179,8 @@ public class MapsFragment extends Fragment {
 //                        location.getLongitude())).zoom(12).build();
 //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        CameraUpdate center = CameraUpdateFactory.newLatLng(mDefaultLocation);
+        LatLng newLatLng = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+        CameraUpdate center = CameraUpdateFactory.newLatLng(newLatLng);
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
 
         mMap.moveCamera(center);
