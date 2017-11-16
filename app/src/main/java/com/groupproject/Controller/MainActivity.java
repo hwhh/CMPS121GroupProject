@@ -27,6 +27,8 @@ public class MainActivity extends FragmentActivity {
     // Fragment TabHost as mTabHost
     private FragmentTabHost mTabHost;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,24 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public void onButtonClick1(View v){
-        FirebaseFirestore db =FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user =  mAuth.getCurrentUser();
+    public void onButtonClick1(View v) {
+        new Event();
+    }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
 
 
 //        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -84,7 +100,3 @@ public class MainActivity extends FragmentActivity {
 ////                        "age", 13,
 ////                        ".color", "Red"
 ////                );
-
-    }
-
-}

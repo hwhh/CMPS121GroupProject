@@ -1,24 +1,12 @@
 package com.groupproject.DataBaseAPI;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class DataBaseAPI {
@@ -27,7 +15,7 @@ public class DataBaseAPI {
     private  DatabaseReference mUserRef;
     private  DatabaseReference mGroupRef;
     private FirebaseUser currentUser;
-    private DatabaseReference ref;
+    private ChildEventListener listener;
 
 
     private static DataBaseAPI single_instance = null;
@@ -38,7 +26,6 @@ public class DataBaseAPI {
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        ref = FirebaseDatabase.getInstance().getReference();
     }
 
     public static DataBaseAPI getDataBase() {
@@ -48,18 +35,25 @@ public class DataBaseAPI {
         return single_instance;
     }
 
-
     //TODO Validate user
     public void writeNewUser(User user) {
-        mGroupRef("users").document(user.getId())
-                .set(user);
+        mDatabase.child("users").child(user.getId())
+                .setValue(user);
+    }
+
+    public void writeNewEvent(Event event) {
+        event.setId(mDatabase.child("events").push().getKey());
+        mDatabase.child("events").child(event.getId())
+                .setValue(event);
     }
 
 
-    public void addEventToUser() {
-        String key = mDatabase.child("posts").push().getKey();
-
+    public void addEventToUser(User user, Event event) {
+        String key = mDatabase.child("users").child(user.getId()).child("goingEventsIDs").push().getKey();
+        mDatabase.child(key).setValue(event.getId());
     }
+
+
 
 
 }

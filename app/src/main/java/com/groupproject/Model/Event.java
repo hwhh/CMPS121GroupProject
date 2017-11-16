@@ -1,11 +1,19 @@
 package com.groupproject.Model;
 
+import com.groupproject.DataBaseAPI.DataBaseAPI;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class Event {
+
+
+    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+
 
     public Map<String, Object> toMap() {
         Map<String, Object> eventMap = new HashMap<>();
@@ -30,9 +38,11 @@ public class Event {
 
     private Date eventDate;
 
-//    private List<User> going;
+    private List<User> going;
+    private List<String> goingIDs;
 //    private List<User> interested;
-//    private List<EventActivity> relatedActivities;
+    private List<Groups> relatedActivities;
+    private List<String> relatedActivitiesIDs;
 
     private Location location;
 
@@ -42,30 +52,41 @@ public class Event {
     private String description;
     private String id;
 
-
-
     public Event() {
-//        init();
+        init();
+        dataBaseAPI.writeNewEvent(this);
     }
 
-    public Event(Date eventDate, Location location, VISIBILITY visibility, String name, String description, String id) {
+    public Event(Date eventDate, Location location, VISIBILITY visibility, String name, String description) {
         this.eventDate = eventDate;
         this.location = location;
         this.visibility = visibility;
         this.name = name;
         this.description = description;
-        this.id = id;
-//        init();
+        init();
+        dataBaseAPI.writeNewEvent(this);
     }
 
-//    private void init(){
-//        going = new ArrayList<>();
+
+
+    private void init(){
+        going = new ArrayList<>();
 //        interested= new ArrayList<>();
-//        relatedActivities= new ArrayList<>();
-//    }
+        relatedActivities= new ArrayList<>();
+        goingIDs= new ArrayList<>();
+        relatedActivitiesIDs= new ArrayList<>();
+    }
 
-    public void save(){
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public List<String> getGoingIDs() {
+        return goingIDs;
+    }
+
+    public List<String> getRelatedActivitiesIDs() {
+        return relatedActivitiesIDs;
     }
 
     public void setVisibility(VISIBILITY visibility) {
@@ -84,17 +105,6 @@ public class Event {
         return eventDate;
     }
 
-//    public List<User> getGoing() {
-//        return going;
-//    }
-//
-//    public List<User> getInterested() {
-//        return interested;
-//    }
-//
-//    public List<EventActivity> getRelatedActivities() {
-//        return relatedActivities;
-//    }
 
     public Location getLocation() {
         return location;

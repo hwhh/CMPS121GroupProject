@@ -16,11 +16,12 @@ public class User {
     }
 
 //    private List<User> connection;
-//    private List<EventActivity> activities;
+//    private List<Groups> activities;
     private List<Event> goingEvents;
-    private List<String> goingEventsID;
+    private List<String> goingEventsIDs;
 
     private List<Event> interestedEvents;//TODO If interested cant be going and vice versa
+    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
 
     private Location location;
@@ -51,7 +52,8 @@ public class User {
 
     public void addEvent(Event e){
         goingEvents.add(e);
-        goingEventsID.add(e.getId());
+        goingEventsIDs.add(e.getId());
+        dataBaseAPI.addEventToUser(this, e);
 
     }
 
@@ -77,8 +79,8 @@ public class User {
     }
 
 
-    public List<String> getGoingEventsID() {
-        return goingEventsID;
+    public List<String> getGoingEventsIDs() {
+        return goingEventsIDs;
     }
 }
 
