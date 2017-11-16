@@ -88,12 +88,12 @@ public class MapsFragment extends Fragment {
 
 
                 Criteria criteria = new Criteria();
-                LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                String provider = locationManager.getBestProvider(criteria, false);
-                Location location = locationManager.getLastKnownLocation(provider);
-                double lat =  location.getLatitude();
-                double lng = location.getLongitude();
-                LatLng coordinate = new LatLng(lat, lng);
+//                LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+//                String provider = locationManager.getBestProvider(criteria, false);
+//                Location location = locationManager.getLastKnownLocation(provider);
+//                double lat =  location.getLatitude();
+//                double lng = location.getLongitude();
+//                LatLng coordinate = new LatLng(lat, lng);
 
                 createMap(googleMap);
             }
@@ -205,7 +205,7 @@ public class MapsFragment extends Fragment {
         Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         LatLng newLatLng = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
         CameraUpdate center = CameraUpdateFactory.newLatLng(newLatLng);
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
 
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
