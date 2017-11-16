@@ -18,18 +18,26 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.groupproject.R;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MapsFragment extends Fragment {
@@ -38,20 +46,22 @@ public class MapsFragment extends Fragment {
     private GoogleMap googleMap;
     GoogleApiClient googleApiClient;
     private Location mLastKnownLocation;
+    private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
+    private LatLng coordinates;
     Context mContext;
 
     private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private boolean mLocationPermissionGranted;
+    private boolean mLocationPermissionGranted = true;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View rootView = inflater.inflate(R.layout.maps_fragment, container, false);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -81,28 +91,20 @@ public class MapsFragment extends Fragment {
                                     Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
                     return;
                 }
-
-
-                //Criteria criteria = new Criteria();
-                //LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                //String provider = locationManager.getBestProvider(criteria, false);
-                //Location location = locationManager.getLastKnownLocation(provider);
-                //double lat =  location.getLatitude();
-                //double lng = location.getLongitude();
-                //LatLng coordinate = new LatLng(lat, lng);
-                //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-                createMap(googleMap);
+                getDeviceLocation();
+                //createMap(googleMap);
             }
         });
 
         return rootView;
     }
 
-    /*private void getDeviceLocation() {
+    private void getDeviceLocation() {
         try {
             if (mLocationPermissionGranted) {
-                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                googleMap.setMyLocationEnabled(true);
+                Task<Location> locationResult = mFusedLocationClient.getLastLocation();
+                locationResult.addOnCompleteListener(new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
@@ -124,7 +126,7 @@ public class MapsFragment extends Fragment {
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
-    }*/
+    }
 
     @Override
     public void onResume() {
@@ -180,8 +182,21 @@ public class MapsFragment extends Fragment {
 //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         //Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         //LatLng newLatLng = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+/*
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        // Check whether location settings are satisfied
+        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);*/
+
+
         Location location = new Location("dummyprovider");
         location.setLatitude(36.9980751);
         location.setLongitude(-122.0575037);
@@ -192,6 +207,8 @@ public class MapsFragment extends Fragment {
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
         CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
+        googleMap.addMarker(new MarkerOptions().position(latLng)
+                .title("Marker"));
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
 
         mMap.moveCamera(center);
