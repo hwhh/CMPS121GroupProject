@@ -1,4 +1,4 @@
-package com.groupproject.Authentication;
+package com.groupproject.Controller.Authentication;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +32,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.groupproject.Controller.MainActivity;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -47,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    private static User currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,24 @@ public class LoginActivity extends AppCompatActivity {
 
         /////////FACEBOOK LOGIN/////////
         final Activity activity = this;
-        setUpFaceBook();
+
+        AppEventsLogger.activateApp(getApplication());
+        CallbackManager mCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(mCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        signInFacebook(loginResult.getAccessToken());
+                    }
+                    @Override
+                    public void onCancel() {
+                        //TODO Deal with this
+                    }
+                    @Override
+                    public void onError(FacebookException exception) {
+                        //TODO Deal with this
+                    }
+                });
 
         /////////GOOGLE LOGIN/////////
         setUpGoogle();
@@ -107,23 +125,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setUpFaceBook(){
 
-        AppEventsLogger.activateApp(getApplication());
-        CallbackManager mCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        signInFacebook(loginResult.getAccessToken());
-                    }
-                    @Override
-                    public void onCancel() {
-                        //TODO Deal with this
-                    }
-                    @Override
-                    public void onError(FacebookException exception) {
-                        //TODO Deal with this
-                    }
-                });
     }
 
     private void setUpGoogle(){
@@ -197,7 +198,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplication(), MainActivity.class);
         if (user != null) {
            new User(user.getUid(), user.getDisplayName(), user.getEmail());
-
         }
         startActivity(intent);
     }

@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
 
@@ -14,8 +15,9 @@ public class DataBaseAPI {
     private  DatabaseReference mEventRef;
     private  DatabaseReference mUserRef;
     private  DatabaseReference mGroupRef;
-    private FirebaseUser currentUser;
-    private ChildEventListener listener;
+
+    private ValueEventListener eventListener;
+
 
 
     private static DataBaseAPI single_instance = null;
@@ -25,7 +27,11 @@ public class DataBaseAPI {
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        eventListener = new EventLister();
+        mEventRef.addValueEventListener(eventListener);
+
+
     }
 
     public static DataBaseAPI getDataBase() {
@@ -37,20 +43,20 @@ public class DataBaseAPI {
 
     //TODO Validate user
     public void writeNewUser(User user) {
-        mDatabase.child("users").child(user.getId())
+        mUserRef.child(user.getId()).child(user.getId())
                 .setValue(user);
     }
 
     public void writeNewEvent(Event event) {
-        event.setId(mDatabase.child("events").push().getKey());
-        mDatabase.child("events").child(event.getId())
+        event.setId(mEventRef.push().getKey());
+        mEventRef.child(event.getId())
                 .setValue(event);
     }
 
 
-    public void addEventToUser(User user, Event event) {
-        String key = mDatabase.child("users").child(user.getId()).child("goingEventsIDs").push().getKey();
-        mDatabase.child(key).setValue(event.getId());
+    public void addEventToUser(FirebaseUser firebaseUser, Event event) {
+        String key = mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").push().getKey();
+        mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").child(key).setValue(event.getId());
     }
 
 

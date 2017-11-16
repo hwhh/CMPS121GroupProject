@@ -1,5 +1,6 @@
 package com.groupproject.Model;
 
+import com.groupproject.Controller.Location;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;

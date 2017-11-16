@@ -1,6 +1,8 @@
 package com.groupproject.Model;
 
 
+import com.google.firebase.auth.FirebaseUser;
+import com.groupproject.Controller.Location;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
@@ -50,10 +52,10 @@ public class User {
         interestedEvents= new ArrayList<>();
     }
 
-    public void addEvent(Event e){
+    public void addEvent(FirebaseUser user, Event e){
         goingEvents.add(e);
         goingEventsIDs.add(e.getId());
-        dataBaseAPI.addEventToUser(this, e);
+        dataBaseAPI.addEventToUser(user, e);
 
     }
 

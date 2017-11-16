@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.groupproject.Authentication.LoginActivity;
+import com.groupproject.Controller.Authentication.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

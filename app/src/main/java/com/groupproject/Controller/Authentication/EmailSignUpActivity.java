@@ -1,4 +1,4 @@
-package com.groupproject.Authentication;
+package com.groupproject.Controller.Authentication;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -16,7 +16,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.Controller.MainActivity;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -37,12 +36,12 @@ public class EmailSignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-         Button createAccount = (Button) findViewById(R.id.SignUp);
+        Button createAccount = (Button) findViewById(R.id.SignUp);
         createAccount.setOnClickListener(new View.OnClickListener() {
          @Override
                  public void onClick(View view) {
-                    createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(), mName.getText().toString());
-                 }
+            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(), mName.getText().toString());
+         }
              });
     }
 

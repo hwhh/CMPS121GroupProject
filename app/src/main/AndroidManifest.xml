@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Authentication.FacebookAuthenticationActivity"
+            android:name=".Controller.Authentication.FacebookAuthenticationActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name">
             <meta-data
@@ -80,13 +80,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Authentication.GoogleAuthenticationActivity" />
-        <activity android:name=".Authentication.EmailAuthenticationActivity" />
-        <activity android:name=".Authentication.LoginActivity" />
-        <activity android:name=".Authentication.EmailSignUpActivity" />
-        <activity
-            android:name=".Controller.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+        <activity android:name=".Controller.Authentication.GoogleAuthenticationActivity" />
+        <activity android:name=".Controller.Authentication.EmailAuthenticationActivity" />
+        <activity android:name=".Controller.Authentication.LoginActivity" />
+        <activity android:name=".Controller.Authentication.EmailSignUpActivity" />
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>
