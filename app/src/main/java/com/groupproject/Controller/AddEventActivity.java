@@ -14,7 +14,13 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.*;
+import com.groupproject.Model.Event;
+import com.groupproject.Model.Location;
 import com.groupproject.R;
 
 import java.text.DateFormat;
@@ -23,13 +29,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import com.groupproject.Model.Event;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class AddEventActivity extends AppCompatActivity {
+public class AddEventActivity extends AppCompatActivity  {
+
+
+    DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     private EditText name;
     private EditText description;
@@ -43,6 +52,7 @@ public class AddEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LatLng eventLocation;
+
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
         } else {
@@ -72,11 +82,11 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                                                    AddEventActivity.this,
-                                                    start_date_picker,
-                                                    startDateCalendar.get(Calendar.YEAR),
-                                                    startDateCalendar.get(Calendar.MONTH),
-                                                    startDateCalendar.get(Calendar.DAY_OF_MONTH));
+                        AddEventActivity.this,
+                        start_date_picker,
+                        startDateCalendar.get(Calendar.YEAR),
+                        startDateCalendar.get(Calendar.MONTH),
+                        startDateCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             }
@@ -112,11 +122,11 @@ public class AddEventActivity extends AppCompatActivity {
                         endDateCalendar.setTime(date);
                     long minDate = endDateCalendar.getTimeInMillis();
                     DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                                                    AddEventActivity.this,
-                                                    end_date_picker,
-                                                    endDateCalendar.get(Calendar.YEAR),
-                                                    endDateCalendar.get(Calendar.MONTH),
-                                                    endDateCalendar.get(Calendar.DAY_OF_MONTH));
+                            AddEventActivity.this,
+                            end_date_picker,
+                            endDateCalendar.get(Calendar.YEAR),
+                            endDateCalendar.get(Calendar.MONTH),
+                            endDateCalendar.get(Calendar.DAY_OF_MONTH));
                     datePickerDialog.getDatePicker().setMinDate(minDate);
                     datePickerDialog.show();
                 }
@@ -128,12 +138,23 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (allDataEntered()) {
-                    Event e = new Event(stringToDate(startDate.getText().toString()), stringToDate(endDate.getText().toString()),
-                            eventLocation, Event.VISIBILITY.PUBLIC, name.getText().toString(), description.getText().toString());
-                    DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                    dataBaseAPI.addEventToUser(firebaseUser, e);
-                    //return to map
+                    assert eventLocation != null;
+
+                    String myFormat = "MM/dd/yy hh:mm";
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                    try {
+                        Date sDate = sdf.parse(startDate.getText().toString());
+                        Date fDate = sdf.parse(endDate.getText().toString());
+                        Event e = new Event(sDate, fDate,
+                                new Location(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
+                                name.getText().toString(), description.getText().toString());
+
+                        dataBaseAPI.addEventToUser(firebaseUser, e);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     onBackPressed();
                 } else {
                     Toast.makeText(getApplicationContext(), "Please fill in all the data",
@@ -210,4 +231,6 @@ public class AddEventActivity extends AppCompatActivity {
     private boolean isEditTextEmpty(EditText editText) {
         return !editText.getText().toString().trim().isEmpty();
     }
+
+
 }

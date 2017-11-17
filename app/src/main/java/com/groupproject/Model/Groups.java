@@ -9,8 +9,9 @@ import java.util.List;
 public class Groups {
 
     private List<Event> eventList;
-    private List<String> eventListIDs; //TODO ONLY SAVE THESE VALUES FOR FLATNESS
     private List<User> users;
+
+    private List<String> eventListIDs; //TODO ONLY SAVE THESE VALUES FOR FLATNESS
     private List<String> usersIDs; //TODO ONLY SAVE THESE VALUES FOR FLATNESS
 
     private String name;
@@ -36,26 +37,39 @@ public class Groups {
         return eventListIDs;
     }
 
+    public void setEventListIDs(List<String> eventListIDs) {
+        this.eventListIDs = eventListIDs;
+    }
+
     public List<String> getUsersIDs() {
         return usersIDs;
+    }
+
+    public void setUsersIDs(List<String> usersIDs) {
+        this.usersIDs = usersIDs;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public String getTags() {
+        return tags;
+    }
 
-
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
 }

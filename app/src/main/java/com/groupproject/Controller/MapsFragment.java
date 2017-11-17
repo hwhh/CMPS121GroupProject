@@ -26,6 +26,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.groupproject.Model.*;
 import com.groupproject.R;
 
 import static android.content.ContentValues.TAG;
@@ -42,6 +46,7 @@ public class MapsFragment extends Fragment {
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = true;
+
 
 
     @Override
@@ -187,8 +192,10 @@ public class MapsFragment extends Fragment {
 
         // For zooming automatically to the location of the marker
 //        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(new LatLng(location.getLatitude(),
+//                .target(new Location(location.getLatitude(),
 //                        location.getLongitude())).zoom(12).build();
 //        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
+
+
 }

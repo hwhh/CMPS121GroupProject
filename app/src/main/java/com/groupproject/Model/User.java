@@ -60,29 +60,45 @@ public class User {
     }
 
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public List<String> getGoingEventsIDs() {
+        return goingEventsIDs;
     }
+
+    public List<String> getInterestedEventsIDs() {
+        return interestedEventsIDs;
+    }
+
 
     public Location getLocation() {
         return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getId() {
         return id;
     }
 
-
-    public List<String> getGoingEventsIDs() {
-        return goingEventsIDs;
+    public void setId(String id) {
+        this.id = id;
     }
 }
 

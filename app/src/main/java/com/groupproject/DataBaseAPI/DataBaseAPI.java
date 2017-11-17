@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.groupproject.Controller.MapsFragment;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
 
@@ -18,7 +19,7 @@ public class DataBaseAPI {
     private  DatabaseReference mUserRef;
     private  DatabaseReference mGroupRef;
 
-    private ValueEventListener eventListener;
+    private ChildEventListener eventListener;
 
 
 
@@ -30,8 +31,8 @@ public class DataBaseAPI {
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
 
-//        eventListener = new EventLister();
-//        mEventRef.addValueEventListener(eventListener);
+        eventListener = new EventLister();
+        mEventRef.addChildEventListener(eventListener);
 
 
     }
@@ -49,27 +50,6 @@ public class DataBaseAPI {
                 .setValue(user);
     }
 
-    private void writeNewEvent(FirebaseUser firebaseUse) {
-        final String uid = firebaseUse.getUid();
-        FirebaseDatabase.getInstance().getReference().child("users").child(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        String authorName = user.getName();
-
-                        // Create new comment object
-
-                        // Push the comment, it will appear in the list
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
 
     public void writeNewEvent(Event event) {
         event.setId(mEventRef.push().getKey());
