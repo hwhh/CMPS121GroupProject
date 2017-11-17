@@ -59,7 +59,6 @@ public class DataBaseAPI {
                         String authorName = user.getName();
 
                         // Create new comment object
-                        Event comment = new Event(uid, authorName, );
 
                         // Push the comment, it will appear in the list
 
