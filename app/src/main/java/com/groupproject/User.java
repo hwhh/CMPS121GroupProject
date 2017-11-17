@@ -8,6 +8,7 @@ public class User {
     private String last_name;
     private String email;
 
+    private String chnaged;
     public User(String id, String first_name, String last_name, String email) {
         this.id = id;
         this.first_name = first_name;

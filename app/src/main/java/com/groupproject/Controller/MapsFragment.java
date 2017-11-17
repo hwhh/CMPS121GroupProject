@@ -1,39 +1,30 @@
 package com.groupproject.Controller;
 
 import android.Manifest;
-import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.groupproject.R;
 
@@ -44,12 +35,8 @@ public class MapsFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-    GoogleApiClient googleApiClient;
     private Location mLastKnownLocation;
-    private LocationRequest mLocationRequest;
     private FusedLocationProviderClient mFusedLocationClient;
-    private LatLng coordinates;
-    Context mContext;
 
     private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
     private static final int DEFAULT_ZOOM = 15;
@@ -92,9 +79,32 @@ public class MapsFragment extends Fragment {
                     return;
                 }
                 getDeviceLocation();
-                //createMap(googleMap);
             }
         });
+
+        FloatingActionButton createEvent
+                = (FloatingActionButton) rootView.findViewById(R.id.create_event_fab);
+        createEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Tap to add a pin!", Toast.LENGTH_LONG).show();
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng point) {
+                        MarkerOptions marker = new MarkerOptions().position(
+                                new LatLng(point.latitude, point.longitude)).title("");
+                        googleMap.addMarker(marker);
+                        googleMap.setOnMapClickListener(null);
+                        Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                        intent.putExtra("event_location",
+                                new LatLng(point.latitude, point.longitude));
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+
+        //TODO: Populate map with markers based on events in DB
 
         return rootView;
     }
@@ -161,7 +171,7 @@ public class MapsFragment extends Fragment {
             case 1: {
                 if ((grantResults.length > 0) && (grantResults[0] +
                         grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
-                    createMap(googleMap);
+                    getDeviceLocation();
                 } else {
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
@@ -169,49 +179,5 @@ public class MapsFragment extends Fragment {
                 }
             }
         }
-    }
-
-    private void createMap(GoogleMap mMap) {
-        mMap.setMyLocationEnabled(true);
-        //TODO: Get user's location and zoom in on it using the code below
-
-        // For zooming automatically to the location of the marker
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(new LatLng(location.getLatitude(),
-//                        location.getLongitude())).zoom(12).build();
-//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        //Location currLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        //LatLng newLatLng = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
-/*
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        // Create LocationSettingsRequest object using location request
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-
-        // Check whether location settings are satisfied
-        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-        settingsClient.checkLocationSettings(locationSettingsRequest);*/
-
-
-        Location location = new Location("dummyprovider");
-        location.setLatitude(36.9980751);
-        location.setLongitude(-122.0575037);
-
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-        CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
-        googleMap.addMarker(new MarkerOptions().position(latLng)
-                .title("Marker"));
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(DEFAULT_ZOOM);
-
-        mMap.moveCamera(center);
-        mMap.animateCamera(zoom);
     }
 }

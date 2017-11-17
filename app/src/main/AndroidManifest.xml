@@ -39,12 +39,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controller.LoginActivity"
+            android:name=".Authentication.FacebookAuthentication"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name">
 
             <meta-data
-                android:name="com.facebook.sdk.ApplicationId"
+                android:name="com.facebook.sdk.Pinned"
                 android:value="@string/facebook_app_id" />
         </activity>
         <activity
@@ -63,6 +63,7 @@
                 android:name="com.facebook.sdk.ApplicationId"
                 android:value="@string/facebook_app_id" />
         </activity>
+        <activity android:name=".Controller.AddEventActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -80,6 +81,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
