@@ -23,19 +23,32 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.EventUpdater;
 import com.groupproject.Model.*;
 import com.groupproject.R;
+
+import net.jodah.expiringmap.ExpiringMap;
+
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import static android.content.ContentValues.TAG;
 
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements Observer {
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -47,7 +60,9 @@ public class MapsFragment extends Fragment {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = true;
 
+    DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
+    Map<String, Event> events;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,8 +123,11 @@ public class MapsFragment extends Fragment {
                 });
             }
         });
+        addPinsToMap(EventUpdater.getEventMap());
 
-        //TODO: Populate map with markers based on events in DB
+        EventUpdater eventUpdater = (EventUpdater) dataBaseAPI.getEventListener();
+        eventUpdater.addObserver(this);
+
 
         return rootView;
     }
@@ -186,16 +204,22 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    private void createMap() {
-//        googleMap.setMyLocationEnabled(true);
-        //TODO: Get user's location and zoom in on it using the code below
 
-        // For zooming automatically to the location of the marker
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(new Location(location.getLatitude(),
-//                        location.getLongitude())).zoom(12).build();
-//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    public void addPinsToMap(ExpiringMap<String, Event> eventMap){
+        if(googleMap != null) {
+            for (Event event : eventMap.values()) {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()))
+                        .title(event.getName())
+                        .snippet(event.getDescription()));
+            }
+        }
     }
 
-
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o instanceof EventUpdater) {
+            addPinsToMap(EventUpdater.getEventMap());
+        }
+    }
 }

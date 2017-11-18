@@ -1,6 +1,7 @@
 package com.groupproject.Controller;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.View;
@@ -8,8 +9,11 @@ import android.view.View;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.EventUpdater;
 import com.groupproject.Model.Event;
 import com.groupproject.R;
+
+import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 
@@ -21,10 +25,14 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
         //TODO change back to Events frag
+
+
+
         mTabHost.addTab(mTabHost.newTabSpec("events").setIndicator("events"),
                         EventsFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("maps").setIndicator("maps"),

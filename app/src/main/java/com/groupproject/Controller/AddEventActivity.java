@@ -138,7 +138,6 @@ public class AddEventActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 if (allDataEntered()) {
-                    assert eventLocation != null;
 
                     String myFormat = "MM/dd/yy hh:mm";
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -146,11 +145,14 @@ public class AddEventActivity extends AppCompatActivity  {
                     try {
                         Date sDate = sdf.parse(startDate.getText().toString());
                         Date fDate = sdf.parse(endDate.getText().toString());
-                        Event e = new Event(sDate, fDate,
-                                new Location(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
-                                name.getText().toString(), description.getText().toString());
+                        Event e;
+                        if (eventLocation != null) {
+                            e = new Event(sDate, fDate,
+                                    new Location(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
+                                    name.getText().toString(), description.getText().toString());
+                            dataBaseAPI.addEventToUser(firebaseUser, e);
+                        }
 
-                        dataBaseAPI.addEventToUser(firebaseUser, e);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

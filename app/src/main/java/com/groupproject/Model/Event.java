@@ -76,6 +76,10 @@ public class Event {
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
     }
 
+    public long getTimeRemaining(){
+        return endDate.getTime() - System.currentTimeMillis();
+    }
+
 
     public Date getStartDate() {
         return startDate;

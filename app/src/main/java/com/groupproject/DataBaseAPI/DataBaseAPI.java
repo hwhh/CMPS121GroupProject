@@ -1,40 +1,35 @@
 package com.groupproject.DataBaseAPI;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.groupproject.Controller.MapsFragment;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
+
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class DataBaseAPI {
 
-    private  DatabaseReference mEventRef;
-    private  DatabaseReference mUserRef;
-    private  DatabaseReference mGroupRef;
-
-    private ChildEventListener eventListener;
-
-
+    private static DatabaseReference mEventRef;
+    private static DatabaseReference mUserRef;
+    private static DatabaseReference mGroupRef;
+    private static ChildEventListener eventListener;
 
     private static DataBaseAPI single_instance = null;
-
 
     private DataBaseAPI(){
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
-
-        eventListener = new EventLister();
+        eventListener = new EventUpdater();
         mEventRef.addChildEventListener(eventListener);
-
-
     }
 
     public static DataBaseAPI getDataBase() {
@@ -42,6 +37,11 @@ public class DataBaseAPI {
             single_instance = new DataBaseAPI();
         }
         return single_instance;
+    }
+
+
+    public ChildEventListener getEventListener() {
+        return eventListener;
     }
 
     //TODO Validate user
@@ -61,6 +61,32 @@ public class DataBaseAPI {
     public void addEventToUser(FirebaseUser firebaseUser, Event event) {
         String key = mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").push().getKey();
         mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").child(key).setValue(event.getId());
+    }
+
+    static HashMap<String, Event> getActiveEvents() {
+        Date date = new Date();
+        Query activeEvents = mUserRef.orderByChild("endDate").startAt(date.toString());
+        final HashMap<String, Event> eventHashMap = new HashMap<>();
+        activeEvents.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Event event = snapshot.getValue(com.groupproject.Model.Event.class);
+                        if (event != null) {
+                            eventHashMap.put(event.getId(), event);
+                        }
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return eventHashMap;
+
     }
 
 
