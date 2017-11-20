@@ -1,15 +1,17 @@
 package com.groupproject.Controller;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,57 +25,60 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.EventUpdater;
-import com.groupproject.Model.*;
+import com.groupproject.Model.Event;
+import com.groupproject.Model.LocationHelper;
+import com.groupproject.Model.LocationHelper.LocationRes;
 import com.groupproject.R;
 
 import net.jodah.expiringmap.ExpiringMap;
 
-import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-
-import static android.content.ContentValues.TAG;
+import java.util.Calendar;
 
 
-public class MapsFragment extends Fragment implements Observer {
+public class MapsFragment extends Fragment {
 
+
+    private static final int DEFAULT_ZOOM = 15;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
+    LocationHelper locHelper;
     MapView mMapView;
+    private Context context;
     private GoogleMap googleMap;
     private Location mLastKnownLocation;
     private FusedLocationProviderClient mFusedLocationClient;
-
-    private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
-    private static final int DEFAULT_ZOOM = 15;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted = true;
+    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private LocationControl locationControlTask;
+    private boolean hasLocation = false;
+    private Location currentLocation;
+    public LocationRes locationResult = new LocationRes() {
 
-    DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+        @Override
+        public void gotLocation(Location location) {
+            currentLocation = new Location(location);
+            hasLocation = true;
+        }
 
-    Map<String, Event> events;
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View rootView = inflater.inflate(R.layout.maps_fragment, container, false);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
+
+        DataBaseAPI.loadActiveEvents();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -86,7 +91,13 @@ public class MapsFragment extends Fragment implements Observer {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
-                // For showing a move to my location button
+                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() { //THIS DEALS WITH THE FIRST TIME THE MAP IS LOADED
+                        addPinsToMap();
+                    }
+                });
+
                 if (ActivityCompat.checkSelfPermission(
                         getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -98,8 +109,8 @@ public class MapsFragment extends Fragment implements Observer {
                                     Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
                     return;
                 }
-                getDeviceLocation();
             }
+
         });
 
         FloatingActionButton createEvent
@@ -123,43 +134,76 @@ public class MapsFragment extends Fragment implements Observer {
                 });
             }
         });
-        addPinsToMap(EventUpdater.getEventMap());
 
-        EventUpdater eventUpdater = (EventUpdater) dataBaseAPI.getEventListener();
-        eventUpdater.addObserver(this);
+        this.context = this.getContext();
 
+        locHelper = new LocationHelper();
+        locHelper.getLocation(context, locationResult);
+        locationControlTask = new LocationControl();
+        locationControlTask.execute(this.getActivity());
 
+        setUpListener();
         return rootView;
     }
+//
+    private void setUpListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-    private void getDeviceLocation() {
-        try {
-            if (mLocationPermissionGranted) {
-                googleMap.setMyLocationEnabled(true);
-                Task<Location> locationResult = mFusedLocationClient.getLastLocation();
-                locationResult.addOnCompleteListener(new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = task.getResult();
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            googleMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-                            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                        }
-                    }
-                });
             }
-        } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
+
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+                if (event != null) {
+                    addPinsToMap();
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        dataBaseAPI.addChildListener("events", childEventListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        locHelper.stopLocationUpdates();
+        locationControlTask.cancel(true);
+    }
+
+    public void addPinsToMap() {
+        googleMap.clear();
+        for (Event event : DataBaseAPI.getEventMap().values()){
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
+                    .title(event.getName())
+                    .snippet(event.getEndDate().toString()));
         }
     }
+
+    private void useLocation() {
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                latLng, DEFAULT_ZOOM));
+    }
+
+
 
     @Override
     public void onResume() {
@@ -186,15 +230,12 @@ public class MapsFragment extends Fragment implements Observer {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         //TODO: Error message if location denied?
         switch (requestCode) {
             case 1: {
-                if ((grantResults.length > 0) && (grantResults[0] +
-                        grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
-                    getDeviceLocation();
+                if ((grantResults.length > 0) && (grantResults[0] + grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
+                    //TODO EMPTY IF STATEMENT
                 } else {
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
@@ -204,22 +245,48 @@ public class MapsFragment extends Fragment implements Observer {
         }
     }
 
+    private class LocationControl extends AsyncTask<Context, Void, Void> {
+        private final ProgressDialog dialog = new ProgressDialog(getActivity());
 
-    public void addPinsToMap(ExpiringMap<String, Event> eventMap){
-        if(googleMap != null) {
-            for (Event event : eventMap.values()) {
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(event.getLocation().getLatitude(), event.getLocation().getLongitude()))
-                        .title(event.getName())
-                        .snippet(event.getDescription()));
+        protected void onPreExecute() {
+            this.dialog.setMessage("Searching");
+            this.dialog.show();
+        }
+
+        protected Void doInBackground(Context... params) {
+            //Wait 10 seconds to see if we can get a location from either network or GPS, otherwise stop
+            Long t = Calendar.getInstance().getTimeInMillis();
+            while (!hasLocation && Calendar.getInstance().getTimeInMillis() - t < 15000) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        protected void onPostExecute(final Void unused) {
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
+
+            if (currentLocation != null) {
+                useLocation();
+            } else {
+                //Couldn't find location, do something like show an alert dialog
             }
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        if(o instanceof EventUpdater) {
-            addPinsToMap(EventUpdater.getEventMap());
-        }
-    }
+
 }
+
+
+//
+//    @Override
+//    public void update(Observable o, Object arg) {
+//        if(o instanceof EventUpdater) {
+//            addPinsToMap(EventUpdater.getEventMap());
+//        }
+//    }

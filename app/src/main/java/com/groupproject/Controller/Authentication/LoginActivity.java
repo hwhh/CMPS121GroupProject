@@ -18,6 +18,7 @@ import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -47,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     private static User currentUser;
+    private CallbackManager mCallbackManager;
+    boolean google = false;
+    boolean facebook = false;
 
 
     @Override
@@ -59,22 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         /////////FACEBOOK LOGIN/////////
         final Activity activity = this;
         AppEventsLogger.activateApp(getApplication());
-        CallbackManager mCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        signInFacebook(loginResult.getAccessToken());
-                    }
-                    @Override
-                    public void onCancel() {
-                        //TODO Deal with this
-                    }
-                    @Override
-                    public void onError(FacebookException exception) {
-                        //TODO Deal with this
-                    }
-                });
+        setUpFaceBook();
 
         /////////GOOGLE LOGIN/////////
         setUpGoogle();
@@ -124,8 +113,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setUpFaceBook(){
 
+        mCallbackManager = CallbackManager.Factory.create();
+        LoginButton loginButton = (LoginButton) findViewById(R.id.button_facebook_login);
+        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                signInFacebook(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
 
     }
+
+
 
     private void setUpGoogle(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -156,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void signInFacebook(AccessToken token) {
-
+        facebook = true;
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -165,8 +175,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             onSuccessfulSignUp();
+
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.. "+task.getException().getMessage(),
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -175,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void singInGoogle(GoogleSignInAccount acct) {
+        google = true;
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -207,13 +220,17 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                singInGoogle(account);
-            } catch (ApiException ignored) {
+        if(facebook)
+            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        else if(google) {
+            if (requestCode == RC_SIGN_IN) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    singInGoogle(account);
+                } catch (ApiException ignored) {
 
+                }
             }
         }
     }
@@ -221,3 +238,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
 }
+
+
+
+
+
+

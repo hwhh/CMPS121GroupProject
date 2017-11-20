@@ -2,14 +2,9 @@ package com.groupproject.Model;
 
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class Event {
@@ -37,7 +32,7 @@ public class Event {
     private List<String> interestedIDs;
     private List<String> relatedActivitiesIDs;
 
-    private Location location;
+    private CustomLocation customLocation;
 
     private VISIBILITY visibility;
 
@@ -52,10 +47,10 @@ public class Event {
 
     }
 
-    public Event(Date startDate, Date endDate, Location location, VISIBILITY visibility, String name, String description) {
+    public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.location = location;
+        this.customLocation = customLocation;
         this.visibility = visibility;
         this.name = name;
         this.description = description;
@@ -76,7 +71,7 @@ public class Event {
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
     }
 
-    public long getTimeRemaining(){
+    public long calculateTimeRemaining(){
         return endDate.getTime() - System.currentTimeMillis();
     }
 
@@ -117,12 +112,12 @@ public class Event {
         this.relatedActivitiesIDs = relatedActivitiesIDs;
     }
 
-    public Location getLocation() {
-        return location;
+    public CustomLocation getCustomLocation() {
+        return customLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setCustomLocation(CustomLocation customLocation) {
+        this.customLocation = customLocation;
     }
 
     public VISIBILITY getVisibility() {

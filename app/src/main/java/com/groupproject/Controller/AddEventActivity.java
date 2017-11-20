@@ -14,13 +14,9 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.Model.*;
+import com.groupproject.Model.CustomLocation;
 import com.groupproject.Model.Event;
-import com.groupproject.Model.Location;
 import com.groupproject.R;
 
 import java.text.DateFormat;
@@ -148,7 +144,7 @@ public class AddEventActivity extends AppCompatActivity  {
                         Event e;
                         if (eventLocation != null) {
                             e = new Event(sDate, fDate,
-                                    new Location(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
+                                    new CustomLocation(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
                                     name.getText().toString(), description.getText().toString());
                             dataBaseAPI.addEventToUser(firebaseUser, e);
                         }
@@ -166,11 +162,6 @@ public class AddEventActivity extends AppCompatActivity  {
         });
     }
 
-
-    public DateTime stringToDate(String date){
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yy HH:mm");
-        return formatter.parseDateTime(date);
-    }
 
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
                                   final Calendar calendarMin) {

@@ -2,7 +2,6 @@ package com.groupproject.Model;
 
 
 import com.google.firebase.auth.FirebaseUser;
-import com.groupproject.Controller.Location;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
@@ -17,8 +16,9 @@ public class User {
         GOING,
     }
 
-//    private List<User> connection;
-//    private List<Groups> activities;
+    private List<User> connection;
+    private List<String> connectionIDs;
+
     private List<Event> goingEvents;
     private List<String> goingEventsIDs;
 
@@ -26,7 +26,7 @@ public class User {
     private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
 
-    private Location location;
+    private CustomLocation location;
     private String name;
     private String email;
     private String id;
@@ -69,11 +69,11 @@ public class User {
     }
 
 
-    public Location getLocation() {
+    public CustomLocation getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(CustomLocation location) {
         this.location = location;
     }
 

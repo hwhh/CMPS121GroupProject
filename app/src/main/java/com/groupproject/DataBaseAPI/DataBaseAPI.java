@@ -11,8 +11,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
 
+import net.jodah.expiringmap.ExpirationListener;
+import net.jodah.expiringmap.ExpiringMap;
+
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 
 public class DataBaseAPI {
@@ -20,16 +24,29 @@ public class DataBaseAPI {
     private static DatabaseReference mEventRef;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mGroupRef;
-    private static ChildEventListener eventListener;
 
     private static DataBaseAPI single_instance = null;
+
+
+    private static ExpiringMap<String, Event> eventMap;
+
+
 
     private DataBaseAPI(){
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
-        eventListener = new EventUpdater();
-        mEventRef.addChildEventListener(eventListener);
+        eventMap = ExpiringMap.builder().variableExpiration().build();
+        eventMap.addExpirationListener(new ExpirationListener<String, Event>() {
+            @Override
+            public void expired(String key, Event e) {
+                e.setExpired(true);
+                HashMap<String, Object> result = new HashMap<>();
+                result.put(e.getId(), e);
+                mEventRef.updateChildren(result);
+                eventMap.remove(e.getId());
+            }
+        });
     }
 
     public static DataBaseAPI getDataBase() {
@@ -40,9 +57,14 @@ public class DataBaseAPI {
     }
 
 
-    public ChildEventListener getEventListener() {
-        return eventListener;
+
+    public void addChildListener(String collection, ChildEventListener childEventListener){
+        if(collection.equals("events")){
+            mEventRef.addChildEventListener(childEventListener);
+        }
+
     }
+
 
     //TODO Validate user
     public void writeNewUser(User user) {
@@ -63,30 +85,40 @@ public class DataBaseAPI {
         mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").child(key).setValue(event.getId());
     }
 
-    static HashMap<String, Event> getActiveEvents() {
+    public static ExpiringMap<String, Event> getEventMap() {
+        return eventMap;
+    }
+
+    public static void loadActiveEvents() {
+
         Date date = new Date();
-        Query activeEvents = mUserRef.orderByChild("endDate").startAt(date.toString());
-        final HashMap<String, Event> eventHashMap = new HashMap<>();
-        activeEvents.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query activeEvents = mEventRef.orderByChild("endDate/time").startAt(date.getTime());
+
+
+
+        activeEvents.addValueEventListener(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Event event = snapshot.getValue(com.groupproject.Model.Event.class);
-                        if (event != null) {
-                            eventHashMap.put(event.getId(), event);
+                        if (event != null && eventMap.get(event.getId()) == null && !event.isExpired()) {
+                            eventMap.put(event.getId(), event);
+                            eventMap.setExpiration(event.getId(), event.calculateTimeRemaining(), TimeUnit.MILLISECONDS);
                         }
                     }
-
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-        return eventHashMap;
 
+
+        });
     }
 
 

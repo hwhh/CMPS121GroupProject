@@ -1,15 +1,15 @@
 package com.groupproject.Model;
 
 
-public class Location {
+public class CustomLocation {
 
 
     private Double latitude;
     private Double longitude;
 
-    public Location() {}
+    public CustomLocation() {}
 
-    public Location(Double latitude, Double longitude) {
+    public CustomLocation(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

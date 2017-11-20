@@ -29,6 +29,8 @@ dependencies {
     compile 'com.google.firebase:firebase-database:11.6.0'
     compile 'com.google.firebase:firebase-core:11.6.0'
     compile 'com.google.firebase:firebase-auth:11.6.0'
+    compile 'com.firebase:firebase-client-android:2.3.1'
+    compile 'com.firebaseui:firebase-ui:0.2.0'
     compile 'com.google.android.gms:play-services-auth:11.6.0'
     compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.google.android.gms:play-services:11.6.0'
@@ -39,6 +41,7 @@ dependencies {
     compile 'net.danlew:android.joda:2.9.9.1'
 
     compile 'net.jodah:expiringmap:0.5.8'
+
 
 
     compile 'com.android.support:appcompat-v7:25.4.0'
