@@ -43,11 +43,9 @@ public class User {
         dataBaseAPI.writeNewUser(this);
     }
 
-
-
     private void init(){
 //        connection = new ArrayList<>();
-//        activities= new ArrayList<>();
+//        activities = new ArrayList<>();
         goingEvents= new ArrayList<>();
         interestedEvents= new ArrayList<>();
     }

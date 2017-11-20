@@ -15,10 +15,10 @@ public class Event {
 
     public enum VISIBILITY {
         INVITE_ONLY,
-        FRIENDS,
         PUBLIC
     }
 
+    private User host;
 
     private Date startDate;
     private Date endDate;
@@ -32,6 +32,8 @@ public class Event {
     private List<String> interestedIDs;
     private List<String> relatedActivitiesIDs;
 
+    private List<String> tags;
+
     private CustomLocation customLocation;
 
     private VISIBILITY visibility;
@@ -41,6 +43,8 @@ public class Event {
     private String id;
 
     private boolean expired;
+
+
 
 
     public Event() {
