@@ -17,6 +17,11 @@
             android:icon="@drawable/events"
             android:title="Events" />
 
+        <item
+            android:id="@+id/map"
+            android:icon="@drawable/events"
+            android:title="Events" />
+
     </group>
 
     <item android:title="Settings">

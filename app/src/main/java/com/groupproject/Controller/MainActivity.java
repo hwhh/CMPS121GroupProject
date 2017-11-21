@@ -40,13 +40,6 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    public void onButtonClick1(View v) {
-        Event e = new Event();
-        DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        dataBaseAPI.addEventToUser(firebaseUser, e);
-
-    }
 
     public void switchToMaps(Event event) {
         mTabHost.setCurrentTab(MAPS_INDEX);

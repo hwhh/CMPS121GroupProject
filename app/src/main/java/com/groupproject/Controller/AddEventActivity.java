@@ -144,7 +144,7 @@ public class AddEventActivity extends AppCompatActivity  {
                         if (eventLocation != null) {
                             e = new Event(sDate, fDate,
                                     new CustomLocation(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
-                                    name.getText().toString(), description.getText().toString());
+                                    name.getText().toString(), description.getText().toString(), FirebaseAuth.getInstance().getUid());
                             dataBaseAPI.addEventToUser(firebaseUser, e);
                         }
 
