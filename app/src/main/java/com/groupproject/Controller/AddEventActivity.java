@@ -32,7 +32,6 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class AddEventActivity extends AppCompatActivity  {
 
-
     DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 

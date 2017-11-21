@@ -49,12 +49,6 @@ public class PrivateFragment extends Fragment {
                     MainActivity mainActivity = (MainActivity) getActivity();
                     //TODO: pass event as argument
                     mainActivity.switchToMaps(null);
-//                    EventInfoFragment eventInfoFragment = new EventInfoFragment();
-//                    FragmentManager fragmentManager = getFragmentManager();
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.private_frag, eventInfoFragment)
-//                            .addToBackStack(null)
-//                            .commit();
                 }
             });
             buttonPanel.addView(eventButton[i]);

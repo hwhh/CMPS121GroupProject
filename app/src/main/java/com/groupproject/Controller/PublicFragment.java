@@ -18,10 +18,6 @@ import com.groupproject.R;
 
 public class PublicFragment extends Fragment {
 
-//    RecyclerView mRecyclerView;
-//    RecyclerView.LayoutManager mLayoutManager;
-    RecyclerView.Adapter mAdapter;
-
     TextView publicText;
 
     ImageButton[] eventButton = new ImageButton[3];
@@ -57,27 +53,11 @@ public class PublicFragment extends Fragment {
                     MainActivity mainActivity = (MainActivity) getActivity();
                     //TODO: pass event as argument
                     mainActivity.switchToMaps(null);
-//                    EventInfoFragment eventInfoFragment = new EventInfoFragment();
-//                    FragmentManager fragmentManager = getFragmentManager();
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.public_frag, eventInfoFragment)
-//                            .addToBackStack(null)
-//                            .commit();
                 }
             });
             buttonPanel.addView(eventButton[i]);
 
         }
-//        // Calling the RecyclerView
-//        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-//        mRecyclerView.setHasFixedSize(true);
-//
-//        // The number of Columns
-//        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-
-//        mAdapter = new HLVAdapter(MainActivity.this, alName, alImage);
-//        mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }
 

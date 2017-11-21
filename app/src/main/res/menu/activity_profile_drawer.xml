@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/friends"
+            android:icon="@drawable/friends"
+            android:title="Friends" />
+        <item
+            android:id="@+id/groups"
+            android:icon="@drawable/groups"
+            android:title="Groups" />
+        <item
+            android:id="@+id/events"
+            android:icon="@drawable/events"
+            android:title="Events" />
+
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/sign_out"
+                android:icon="@drawable/signout"
+                android:title="Sign Out" />
+            <item
+                android:id="@+id/delete_accout"
+                android:icon="@drawable/deleteaccount"
+                android:title="Delete Account" />
+        </menu>
+    </item>
+
+</menu>

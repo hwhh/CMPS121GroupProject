@@ -38,7 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -74,19 +73,21 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-
         <activity android:name=".Controller.Authentication.LoginActivity">
             <meta-data
                 android:name="com.facebook.sdk.Pinned"
                 android:value="@string/facebook_app_id" />
-
         </activity>
-
         <activity android:name=".Controller.Authentication.EmailSignUpActivity" />
-        <activity android:name=".SettingActivity"></activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".Controller.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

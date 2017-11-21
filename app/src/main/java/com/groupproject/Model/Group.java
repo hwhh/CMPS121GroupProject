@@ -14,8 +14,10 @@ public class Group {
     private String name;
     private String description;
 
-//    private Event.VISIBILITY visibility;
+    private Event.VISIBILITY visibility;
 
-
-
+    public Group(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

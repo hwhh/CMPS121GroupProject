@@ -17,8 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -35,8 +33,6 @@ import com.groupproject.Model.LocationHelper;
 import com.groupproject.Model.LocationHelper.LocationRes;
 import com.groupproject.R;
 
-import net.jodah.expiringmap.ExpiringMap;
-
 import java.util.Calendar;
 
 
@@ -44,15 +40,9 @@ public class MapsFragment extends Fragment {
 
 
     private static final int DEFAULT_ZOOM = 15;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private final LatLng mDefaultLocation = new LatLng(36.9980751, -122.0575037);
     LocationHelper locHelper;
     MapView mMapView;
-    private Context context;
     private GoogleMap googleMap;
-    private Location mLastKnownLocation;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private boolean mLocationPermissionGranted = true;
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private LocationControl locationControlTask;
     private boolean hasLocation = false;
@@ -71,7 +61,6 @@ public class MapsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View rootView = inflater.inflate(R.layout.maps_fragment, container, false);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -107,7 +96,6 @@ public class MapsFragment extends Fragment {
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-                    return;
                 }
             }
 
@@ -135,7 +123,7 @@ public class MapsFragment extends Fragment {
             }
         });
 
-        this.context = this.getContext();
+        Context context = this.getContext();
 
         locHelper = new LocationHelper();
         locHelper.getLocation(context, locationResult);
@@ -283,10 +271,3 @@ public class MapsFragment extends Fragment {
 }
 
 
-//
-//    @Override
-//    public void update(Observable o, Object arg) {
-//        if(o instanceof EventUpdater) {
-//            addPinsToMap(EventUpdater.getEventMap());
-//        }
-//    }

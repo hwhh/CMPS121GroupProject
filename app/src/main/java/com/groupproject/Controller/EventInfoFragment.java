@@ -10,10 +10,6 @@ import android.widget.TextView;
 
 import com.groupproject.R;
 
-/**
- * Created by haileypun on 14/11/2017.
- */
-
 public class EventInfoFragment extends Fragment{
 
     TextView eventText;

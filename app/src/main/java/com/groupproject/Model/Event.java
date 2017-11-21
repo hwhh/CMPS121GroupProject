@@ -18,18 +18,18 @@ public class Event {
         PUBLIC
     }
 
-    private User host;
+    private String hostID;
 
     private Date startDate;
     private Date endDate;
 
-    private List<User> going;
-    private List<User> interested;
+    private List<User> going;//TODO remove
+    private List<User> interested;//TODO remove
 
     private List<String> relatedActivities;
 
     private List<String> goingIDs;
-    private List<String> interestedIDs;
+    private List<String> interestedIDs;//TODO implement
     private List<String> relatedActivitiesIDs;
 
     private List<String> tags;
@@ -51,13 +51,14 @@ public class Event {
 
     }
 
-    public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description) {
+    public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description, String hostID) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.customLocation = customLocation;
         this.visibility = visibility;
         this.name = name;
         this.description = description;
+        this.hostID = hostID;
         init();
         dataBaseAPI.writeNewEvent(this);
     }
@@ -77,6 +78,11 @@ public class Event {
 
     public long calculateTimeRemaining(){
         return endDate.getTime() - System.currentTimeMillis();
+    }
+
+
+    public List<String> getTags() {
+        return tags;
     }
 
 

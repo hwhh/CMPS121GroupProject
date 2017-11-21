@@ -1,6 +1,5 @@
 package com.groupproject.Controller;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -10,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
-import com.groupproject.Model.LocationHelper;
 import com.groupproject.R;
 
 public class MainActivity extends FragmentActivity {
@@ -58,36 +56,3 @@ public class MainActivity extends FragmentActivity {
 
 }
 
-
-//        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-//
-//        String key = mDatabase.child("events").push().getKey();
-//        Event e = new Event();
-//        Map<String, Object> postValues = e.toMap();
-//
-//        Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put("/events/" + key, postValues);
-//        childUpdates.put("/users/" + user.getUid() + "/goingEvents/" + key, postValues);
-//
-//        mDatabase.updateChildren(childUpdates);
-//
-////        User u = db.collection("users").document(user.getUid());
-////        Map<String, Object> map = new HashMap<>();
-////        Event b = new Event();
-////        Event c = new Event();
-////
-////        Map<String, Object> data = new HashMap<>();
-////        DocumentReference newEventRef = db.collection("events").document();
-////        newEventRef.set(data);
-//
-////        map.put("goingEvents", e.toMap());
-//////        db.collection("users").document(e.getUid()).set(newUser);
-////        map.put("goingEvents", b.toMap());
-////        map.put("goingEvents", c.toMap());
-//////        db.collection("users").document(user.getUid()).update(map, SetOptions.merge());
-////
-////        db.collection("users").document(user.getUid())
-////                .update(
-////                        "age", 13,
-////                        ".color", "Red"
-////                );

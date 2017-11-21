@@ -22,7 +22,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!--<style name="MyButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">-->
-        <!--<item name="background">@color/white</item>-->
+    <!--<item name="background">@color/white</item>-->
     <!--</style>-->
 
 
@@ -41,9 +41,7 @@
     </style>
 
     <!-- Light EditTexts -->
-    <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark"/>
-
-
+    <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark" />
 
 
     <style name="ThemeOverlay.MyTextDetail" parent="AppTheme">
