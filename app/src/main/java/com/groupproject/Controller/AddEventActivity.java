@@ -46,6 +46,7 @@ public class AddEventActivity extends AppCompatActivity  {
     private Calendar endDateCalendar;
     private DatePickerDialog.OnDateSetListener start_date_picker;
     private DatePickerDialog.OnDateSetListener end_date_picker;
+    private Spinner visibility;
 
     ArrayList<String> options = new ArrayList<>();
 
@@ -146,9 +147,12 @@ public class AddEventActivity extends AppCompatActivity  {
                         Date sDate = sdf.parse(startDate.getText().toString());
                         Date fDate = sdf.parse(endDate.getText().toString());
                         Event e;
+                        Event.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
+                                Event.VISIBILITY.PUBLIC : Event.VISIBILITY.INVITE_ONLY;
+
                         if (eventLocation != null) {
                             e = new Event(sDate, fDate,
-                                    new CustomLocation(eventLocation.latitude, eventLocation.longitude), Event.VISIBILITY.PUBLIC,
+                                    new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                     name.getText().toString(), description.getText().toString(), FirebaseAuth.getInstance().getUid());
                             dataBaseAPI.addEventToUser(firebaseUser, e);
                         }
@@ -165,7 +169,12 @@ public class AddEventActivity extends AppCompatActivity  {
             }
         });
 
-        dropdownOption();
+        options.add("Public");
+        options.add("Private");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
+        visibility = (Spinner)findViewById(R.id.visibility);
+        visibility.setAdapter(adapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
 
@@ -233,16 +242,6 @@ public class AddEventActivity extends AppCompatActivity  {
 
     public void dropdownOption(){
 
-        options.add("Public");
-        options.add("Private");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
-
-        Spinner visibility = (Spinner)findViewById(R.id.visibility);
-
-        visibility.setAdapter(adapter);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
 
