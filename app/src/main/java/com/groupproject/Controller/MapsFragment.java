@@ -1,7 +1,9 @@
 package com.groupproject.Controller;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -187,16 +189,23 @@ public class MapsFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if ((grantResults.length > 0) &&
-                        (grantResults[0] + grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
-                    setCurrentLocation();
-                } else {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-                }
+        if (requestCode == 1) {
+            if ((grantResults.length > 0) &&
+                    (grantResults[0] + grantResults[1]) == PackageManager.PERMISSION_GRANTED) {
+                setCurrentLocation();
+            } else {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Please enable location settings. " +
+                        "If no request is appearing, go to Settings > Apps > Pinned > Permissions ");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                askForLocationPermissions();
+                            }
+                        });
+                alertDialog.show();
             }
         }
     }
