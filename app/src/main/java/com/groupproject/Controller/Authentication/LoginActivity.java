@@ -49,8 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static User currentUser;
     private CallbackManager mCallbackManager;
-    boolean google = false;
-    boolean facebook = false;
 
 
     @Override
@@ -62,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
 
         /////////FACEBOOK LOGIN/////////
         final Activity activity = this;
-        AppEventsLogger.activateApp(getApplication());
         setUpFaceBook();
 
         /////////GOOGLE LOGIN/////////
@@ -108,34 +105,29 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-    }
 
+    }
 
     private void setUpFaceBook(){
 
+        AppEventsLogger.activateApp(getApplication());
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.button_facebook_login);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                signInFacebook(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
-
+        LoginManager.getInstance().registerCallback(mCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        signInFacebook(loginResult.getAccessToken());
+                    }
+                    @Override
+                    public void onCancel() {
+                        //TODO Deal with this
+                    }
+                    @Override
+                    public void onError(FacebookException exception) {
+                        exception.printStackTrace();
+                    }
+                });
     }
-
-
 
     private void setUpGoogle(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -163,10 +155,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
-
     private void signInFacebook(AccessToken token) {
-        facebook = true;
+
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -175,10 +165,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             onSuccessfulSignUp();
-
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Authentication failed.. "+task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -187,7 +175,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void singInGoogle(GoogleSignInAccount acct) {
-        google = true;
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -205,25 +192,24 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
     public void onSuccessfulSignUp(){
         FirebaseUser user = mAuth.getCurrentUser();
         Intent intent = new Intent(getApplication(), MainActivity.class);
         if (user != null) {
            new User(user.getUid(), user.getDisplayName(), user.getEmail());
-
         }
         startActivity(intent);
     }
 
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(facebook)
+        if(requestCode == 64206)
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
-        else if(google) {
-            if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 try {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
@@ -232,7 +218,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             }
-        }
+
     }
 
 
