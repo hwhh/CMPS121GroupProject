@@ -44,9 +44,6 @@ public class Event {
 
     private boolean expired;
 
-
-
-
     public Event() {
 
     }
