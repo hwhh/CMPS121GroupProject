@@ -1,4 +1,4 @@
-package com.groupproject.Controller;
+package com.groupproject.Controller.EventActivities;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.groupproject.Controller.MainActivity;
 import com.groupproject.R;
 
 public class PublicFragment extends Fragment {
@@ -26,7 +27,7 @@ public class PublicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.public_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.events_public, container, false);
 
         publicText = (TextView)rootView.findViewById(R.id.publicText);
 

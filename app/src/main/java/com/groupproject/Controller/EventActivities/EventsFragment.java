@@ -1,4 +1,4 @@
-package com.groupproject.Controller;
+package com.groupproject.Controller.EventActivities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +14,7 @@ public class EventsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_events, container, false);
+        View rootView = inflater.inflate(R.layout.event_views, container, false);
 
         PublicFragment publicFragment = new PublicFragment();
         FragmentManager fragmentManager = getFragmentManager();

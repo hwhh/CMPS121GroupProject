@@ -90,15 +90,9 @@ public class DataBaseAPI {
     }
 
     public static void loadActiveEvents() {
-
         Date date = new Date();
         Query activeEvents = mEventRef.orderByChild("endDate/time").startAt(date.getTime());
-
-
-
         activeEvents.addValueEventListener(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -127,79 +121,3 @@ public class DataBaseAPI {
 }
 
 
-//    public void somthing(User user){
-//        FirebaseFirestore mDatabase =FirebaseFirestore.getInstance();
-//        Map<String, Object> map = new HashMap<>();
-//        Event e = new Event();
-//        Event b = new Event();
-//        Event c = new Event();
-//        map.put("activities", e);
-//        mDatabase.collection("user").document(user.getId()).update(map);
-//        map.put("activities", b);
-//        mDatabase.collection("user").document(user.getId()).update(map);
-//        map.put("activities", c);
-//        mDatabase.collection("user").document(user.getId()).update(map);
-//
-//    }
-//
-//
-//    public void updateElement(String collection, String child) {
-//        ref.child(collection).child(child).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    // use "username" already exists
-//                } else {
-//                    // "username" does not exist yet.
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-
-
-//
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("id", currentUser.getUid());
-//        user.put("name", currentUser.getDisplayName());
-//        user.put("email", currentUser.getEmail());
-//
-//        mDatabase.collection("users")
-//                .document("some id")
-//                .set(user);
-//    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
-
-
-//    Firebase m_objFireBaseRef = new Firebase(AppConstants.FIREBASE_URL);
-//    Firebase objRef = m_objFireBaseRef.child("tasks");
-//    Query pendingTasks = objRef.orderByChild("Status").equalTo("PENDING");
-//    pendingTasks.addListenerForSingleValueEvent(new ValueEventListener() {
-//        @Override
-//        public void onDataChange(DataSnapshot tasksSnapshot) {
-//            for (DataSnapshot snapshot: tasksSnapshot.getChildren()) {
-//                snapshot.getRef().child("Status").setValue("COMPLETED");
-//            }
-//        }
-//        @Override
-//        public void onCancelled(FirebaseError firebaseError) {
-//            System.out.println("The read failed: " + firebaseError.getMessage());
-//        }
-//    });
-//    ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//        @Override
-//        public void onDataChange(DataSnapshot dataSnapshot) {
-//            final Profile tempProfile = new Profile(); //this is my user_class Class
-//            final Field[] fields = tempProfile.getClass().getDeclaredFields();
-//            for(Field field : fields){
-//                Log.i(TAG, field.getName() + ": " + dataSnapshot.child(field.getName()).getValue());
-//            }
-//        }
-//
-//        @Override
-//        public void onCancelled(DatabaseError databaseError) {
-//        }
-//    });

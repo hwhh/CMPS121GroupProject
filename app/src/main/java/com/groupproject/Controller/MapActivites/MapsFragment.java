@@ -1,4 +1,4 @@
-package com.groupproject.Controller;
+package com.groupproject.Controller.MapActivites;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.groupproject.Controller.EventActivities.AddEventActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
 import com.groupproject.R;
@@ -43,6 +44,7 @@ import java.util.Calendar;
 
 public class MapsFragment extends Fragment {
 
+    //TODO When clicked back on create event pin stays, also the directions to which pin ???
 
     private static final int DEFAULT_ZOOM = 15;
     private boolean foundLocation;
@@ -50,12 +52,21 @@ public class MapsFragment extends Fragment {
     private GoogleMap googleMap;
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private LocationControl locationControlTask;
+    View rootView;
+
+    public static Fragment newInstance(){
+        Fragment fragment = new MapsFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.maps_fragment, container, false);
+        rootView = inflater.inflate(R.layout.maps_fragment, container, false);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
@@ -145,6 +156,8 @@ public class MapsFragment extends Fragment {
         dataBaseAPI.addChildListener("events", childEventListener);
     }
 
+
+
     @Override
     public void onStop() {
         super.onStop();
@@ -154,7 +167,7 @@ public class MapsFragment extends Fragment {
 
     public void addPinsToMap() {
         googleMap.clear();
-        for (Event event : DataBaseAPI.getEventMap().values()){
+        for (Event event : DataBaseAPI.getEventMap().values()) {
             googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
                     .title(event.getName())
@@ -165,6 +178,7 @@ public class MapsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        rootView.requestFocus();
         mMapView.onResume();
     }
 
@@ -260,6 +274,11 @@ public class MapsFragment extends Fragment {
         FusedLocationProviderClient mFusedLocationProviderClient = LocationServices
                 .getFusedLocationProviderClient(getActivity());
         //Ignore the red line - we check for permissions before this function is called
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
         Task<Location> lastLocation = mFusedLocationProviderClient.getLastLocation();
         lastLocation.addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
@@ -267,7 +286,7 @@ public class MapsFragment extends Fragment {
                 if (task.isSuccessful()) {
                     // Set the map's camera position to the current location of the device.
                     Location location = task.getResult();
-                    if (location != null)  {
+                    if (location != null) {
                         LatLng currentLatLng = new LatLng(location.getLatitude(),
                                 location.getLongitude());
                         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(currentLatLng,
@@ -286,6 +305,10 @@ public class MapsFragment extends Fragment {
     private void setCurrentLocation() {
         foundLocation = false;
         //Ignore the red line - we check for permissions before this function is called
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         googleMap.setMyLocationEnabled(true);
         FusedLocationProviderClient mFusedLocationProviderClient = LocationServices
                 .getFusedLocationProviderClient(getActivity());

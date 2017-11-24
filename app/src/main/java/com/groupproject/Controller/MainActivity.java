@@ -3,11 +3,9 @@ package com.groupproject.Controller;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Controller.EventActivities.EventsFragment;
+import com.groupproject.Controller.SearchActivities.SearchFragment;
 import com.groupproject.Model.Event;
 import com.groupproject.R;
 
@@ -30,7 +28,7 @@ public class MainActivity extends FragmentActivity {
         mTabHost.addTab(mTabHost.newTabSpec("events").setIndicator("events"),
                 EventsFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("maps").setIndicator("maps"),
-                MapsFragment.class, null);
+                SearchFragment.class, null);
 
     }
 

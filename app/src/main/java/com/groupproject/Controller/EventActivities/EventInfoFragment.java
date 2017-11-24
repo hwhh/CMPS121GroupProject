@@ -1,4 +1,4 @@
-package com.groupproject.Controller;
+package com.groupproject.Controller.EventActivities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +20,7 @@ public class EventInfoFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.eventinfo_frag, container, false);
+        View rootView = inflater.inflate(R.layout.event_info, container, false);
 
         eventText = (TextView) rootView.findViewById(R.id.eventName);
         dateText = (TextView) rootView.findViewById(R.id.dateText);

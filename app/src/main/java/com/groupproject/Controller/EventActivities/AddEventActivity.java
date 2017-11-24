@@ -1,4 +1,4 @@
-package com.groupproject.Controller;
+package com.groupproject.Controller.EventActivities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -29,10 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 public class AddEventActivity extends AppCompatActivity  {
 
     DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
@@ -59,7 +55,7 @@ public class AddEventActivity extends AppCompatActivity  {
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras event_location");
         }
-        setContentView(R.layout.create_event);
+        setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
         name = (EditText) findViewById(R.id.name);

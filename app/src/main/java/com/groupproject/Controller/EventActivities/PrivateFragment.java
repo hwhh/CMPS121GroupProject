@@ -1,9 +1,8 @@
-package com.groupproject.Controller;
+package com.groupproject.Controller.EventActivities;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.groupproject.Controller.MainActivity;
 import com.groupproject.R;
 
 public class PrivateFragment extends Fragment {
@@ -22,7 +22,7 @@ public class PrivateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.private_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.events_private, container, false);
 
         privateText = (TextView)rootView.findViewById(R.id.privateText);
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.groupproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -54,40 +55,32 @@
                 android:name="com.facebook.sdk.ApplicationId"
                 android:value="@string/facebook_app_id" />
         </activity>
-        <activity android:name=".Controller.AddEventActivity" />
+        <activity android:name=".Controller.EventActivities.AddEventActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".Controller.MainActivity" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Controller.Authentication.LoginActivity">
+        <activity android:name=".Controller.LoginActivities.LoginActivity">
             <meta-data
                 android:name="com.facebook.sdk.Pinned"
                 android:value="@string/facebook_app_id" />
         </activity>
-        <activity android:name=".Controller.Authentication.EmailSignUpActivity" />
+        <activity android:name=".Controller.LoginActivities.EmailSignUpActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".Controller.ProfileActivity"
+            android:name=".Controller.BaseActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
