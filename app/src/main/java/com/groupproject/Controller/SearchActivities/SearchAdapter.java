@@ -11,6 +11,8 @@ import android.widget.TextView;
 //import com.firebase.ui.database.FirebaseRecyclerOptions;
 //import com.google.firebase.database.FirebaseDatabase;
 //import com.google.firebase.database.Query;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.groupproject.Model.User;
@@ -27,12 +29,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.UserViewHo
             .getReference()
             .child("users")
             .child("name")
-            .limitToFirst(0);
+            .limitToFirst(1);
 
 
-//    FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
-//            .setQuery(query, User.class)
-//            .build();
+    FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
+            .setQuery(query, User.class)
+            .build();
 
     public void setQuery(Query query) {
         this.query = query;
@@ -85,21 +87,22 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.UserViewHo
         }
     }
 
-//    FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
-//        @Override
-//        public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            // Create a new instance of the ViewHolder, in this case we are using a custom
-//            // layout called R.layout.message for each item
-//            View view = LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.search_result, parent, false);
-//
-//            return new UserViewHolder(view);
-//        }
-//
-//        @Override
-//        protected void onBindViewHolder(UserViewHolder holder, int position, User model) {
-//            // Bind the Chat object to the ChatHolder
-//            // ...
-//        }
-//    };
+    FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
+        @Override
+        public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // Create a new instance of the ViewHolder, in this case we are using a custom
+            // layout called R.layout.message for each item
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.search_result, parent, false);
+
+            return new UserViewHolder(view);
+        }
+
+        @Override
+        protected void onBindViewHolder(UserViewHolder holder, int position, User model) {
+//            User user = users.get(position);
+            holder.vName.setText(model.getName());
+            holder.vEmail.setText(model.getEmail());
+        }
+    };
 }
