@@ -175,6 +175,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search">Search</string>
     <string name="email">Email</string>
+    <string name="join">join</string>
+    <string name="leave">leave</string>
 
 
 </resources>

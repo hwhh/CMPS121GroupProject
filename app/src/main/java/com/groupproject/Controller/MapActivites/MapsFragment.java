@@ -28,6 +28,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +36,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.groupproject.Controller.EventActivities.AddEventActivity;
+import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
 import com.groupproject.R;
@@ -42,7 +44,7 @@ import com.groupproject.R;
 import java.util.Calendar;
 
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     //TODO When clicked back on create event pin stays, also the directions to which pin ???
 
@@ -94,7 +96,7 @@ public class MapsFragment extends Fragment {
                         intent.putExtra("event_location",
                                 new LatLng(point.latitude, point.longitude));
                         startActivity(intent);
-                        addPinsToMap();
+                        //TODO: get id of created event?
                     }
                 });
             }
@@ -174,6 +176,7 @@ public class MapsFragment extends Fragment {
                 });
 
                 askForLocationPermissions();
+                googleMap.setOnMarkerClickListener(MapsFragment.this);
             }
 
         });
@@ -219,6 +222,16 @@ public class MapsFragment extends Fragment {
                 alertDialog.show();
             }
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+        //TODO: pass event ID? or event?
+        intent.putExtra("name", marker.getTitle());
+        intent.putExtra("location", marker.getPosition());
+        startActivity(intent);
+        return true;
     }
 
     private void askForLocationPermissions() {
