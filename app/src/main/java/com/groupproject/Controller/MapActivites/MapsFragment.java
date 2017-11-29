@@ -80,23 +80,6 @@ public class MapsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() { //THIS DEALS WITH THE FIRST TIME THE MAP IS LOADED
-                        addPinsToMap();
-                    }
-                });
-
-                askForLocationPermissions();
-            }
-
-        });
-
         FloatingActionButton createEvent
                 = (FloatingActionButton) rootView.findViewById(R.id.create_event_fab);
         createEvent.setOnClickListener(new View.OnClickListener() {
@@ -106,14 +89,12 @@ public class MapsFragment extends Fragment {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng point) {
-                        MarkerOptions marker = new MarkerOptions().position(
-                                new LatLng(point.latitude, point.longitude)).title("");
-                        googleMap.addMarker(marker);
                         googleMap.setOnMapClickListener(null);
                         Intent intent = new Intent(getActivity(), AddEventActivity.class);
                         intent.putExtra("event_location",
                                 new LatLng(point.latitude, point.longitude));
                         startActivity(intent);
+                        addPinsToMap();
                     }
                 });
             }
@@ -180,6 +161,22 @@ public class MapsFragment extends Fragment {
         super.onResume();
         rootView.requestFocus();
         mMapView.onResume();
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+
+                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() { //THIS DEALS WITH THE FIRST TIME THE MAP IS LOADED
+                        addPinsToMap();
+                    }
+                });
+
+                askForLocationPermissions();
+            }
+
+        });
     }
 
     @Override
