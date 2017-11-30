@@ -66,6 +66,10 @@ public class DataBaseAPI {
     }
 
 
+    public DatabaseReference getmUserRef() {
+        return mUserRef;
+    }
+
     //TODO Validate user
     public void writeNewUser(User user) {
         mUserRef.child(user.getId())

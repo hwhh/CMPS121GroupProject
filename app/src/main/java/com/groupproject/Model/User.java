@@ -5,7 +5,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
@@ -57,10 +59,22 @@ public class User {
 
     }
 
-
-    public List<String> getGoingEventsIDs() {
-        return goingEventsIDs;
+    public void setGoingEventsIDs(Map<String, Object> map) {
+        if(goingEventsIDs == null)
+            goingEventsIDs = new ArrayList<>();
+        for (Object o : map.values()) {
+            goingEventsIDs.add(o.toString());
+        }
     }
+
+    public Map<String, Object> getGoingEventsIDs() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        for (String i : goingEventsIDs)
+            map.put(i,i);
+        return map;
+    }
+
+
 
     public List<String> getInterestedEventsIDs() {
         return interestedEventsIDs;

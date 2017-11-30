@@ -31,7 +31,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.groupproject.Controller.MainActivity;
+import com.groupproject.Controller.BaseActivity;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onSuccessfulSignUp(){
         FirebaseUser user = mAuth.getCurrentUser();
-        Intent intent = new Intent(getApplication(), MainActivity.class);
+        Intent intent = new Intent(getApplication(), BaseActivity.class);
         if (user != null) {
            new User(user.getUid(), user.getDisplayName(), user.getEmail());
         }
