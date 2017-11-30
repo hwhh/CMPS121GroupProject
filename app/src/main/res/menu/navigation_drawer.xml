@@ -18,9 +18,9 @@
             android:title="Events" />
 
         <item
-            android:id="@+id/map"
-            android:icon="@drawable/events"
-            android:title="Events" />
+            android:id="@+id/requests"
+            android:icon="@drawable/requests"
+            android:title="Friend Requests" />
 
     </group>
 

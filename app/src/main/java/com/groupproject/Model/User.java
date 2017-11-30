@@ -18,16 +18,12 @@ public class User extends DataBaseItem{
         GOING,
     }
 
-    private List<User> connection;
-    private List<String> connectionIDs;
-
-    private List<Event> goingEvents;
+    private List<String> friendsIDs;
+    private List<String> requestsID;
     private List<String> goingEventsIDs;
-
-    private List<Event> interestedEvents;//TODO If interested cant be going and vice versa
     private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
-
+    private String nameLower;
     private CustomLocation location;
     private String name;
     private String email;
@@ -35,13 +31,12 @@ public class User extends DataBaseItem{
 
 
     public User() {
-        super("user");
     }
 
     public User(String id, String name, String email) {
-        super("user");
         this.id = id;
         this.name = name;
+        this.nameLower = name.toLowerCase();
         this.email = email;
         init();
         dataBaseAPI.writeNewUser(this);
@@ -50,12 +45,13 @@ public class User extends DataBaseItem{
     private void init(){
 //        connection = new ArrayList<>();
 //        activities = new ArrayList<>();
-        goingEvents= new ArrayList<>();
-        interestedEvents= new ArrayList<>();
+        goingEventsIDs= new ArrayList<>();
+        interestedEventsIDs= new ArrayList<>();
+        friendsIDs= new ArrayList<>();
+        requestsID= new ArrayList<>();
     }
 
     public void addEvent(FirebaseUser user, Event e){
-        goingEvents.add(e);
         goingEventsIDs.add(e.getId());
         dataBaseAPI.addEventToUser(user, e);
 
@@ -70,13 +66,23 @@ public class User extends DataBaseItem{
     }
 
     public Map<String, Object> getGoingEventsIDs() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        for (String i : goingEventsIDs)
-            map.put(i,i);
-        return map;
+        if(goingEventsIDs != null) {
+            Map<String, Object> map = new HashMap<>();
+            for (String i : goingEventsIDs)
+                map.put(i, i);
+            return map;
+        }else{
+            return new HashMap<>();
+        }
     }
 
+    public List<String> getFriendsIDs() {
+        return friendsIDs;
+    }
 
+    public List<String> getRequestsID() {
+        return requestsID;
+    }
 
     public List<String> getInterestedEventsIDs() {
         return interestedEventsIDs;
@@ -113,6 +119,10 @@ public class User extends DataBaseItem{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getLowerCaseName() {
+        return nameLower;
     }
 }
 

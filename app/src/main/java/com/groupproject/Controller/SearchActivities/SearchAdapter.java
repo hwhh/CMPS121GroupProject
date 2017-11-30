@@ -12,18 +12,20 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
-import com.groupproject.Model.User;
 import com.groupproject.R;
 
 
 public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchAdapter.ViewHolder> {
 
+    private String type;
 
-    SearchAdapter(Query query) {
+    SearchAdapter(Query query, String type) {
         super(new FirebaseRecyclerOptions.Builder<DataBaseItem>().setQuery(query, DataBaseItem.class).build());
+        this.type = type;
     }
 
     @Override
@@ -39,14 +41,15 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
     @Override
     protected void onBindViewHolder(ViewHolder holder, int position, DataBaseItem model) {
         holder.vName.setText(model.getName());
-
-        if(model instanceof User)
-            holder.vButton.setText("Add Friend");
-        if(model instanceof Event)
+        if(type.equals("user"))
+            holder.vButton.setText("View Profile");
+        if(type.equals("event"))
             holder.vButton.setText("View Event");
-        if(model instanceof Group)
-            holder.vButton.setText("Join Group");
+        if(type.equals("group"))
+            holder.vButton.setText("View Group");
     }
+
+
 
 
 
@@ -59,6 +62,19 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
             super(v);
             vName = v.findViewById(R.id.txtName);
             vButton = v.findViewById(R.id.interact_button);
+            vButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    if(type.equals("user")) {
+
+                    }if(type.equals("event")) {
+
+                    }if(type.equals("group")){
+
+                    }
+
+                }
+            });
         }
 
     }

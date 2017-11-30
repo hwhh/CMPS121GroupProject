@@ -91,6 +91,9 @@ public class DataBaseAPI {
                 .setValue(event);
     }
 
+    public boolean checkIfFriends(){
+        return true;
+    }
 
     public void addEventToUser(FirebaseUser firebaseUser, Event event) {
         String key = mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").push().getKey();

@@ -134,7 +134,7 @@ public class BaseActivity extends AppCompatActivity
             }
             @Override
             public boolean onQueryTextChange(String s) {
-                searchFrag.setQ(s);
+                searchFrag.setQ(s.toLowerCase());
                 return false;
             }
         });

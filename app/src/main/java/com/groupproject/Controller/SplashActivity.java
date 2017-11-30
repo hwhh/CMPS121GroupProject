@@ -20,7 +20,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent;
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //Duration of splash screen in milliseconds
         int SPLASH_DISPLAY_LENGTH = 1000;

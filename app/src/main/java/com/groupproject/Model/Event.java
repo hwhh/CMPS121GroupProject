@@ -10,7 +10,6 @@ import java.util.List;
 public class Event extends DataBaseItem {
 
 
-
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
 
@@ -21,11 +20,11 @@ public class Event extends DataBaseItem {
 
     private String hostID;
 
+    private String nameLower;
+
     private Date startDate;
     private Date endDate;
 
-    private List<User> going;//TODO remove
-    private List<User> interested;//TODO remove
 
     private List<String> relatedActivities;
 
@@ -45,6 +44,7 @@ public class Event extends DataBaseItem {
 
     private boolean expired;
 
+
     public Event() {
 
     }
@@ -53,9 +53,12 @@ public class Event extends DataBaseItem {
 
         this.startDate = startDate;
         this.endDate = endDate;
+
         this.customLocation = customLocation;
         this.visibility = visibility;
         this.name = name;
+        this.nameLower = name.toLowerCase();
+
         this.description = description;
         this.hostID = hostID;
         init();
@@ -63,8 +66,6 @@ public class Event extends DataBaseItem {
     }
 
     private void init(){
-        going = new ArrayList<>();
-        interested= new ArrayList<>();
         relatedActivities= new ArrayList<>();
         goingIDs= new ArrayList<>();
         relatedActivitiesIDs= new ArrayList<>();
@@ -138,11 +139,10 @@ public class Event extends DataBaseItem {
         this.visibility = visibility;
     }
 
-    @Override
+
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;
@@ -170,6 +170,10 @@ public class Event extends DataBaseItem {
 
     public void setExpired(boolean expired) {
         this.expired = expired;
+    }
+
+    public String getLowerCaseName() {
+        return nameLower;
     }
 }
 

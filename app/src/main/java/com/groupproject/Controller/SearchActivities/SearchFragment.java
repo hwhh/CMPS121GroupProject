@@ -22,7 +22,7 @@ public class SearchFragment extends Fragment {
     private SearchAdapter mSearchAdapter;
     private RecyclerView mRecyclerView;
     private DatabaseReference reference;
-//    private String type;
+    private String type;
 
 
     @Override
@@ -41,12 +41,15 @@ public class SearchFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case (1):reference = dataBaseAPI.getmUserRef();
+                        type = "user";
                         setQ("");
                         break;
                     case (2):reference = dataBaseAPI.getmEventRef();
+                        type = "event";
                         setQ("");
                         break;
                     case (3):reference = dataBaseAPI.getmGroupRef();
+                        type = "group";
                         setQ("");
                         break;
                 }
@@ -73,8 +76,8 @@ public class SearchFragment extends Fragment {
 
     public void setQ(String q) {
         if(reference != null) {
-            Query query = reference.orderByChild("name").startAt(q).endAt(q + "\uf8ff");
-            mSearchAdapter = new SearchAdapter(query);
+            Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
+            mSearchAdapter = new SearchAdapter(query, type);
             mRecyclerView.swapAdapter(mSearchAdapter, true);
             mSearchAdapter.startListening();
         }

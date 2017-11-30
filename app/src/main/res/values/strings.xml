@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pinned</string>
-    <string name="facebook_app_id">331615740665631</string>
-    <string name="fb_login_protocol_scheme">fa5b1b1f708a3769f7033d7adc01df2c</string>
+    <string name="facebook_app_id">442852402778357</string>
+    <string name="fb_login_protocol_scheme">fb442852402778357</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
