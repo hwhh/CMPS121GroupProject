@@ -175,6 +175,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search">Search</string>
     <string name="email">Email</string>
+    <string name="add_friend">Add Friend</string>
 
 
 </resources>

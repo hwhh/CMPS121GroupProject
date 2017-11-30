@@ -7,7 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Event {
+public class Event extends DataBaseItem {
+
 
 
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
@@ -49,6 +50,7 @@ public class Event {
     }
 
     public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description, String hostID) {
+
         this.startDate = startDate;
         this.endDate = endDate;
         this.customLocation = customLocation;
@@ -68,6 +70,7 @@ public class Event {
         relatedActivitiesIDs= new ArrayList<>();
         expired = checkExpired();
     }
+
 
     public boolean checkExpired(){
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
@@ -135,9 +138,11 @@ public class Event {
         this.visibility = visibility;
     }
 
+    @Override
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;

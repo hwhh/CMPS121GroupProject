@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Group {
+public class Group extends DataBaseItem{
 
     private List<User> memebrs;
     private List<String> memebrsIDs;
@@ -20,9 +20,11 @@ public class Group {
     private Event.VISIBILITY visibility;
 
     public Group() {
+
     }
 
     public Group(String name, String description) {
+
         this.name = name;
         this.description = description;
         init();
@@ -37,6 +39,7 @@ public class Group {
     }
 
 
+
     public List<String> getTags() {
         return tags;
     }
@@ -49,9 +52,11 @@ public class Group {
         return eventsIDs;
     }
 
+    @Override
     public String getName() {
         return name;
     }
+
 
     public String getDescription() {
         return description;

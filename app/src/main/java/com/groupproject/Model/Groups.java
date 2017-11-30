@@ -6,7 +6,7 @@ import java.util.List;
 
 
 
-public class Groups {
+public class gitGroups {
 
     private List<Event> eventList;
     private List<String> eventListIDs; //TODO ONLY SAVE THESE VALUES FOR FLATNESS

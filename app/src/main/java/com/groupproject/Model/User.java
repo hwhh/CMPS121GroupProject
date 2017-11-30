@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class User {
+public class User extends DataBaseItem{
 
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -35,9 +35,11 @@ public class User {
 
 
     public User() {
+        super("user");
     }
 
     public User(String id, String name, String email) {
+        super("user");
         this.id = id;
         this.name = name;
         this.email = email;

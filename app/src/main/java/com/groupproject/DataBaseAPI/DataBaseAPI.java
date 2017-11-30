@@ -70,6 +70,14 @@ public class DataBaseAPI {
         return mUserRef;
     }
 
+    public DatabaseReference getmEventRef() {
+        return mEventRef;
+    }
+
+    public DatabaseReference getmGroupRef() {
+        return mGroupRef;
+    }
+
     //TODO Validate user
     public void writeNewUser(User user) {
         mUserRef.child(user.getId())
