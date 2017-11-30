@@ -17,17 +17,42 @@ import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 
-public class SearchFragment extends Fragment
-{
-
+public class SearchFragment extends Fragment {
 
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private SearchAdapter mSearchAdapter;
     private Query query;
+    private RecyclerView mRecyclerView;
+    private View rootView;
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.search_results, container, false);
+        mRecyclerView = rootView.findViewById(R.id.search_fragment);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        setQ("");
+        return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mSearchAdapter.stopListening();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mSearchAdapter.startListening();
+    }
+
 
     public void setQ(String q) {
         query = dataBaseAPI.getmUserRef().orderByChild("name").startAt(q).endAt(q+"\uf8ff");
-        mSearchAdapter.refreshList(query);
+
         query.addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -57,51 +82,22 @@ public class SearchFragment extends Fragment
 
             }
         });
-        mSearchAdapter.getmRVAdapter().notifyDataSetChanged();
+
+
+        mSearchAdapter = new SearchAdapter(query);
+        mRecyclerView.swapAdapter(mSearchAdapter, true);
+        mSearchAdapter.notifyDataSetChanged();
+
+
+//        mSearchAdapter.notifyDataSetChanged();
     }
 
 
     public static SearchFragment newInstance(){
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.search_results, container, false);
-        RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        query =  dataBaseAPI.getmUserRef();
-
-
-        mSearchAdapter = new SearchAdapter(mRecyclerView, query);
-        mRecyclerView.setAdapter(mSearchAdapter.getmRVAdapter());
-        mSearchAdapter.refreshList(query);
-        setQ("");
-
-        return rootView;
-    }
-
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-//        mSearchAdapter.stopListening();
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-//        mSearchAdapter.startListening();
     }
 
 

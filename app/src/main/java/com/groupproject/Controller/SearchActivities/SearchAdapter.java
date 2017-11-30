@@ -9,67 +9,35 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
 
-public class SearchAdapter extends RecyclerView.ViewHolder {
+public class SearchAdapter extends FirebaseRecyclerAdapter<User, SearchAdapter.UserViewHolder> {
 
 
-    private FirebaseRecyclerAdapter<User, UserViewHolder> mRVAdapter;
-
-    SearchAdapter(View itemView, Query query) {
-        super(itemView);
-        refreshList(query);
+    SearchAdapter(Query query) {
+        super(new FirebaseRecyclerOptions.Builder<User>().setQuery(query, User.class).build());
     }
 
-    void refreshList(Query query) {
-        FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query, User.class).build();
-        mRVAdapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
-            @Override
-            public UserViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-                View itemView = LayoutInflater.
-                        from(viewGroup.getContext()).
-                        inflate(R.layout.search_result, viewGroup, false);
+    @Override
+    public UserViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View itemView = LayoutInflater.
+                from(viewGroup.getContext()).
+                inflate(R.layout.search_result, viewGroup, false);
 
-                return new UserViewHolder(itemView);
-            }
-
-            @Override
-            protected void onBindViewHolder(UserViewHolder holder, int position, User model) {
-                holder.vName.setText(model.getName());
-                holder.vEmail.setText(model.getEmail());
-            }
-        };
-        mRVAdapter.startListening();
+        return new UserViewHolder(itemView);
     }
 
-    FirebaseRecyclerAdapter<User, UserViewHolder> getmRVAdapter() {
-        return mRVAdapter;
+    @Override
+    protected void onBindViewHolder(UserViewHolder holder, int position, User model) {
+        holder.vName.setText(model.getName());
+        holder.vEmail.setText(model.getEmail());
     }
 
-
-    //    @Override
-//    public UserViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-//        View itemView = LayoutInflater.
-//                from(viewGroup.getContext()).
-//                inflate(R.layout.search_result, viewGroup, false);
-//
-//        return new UserViewHolder(itemView);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(UserViewHolder holder, int position) {
-//
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return 0;
-//    }
-
-    static class UserViewHolder extends RecyclerView.ViewHolder {
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
 
         TextView vName;
         TextView vEmail;
@@ -79,6 +47,20 @@ public class SearchAdapter extends RecyclerView.ViewHolder {
             vName = v.findViewById(R.id.txtName);
             vEmail = v.findViewById(R.id.txtEmail);
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        // Called each time there is a new data snapshot. You may want to use this method
+        // to hide a loading spinner or check for the "no documents" state and update your UI.
+        // ...
+    }
+
+    @Override
+    public void onError(DatabaseError e) {
+        // Called when there is an error getting data. You may want to update
+        // your UI to display an error message to the user.
+        // ...
     }
 
 

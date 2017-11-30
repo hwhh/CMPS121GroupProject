@@ -87,12 +87,13 @@ public class BaseActivity extends AppCompatActivity
         searchView.setIconified(false);
         searchView.clearFocus();
 
-        ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
+        ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
         // Set on click listener
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentFrag = mapsFrag;
+                searchView.setQuery("", true);
                 ft = fragmentManager.beginTransaction();
                 ft.replace(R.id.dashboard_content, mapsFrag);
                 ft.commit();
