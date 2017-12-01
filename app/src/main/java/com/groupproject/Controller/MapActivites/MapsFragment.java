@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -118,6 +119,8 @@ public class MapsFragment extends Fragment {
                 });
             }
         });
+
+
         setUpListener();
         return rootView;
     }

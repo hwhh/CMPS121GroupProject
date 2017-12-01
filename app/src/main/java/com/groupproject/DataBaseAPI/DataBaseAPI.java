@@ -95,6 +95,10 @@ public class DataBaseAPI {
         return true;
     }
 
+
+
+
+
     public void addEventToUser(FirebaseUser firebaseUser, Event event) {
         String key = mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").push().getKey();
         mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").child(key).setValue(event.getId());

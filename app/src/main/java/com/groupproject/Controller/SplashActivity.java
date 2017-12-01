@@ -15,7 +15,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +25,6 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                AccessToken accessToken = AccessToken.getCurrentAccessToken();
                 Intent intent;
                 if (user != null) {
                     // User is signed in

@@ -176,6 +176,9 @@
     <string name="search">Search</string>
     <string name="email">Email</string>
     <string name="add_friend">Add Friend</string>
+    <string name="friends">Friends</string>
+    <string name="events">Events</string>
+    <string name="groups">Groups</string>
 
 
 </resources>

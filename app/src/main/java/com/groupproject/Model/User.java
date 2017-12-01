@@ -43,8 +43,6 @@ public class User extends DataBaseItem{
     }
 
     private void init(){
-//        connection = new ArrayList<>();
-//        activities = new ArrayList<>();
         goingEventsIDs= new ArrayList<>();
         interestedEventsIDs= new ArrayList<>();
         friendsIDs= new ArrayList<>();
@@ -151,30 +149,3 @@ public class User extends DataBaseItem{
 
 
 
-//Path for events -> /users/{user.id}/interestedEvents
-//TODO Make an interface to extract db calls
-//    public void addEvent(Event event, EVENT_TYPE event_type){
-//        if(event_type == EVENT_TYPE.INTERESTED) {
-//            interestedEvents.add(event);
-//            event.getInterested().add(this);
-//        }else {
-//            goingEvents.add(event);
-//            if(event.getInterested().contains(this)){
-//                event.getInterested().remove(this);
-//            }
-//            event.getGoing().add(this);
-//        }
-
-
-
-//        String key = ref.child("users").push().getKey();
-//        Map<String, Object> eventMap = event.toMap();
-//        Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put("/users/" + id + "/interestedEvents", eventMap);
-//        childUpdates.put("/events/" + event.getId() + "/" + key, eventMap);
-//
-//        ref.updateChildren(childUpdates);
-
-
-
-//    }
