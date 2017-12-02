@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;

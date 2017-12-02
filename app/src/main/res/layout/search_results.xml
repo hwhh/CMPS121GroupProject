@@ -11,8 +11,23 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="81dp">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/new_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="328dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_add_black_24dp"
+        app:backgroundTint="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.966"
+        app:rippleColor="@color/cardview_dark_background" />
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/linearLayout4"
+        android:id="@+id/radio_buttons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/linearLayout3"

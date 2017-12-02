@@ -1,7 +1,5 @@
 package com.groupproject.DataBaseAPI;
 
-import android.support.v4.content.ContextCompat;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -13,7 +11,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
-import com.groupproject.R;
 
 import net.jodah.expiringmap.ExpirationListener;
 import net.jodah.expiringmap.ExpiringMap;
@@ -46,6 +43,8 @@ public class DataBaseAPI {
         REQUESTED,
         NONE
     }
+
+
 
     private DataBaseAPI(){
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
@@ -118,7 +117,7 @@ public class DataBaseAPI {
     }
 
     public void acceptRequestUser (User user){
-
+        //TODO Implement
     }
 
     //TODO Validate user

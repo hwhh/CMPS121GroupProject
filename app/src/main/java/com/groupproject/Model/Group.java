@@ -1,12 +1,18 @@
 package com.groupproject.Model;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class Group extends DataBaseItem{
 
-    private List<String> memebrsIDs;
+    private List<String> membersIDs;
 
     private List<String > eventsIDs;
 
@@ -32,23 +38,30 @@ public class Group extends DataBaseItem{
     }
 
     private void init(){
-        memebrsIDs = new ArrayList<>();
+        membersIDs = new ArrayList<>();
         eventsIDs= new ArrayList<>();
         tags= new ArrayList<>();
     }
 
 
-
-    public List<String> getTags() {
-        return tags;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setMembersIDs(Map<String, Object> map) {
+        membersIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
     }
 
-    public List<String> getMemebrsIDs() {
-        return memebrsIDs;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getMembersIDs() {
+        return membersIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
-    public List<String> getEventsIDs() {
-        return eventsIDs;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setEventsIDs(Map<String, Object> map) {
+        eventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getEventsIDs() {
+        return eventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
 

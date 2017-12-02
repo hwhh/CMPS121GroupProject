@@ -1,10 +1,16 @@
 package com.groupproject.Model;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class Event extends DataBaseItem {
@@ -25,12 +31,7 @@ public class Event extends DataBaseItem {
     private Date startDate;
     private Date endDate;
 
-
-    private List<String> relatedActivities;
-
     private List<String> goingIDs;
-    private List<String> interestedIDs;//TODO implement
-    private List<String> relatedActivitiesIDs;
 
     private List<String> tags;
 
@@ -63,9 +64,7 @@ public class Event extends DataBaseItem {
     }
 
     private void init(){
-        relatedActivities= new ArrayList<>();
         goingIDs= new ArrayList<>();
-        relatedActivitiesIDs= new ArrayList<>();
         if(endDate != null)
             expired = checkExpired();
     }
@@ -74,6 +73,19 @@ public class Event extends DataBaseItem {
     public boolean checkExpired(){
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
     }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setGoingIDs(Map<String, Object> map) {
+        goingIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getGoingIDs() {
+        return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
 
     public long calculateTimeRemaining(){
         return endDate.getTime() - System.currentTimeMillis();
@@ -98,24 +110,6 @@ public class Event extends DataBaseItem {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
-    public List<String> getRelatedActivities() {
-        return relatedActivities;
-    }
-
-    public List<String> getGoingIDs() {
-        return goingIDs;
-    }
-
-    public List<String> getInterestedIDs() {
-        return interestedIDs;
-    }
-
-    public List<String> getRelatedActivitiesIDs() {
-        return relatedActivitiesIDs;
-    }
-
-    public void setRelatedActivitiesIDs(List<String> relatedActivitiesIDs) {this.relatedActivitiesIDs = relatedActivitiesIDs;}
 
     public CustomLocation getCustomLocation() {
         return customLocation;

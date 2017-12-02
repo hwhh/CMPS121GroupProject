@@ -3,6 +3,7 @@ package com.groupproject.Controller.SearchActivities;
 
 
 
+import android.support.v4.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -14,12 +15,11 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.groupproject.Controller.SideBarActivities.GroupsFragment;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.User;
@@ -35,11 +35,11 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
 
 
     private final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-    private final SearchFragment searchFragment;
+    private final Fragment fragment;
 
-    SearchAdapter(Query query, SearchFragment searchFragment) {
+    public SearchAdapter(Query query, Fragment fragment) {
         super(new FirebaseRecyclerOptions.Builder<DataBaseItem>().setQuery(query, DataBaseItem.class).build());
-        this.searchFragment = searchFragment;
+        this.fragment = fragment;
 
     }
 
@@ -53,11 +53,26 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
 
     @Override
     protected void onBindViewHolder(ViewHolder holder, int position, DataBaseItem model) {
-        holder.vName.setText(model.getName());
 
-        if(searchFragment.getSearchType() == SearchFragment.SearchType.USERS)
-            createUserDrawable(model, holder);
-//            holder.interact.setImageDrawable(ContextCompat.getDrawable(searchFragment.getActivity(), R.drawable.deleteaccount));
+
+//        holder.cardView.setOnClickListener(v -> {
+//            if (fragment.getSearchType() == SearchFragment.SearchType.USERS)
+//            if (fragment.getSearchType() == SearchFragment.SearchType.EVENTS){}
+//            if (fragment.getSearchType() == SearchFragment.SearchType.GROUPS){}
+//        });
+
+        if(fragment instanceof SearchFragment) {
+            holder.vName.setText(model.getName());
+            if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS)
+                createUserDrawable(model, holder);
+            if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
+
+            }
+        }else if(fragment instanceof GroupsFragment){
+            holder.vName.setText(model.getName());
+        }
+
+
     }
 
 
@@ -70,13 +85,14 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
                        User user = dataSnapshot.getValue(com.groupproject.Model.User.class);
                        DataBaseAPI.UserRelationship userRelationship = dataBaseAPI.getRelationShip(user);
                        if(userRelationship == ME) {
-                           holder.interact.setImageDrawable(ContextCompat.getDrawable(searchFragment.getActivity(), R.drawable.facebook));
+                           holder.interact.setVisibility(View.GONE);
                        } else if(userRelationship == FRIENDS) {
-                           holder.interact.setImageDrawable(ContextCompat.getDrawable(searchFragment.getActivity(), R.drawable.com_facebook_button_icon));
+                           holder.interact.setVisibility(View.GONE);//TODO Add remove button to profile
+                           holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.com_facebook_button_icon));
                        } else if(userRelationship == REQUESTED) {
-                           holder.interact.setImageDrawable(ContextCompat.getDrawable(searchFragment.getActivity(), R.drawable.common_google_signin_btn_icon_dark_focused));
+                           holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.common_google_signin_btn_icon_dark_focused));
                        }else if(userRelationship == NONE) {
-                           holder.interact.setImageDrawable(ContextCompat.getDrawable(searchFragment.getActivity(), R.drawable.deleteaccount));
+                           holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.deleteaccount));
                        }
                        holder.interact.setOnClickListener(view -> {
                            if(userRelationship == FRIENDS) {
@@ -97,18 +113,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
     }
 
 
-
-    public void event(DataBaseItem model){
-
-    }
-
-    public void group(DataBaseItem model){
-
-    }
-
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder  {
+    class ViewHolder extends RecyclerView.ViewHolder  {
 
         TextView vName;
         CardView cardView;

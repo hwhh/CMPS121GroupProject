@@ -19,6 +19,9 @@ import android.widget.ImageView;
 
 import com.groupproject.Controller.MapActivites.MapsFragment;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
+import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.SideBarActivities.GroupsFragment;
+import com.groupproject.Model.Group;
 import com.groupproject.R;
 
 
@@ -28,7 +31,7 @@ public class BaseActivity extends AppCompatActivity
     private InputMethodManager imm;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-    SearchFragment searchFrag = SearchFragment.newInstance();
+    SearchFragment searchFrag = new SearchFragment();
     Fragment mapsFrag = MapsFragment.newInstance();
     private SearchView searchView;
 
@@ -88,32 +91,23 @@ public class BaseActivity extends AppCompatActivity
         searchView.setIconified(false);
         searchView.clearFocus();
 
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(b && !exited)  //check if just closed
-                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
-                else if(!b && exited)
-                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
-                else if(b && exited){
-                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
+        searchView.setOnQueryTextFocusChangeListener((view, b) -> {
+            if(b && !exited)  //check if just closed
+                fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
+            else if(!b && exited)
+                fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+            else
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 
-                }
-                else
-                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-
-                exited = false;
-            }
+            exited = false;
         });
 
 
         ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.setQuery("", true);
-                fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
-            }
+        closeButton.setOnClickListener(v -> {
+            exited = true;
+            searchView.setQuery("", true);
+            fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -124,7 +118,8 @@ public class BaseActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String s) {
-                searchFrag.setQ(s.toLowerCase());
+                if(!exited)
+                    searchFrag.setQ(s.toLowerCase());
                 return false;
             }
         });
@@ -141,6 +136,10 @@ public class BaseActivity extends AppCompatActivity
 
 
         } else if (id == R.id.groups) {
+            GroupsFragment groupsFragment = new GroupsFragment();
+            exited = true;
+            fragmentManager.beginTransaction().replace(R.id.dashboard_content, groupsFragment, "groups").remove(searchFrag).commitAllowingStateLoss();
+
 
         } else if (id == R.id.events) {
 

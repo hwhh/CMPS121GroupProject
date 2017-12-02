@@ -18,20 +18,14 @@ import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchType{
 
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private RecyclerView mRecyclerView;
     private DatabaseReference reference;
     private SearchAdapter mSearchAdapter;
 
-    public enum SearchType{
-        USERS,
-        EVENTS,
-        GROUPS
-    }
-
-    private SearchType searchType;
+    private Type searchType;
 
     public interface SwitchFragment{
         void switchFragment(Fragment frag, Bundle args);
@@ -52,18 +46,18 @@ public class SearchFragment extends Fragment {
         RadioButton radioButton = rootView.findViewById(R.id.friendsRadio);
         radioButton.setChecked(true);
         reference = dataBaseAPI.getmUserRef();
-        searchType = SearchType.USERS;
+        searchType = SearchType.Type.USERS;
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.friendsRadio) {
                 reference = dataBaseAPI.getmUserRef();
-                searchType = SearchType.USERS;
+                searchType = SearchType.Type.USERS;
             } else if (checkedId == R.id.eventsRadio) {
                 reference = dataBaseAPI.getmEventRef();
-                searchType = SearchType.EVENTS;
+                searchType = SearchType.Type.EVENTS;
             } else if (checkedId == R.id.groupsRadio) {
                 reference = dataBaseAPI.getmGroupRef();
-                searchType = SearchType.GROUPS;
+                searchType = SearchType.Type.GROUPS;
             }
             setQ("");
         });
@@ -84,18 +78,12 @@ public class SearchFragment extends Fragment {
     }
 
     public void setQ(String q) {
-        Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
-        mSearchAdapter = new SearchAdapter(query, this);
-        mRecyclerView.swapAdapter(mSearchAdapter, true);
-        mSearchAdapter.startListening();
-    }
-
-
-    public static SearchFragment newInstance(){
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        if(reference != null) {
+            Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
+            mSearchAdapter = new SearchAdapter(query, this);
+            mRecyclerView.swapAdapter(mSearchAdapter, true);
+            mSearchAdapter.startListening();
+        }
     }
 
 
@@ -106,7 +94,7 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    public SearchType getSearchType() {
+    public Type getSearchType() {
         return searchType;
     }
 }
