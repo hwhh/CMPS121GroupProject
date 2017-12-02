@@ -38,11 +38,11 @@ public class EmailSignUpActivity extends AppCompatActivity {
 
         Button createAccount = (Button) findViewById(R.id.SignUp);
         createAccount.setOnClickListener(new View.OnClickListener() {
-         @Override
-                 public void onClick(View view) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(), mName.getText().toString());
-         }
-             });
+            @Override
+            public void onClick(View view) {
+                createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(), mName.getText().toString());
+            }
+        });
     }
 
     private void createAccount(final String email, String password, final String name) {
@@ -58,10 +58,10 @@ public class EmailSignUpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                               new User(user.getUid(), name, email);
+                                new User(user.getUid(), name, email);
                             }
                         } else {
-                            Toast.makeText(EmailSignUpActivity.this, "Authentication failed. "+task.getException().getMessage(),
+                            Toast.makeText(EmailSignUpActivity.this, "Authentication failed. " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

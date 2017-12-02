@@ -46,21 +46,16 @@ public class Event extends DataBaseItem {
 
 
     public Event() {
-
+        init();
     }
 
     public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description, String hostID) {
-
         this.startDate = startDate;
         this.endDate = endDate;
-
         this.customLocation = customLocation;
         this.visibility = visibility;
         this.name = name;
         this.nameLower = name.toLowerCase();
-
-
-
         this.description = description;
         this.hostID = hostID;
         init();
@@ -71,7 +66,8 @@ public class Event extends DataBaseItem {
         relatedActivities= new ArrayList<>();
         goingIDs= new ArrayList<>();
         relatedActivitiesIDs= new ArrayList<>();
-        expired = checkExpired();
+        if(endDate != null)
+            expired = checkExpired();
     }
 
 
@@ -83,11 +79,9 @@ public class Event extends DataBaseItem {
         return endDate.getTime() - System.currentTimeMillis();
     }
 
-
     public List<String> getTags() {
         return tags;
     }
-
 
     public Date getStartDate() {
         return startDate;
@@ -121,17 +115,13 @@ public class Event extends DataBaseItem {
         return relatedActivitiesIDs;
     }
 
-    public void setRelatedActivitiesIDs(List<String> relatedActivitiesIDs) {
-        this.relatedActivitiesIDs = relatedActivitiesIDs;
-    }
+    public void setRelatedActivitiesIDs(List<String> relatedActivitiesIDs) {this.relatedActivitiesIDs = relatedActivitiesIDs;}
 
     public CustomLocation getCustomLocation() {
         return customLocation;
     }
 
-    public void setCustomLocation(CustomLocation customLocation) {
-        this.customLocation = customLocation;
-    }
+    public void setCustomLocation(CustomLocation customLocation) {this.customLocation = customLocation;}
 
     public VISIBILITY getVisibility() {
         return visibility;
@@ -140,7 +130,6 @@ public class Event extends DataBaseItem {
     public void setVisibility(VISIBILITY visibility) {
         this.visibility = visibility;
     }
-
 
     public String getName() {
         return name;

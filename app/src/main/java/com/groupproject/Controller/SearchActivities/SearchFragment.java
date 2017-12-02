@@ -26,9 +26,9 @@ public class SearchFragment extends Fragment {
     private SearchAdapter mSearchAdapter;
 
     public enum SearchType{
-        Friends,
-        Events,
-        Groups
+        USERS,
+        EVENTS,
+        GROUPS
     }
 
     private SearchType searchType;
@@ -52,27 +52,20 @@ public class SearchFragment extends Fragment {
         RadioButton radioButton = rootView.findViewById(R.id.friendsRadio);
         radioButton.setChecked(true);
         reference = dataBaseAPI.getmUserRef();
-        searchType = SearchType.Friends;
+        searchType = SearchType.USERS;
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case (R.id.friendsRadio):
-                        reference = dataBaseAPI.getmUserRef();
-                        searchType = SearchType.Friends;
-                        break;
-                    case (R.id.eventsRadio):
-                        reference = dataBaseAPI.getmEventRef();
-                        searchType = SearchType.Events;
-                        break;
-                    case (R.id.groupsRadio):
-                        reference = dataBaseAPI.getmGroupRef();
-                        searchType = SearchType.Groups;
-                        break;
-                }
-
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.friendsRadio) {
+                reference = dataBaseAPI.getmUserRef();
+                searchType = SearchType.USERS;
+            } else if (checkedId == R.id.eventsRadio) {
+                reference = dataBaseAPI.getmEventRef();
+                searchType = SearchType.EVENTS;
+            } else if (checkedId == R.id.groupsRadio) {
+                reference = dataBaseAPI.getmGroupRef();
+                searchType = SearchType.GROUPS;
             }
+            setQ("");
         });
         setQ("");
         return rootView;
@@ -91,12 +84,10 @@ public class SearchFragment extends Fragment {
     }
 
     public void setQ(String q) {
-        if(reference != null) {
-            Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
-            mSearchAdapter = new SearchAdapter(query, this);
-            mRecyclerView.swapAdapter(mSearchAdapter, true);
-            mSearchAdapter.startListening();
-        }
+        Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
+        mSearchAdapter = new SearchAdapter(query, this);
+        mRecyclerView.swapAdapter(mSearchAdapter, true);
+        mSearchAdapter.startListening();
     }
 
 

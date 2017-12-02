@@ -119,45 +119,9 @@ public class MapsFragment extends Fragment {
                 });
             }
         });
-
-
-        setUpListener();
         return rootView;
     }
 
-    private void setUpListener() {
-        ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
-                if (event != null) {
-                    addPinsToMap();
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        dataBaseAPI.addChildListener("events", childEventListener);
-    }
 
 
 

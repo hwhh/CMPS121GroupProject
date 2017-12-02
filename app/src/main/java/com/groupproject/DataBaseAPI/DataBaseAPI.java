@@ -1,5 +1,8 @@
 package com.groupproject.DataBaseAPI;
 
+import android.support.v4.content.ContextCompat;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -10,6 +13,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
+import com.groupproject.R;
 
 import net.jodah.expiringmap.ExpirationListener;
 import net.jodah.expiringmap.ExpiringMap;
@@ -19,18 +23,29 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
+
+
 public class DataBaseAPI {
+
+    private static final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     private static DatabaseReference mEventRef;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mGroupRef;
 
     private static DataBaseAPI single_instance = null;
-
-
     private static ExpiringMap<String, Event> eventMap;
 
-
+    public enum UserRelationship {
+        ME,
+        FRIENDS,
+        REQUESTED,
+        NONE
+    }
 
     private DataBaseAPI(){
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
@@ -56,15 +71,11 @@ public class DataBaseAPI {
         return single_instance;
     }
 
-
-
     public void addChildListener(String collection, ChildEventListener childEventListener){
         if(collection.equals("events")){
             mEventRef.addChildEventListener(childEventListener);
         }
-
     }
-
 
     public DatabaseReference getmUserRef() {
         return mUserRef;
@@ -78,26 +89,48 @@ public class DataBaseAPI {
         return mGroupRef;
     }
 
+
+    public UserRelationship getRelationShip(User user){
+        if(user.getId().equals(currentUser.getUid())) {
+            return ME;
+        }else if(user.friendsIDs.contains(currentUser.getUid())){
+            return FRIENDS;
+        }else if(user.requestsID.contains(currentUser.getUid())){
+            return REQUESTED;
+        }else{
+            return NONE;
+        }
+    }
+
+    public void sendFriendRequest(User user){
+        String key =getmUserRef().child(user.getId()).child("requestsID").push().getKey();
+        getmUserRef().child(user.getId()).child("requestsID").child(key).setValue(currentUser.getUid());
+    }
+
+    public void removeFriend(User user){
+        getmUserRef().child(currentUser.getUid()).child("friendsIDs").child(user.getId()).removeValue();
+        getmUserRef().child(user.getId()).child("friendsIDs").child(currentUser.getUid()).removeValue();
+    }
+
+    public void cancelRequest(User user){
+        getmUserRef().child(user.getId()).child("requestsID").child(currentUser.getUid()).removeValue();
+
+    }
+
+    public void acceptRequestUser (User user){
+
+    }
+
     //TODO Validate user
     public void writeNewUser(User user) {
-        mUserRef.child(user.getId())
-                .setValue(user);
+        mUserRef.child(user.getId()).setValue(user);
     }
 
 
     public void writeNewEvent(Event event) {
         event.setId(mEventRef.push().getKey());
-        mEventRef.child(event.getId())
-                .setValue(event);
+        mEventRef.child(event.getId()).setValue(event);
     }
-
-    public boolean checkIfFriends(){
-        return true;
-    }
-
-
-
-
 
     public void addEventToUser(FirebaseUser firebaseUser, Event event) {
         String key = mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").push().getKey();

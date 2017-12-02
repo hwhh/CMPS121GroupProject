@@ -21,7 +21,7 @@ public class Group extends DataBaseItem{
     private Event.VISIBILITY visibility;
 
     public Group() {
-
+        init();
     }
 
     public Group(String name, String description) {

@@ -95,6 +95,10 @@ public class BaseActivity extends AppCompatActivity
                     fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
                 else if(!b && exited)
                     fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+                else if(b && exited){
+                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
+
+                }
                 else
                     imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 

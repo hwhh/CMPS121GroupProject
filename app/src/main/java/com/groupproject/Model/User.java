@@ -1,6 +1,9 @@
 package com.groupproject.Model;
 
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
@@ -8,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class User extends DataBaseItem{
 
@@ -18,10 +23,10 @@ public class User extends DataBaseItem{
         GOING,
     }
 
-    private List<String> friendsIDs;
-    private List<String> requestsID;
-    private List<String> goingEventsIDs;
-    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
+    public List<String> friendsIDs;
+    public List<String> requestsID;
+    public List<String> goingEventsIDs;
+//    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
     private String nameLower;
     private CustomLocation location;
@@ -31,6 +36,7 @@ public class User extends DataBaseItem{
 
 
     public User() {
+        init();
     }
 
     public User(String id, String name, String email) {
@@ -44,7 +50,6 @@ public class User extends DataBaseItem{
 
     private void init(){
         goingEventsIDs= new ArrayList<>();
-        interestedEventsIDs= new ArrayList<>();
         friendsIDs= new ArrayList<>();
         requestsID= new ArrayList<>();
     }
@@ -55,36 +60,37 @@ public class User extends DataBaseItem{
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingEventsIDs(Map<String, Object> map) {
-        if(goingEventsIDs == null)
-            goingEventsIDs = new ArrayList<>();
-        for (Object o : map.values()) {
-            goingEventsIDs.add(o.toString());
-        }
+        goingEventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getGoingEventsIDs() {
-        if(goingEventsIDs != null) {
-            Map<String, Object> map = new HashMap<>();
-            for (String i : goingEventsIDs)
-                map.put(i, i);
-            return map;
-        }else{
-            return new HashMap<>();
-        }
+        return goingEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
-    public List<String> getFriendsIDs() {
-        return friendsIDs;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setFriendsIDs(Map<String, Object> map) {
+        friendsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
     }
 
-    public List<String> getRequestsID() {
-        return requestsID;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getFriendsIDs() {
+        return friendsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
-    public List<String> getInterestedEventsIDs() {
-        return interestedEventsIDs;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setRequestsID(Map<String, Object> map) {
+        requestsID = map.values().stream().map(Object::toString).collect (Collectors.toList());
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getRequestsID() {
+        return requestsID.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
 
 
     public CustomLocation getLocation() {
@@ -111,9 +117,7 @@ public class User extends DataBaseItem{
         this.email = email;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() {return id;}
 
     public void setId(String id) {
         this.id = id;
@@ -122,7 +126,12 @@ public class User extends DataBaseItem{
     public String getLowerCaseName() {
         return nameLower;
     }
+
+    public void setLowerCaseName(String nameLower) {
+        this.nameLower = nameLower;
+    }
 }
+
 
 
 
