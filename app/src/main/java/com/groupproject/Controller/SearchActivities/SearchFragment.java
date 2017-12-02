@@ -1,41 +1,102 @@
 package com.groupproject.Controller.SearchActivities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-//import com.firebase.ui.database.FirebaseRecyclerOptions;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.Query;
-import com.google.firebase.database.FirebaseDatabase;
-import com.groupproject.Model.User;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
+
 
 public class SearchFragment extends Fragment {
 
+    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private DatabaseReference reference;
     private SearchAdapter mSearchAdapter;
 
-    String q = "";
-
-
-
-    public void setQ(String q) {
-        mSearchAdapter.setQuery(FirebaseDatabase.getInstance()
-                .getReference()
-                .child("users")
-                .child("name")
-                .equalTo(q));
-        mAdapter.notifyDataSetChanged();
+    public enum SearchType{
+        Friends,
+        Events,
+        Groups
     }
 
-    public SearchFragment() {
+    private SearchType searchType;
+
+    public interface SwitchFragment{
+        void switchFragment(Fragment frag, Bundle args);
+    }
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.search_results, container, false);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        mRecyclerView = rootView.findViewById(R.id.search_fragment);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        RadioGroup radioGroup = rootView.findViewById(R.id.rGroup);
+        RadioButton radioButton = rootView.findViewById(R.id.friendsRadio);
+        radioButton.setChecked(true);
+        reference = dataBaseAPI.getmUserRef();
+        searchType = SearchType.Friends;
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case (R.id.friendsRadio):
+                        reference = dataBaseAPI.getmUserRef();
+                        searchType = SearchType.Friends;
+                        break;
+                    case (R.id.eventsRadio):
+                        reference = dataBaseAPI.getmEventRef();
+                        searchType = SearchType.Events;
+                        break;
+                    case (R.id.groupsRadio):
+                        reference = dataBaseAPI.getmGroupRef();
+                        searchType = SearchType.Groups;
+                        break;
+                }
+
+            }
+        });
+        setQ("");
+        return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mSearchAdapter != null)
+            mSearchAdapter.stopListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    public void setQ(String q) {
+        if(reference != null) {
+            Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
+            mSearchAdapter = new SearchAdapter(query, this);
+            mRecyclerView.swapAdapter(mSearchAdapter, true);
+            mSearchAdapter.startListening();
+        }
     }
 
 
@@ -46,31 +107,15 @@ public class SearchFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.search_results, container, false);
 
-
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.search_fragment);
-
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mSearchAdapter = new SearchAdapter();
-        mAdapter = mSearchAdapter;
-        mRecyclerView.setAdapter(mAdapter);
-
-
-        return rootView;
+    public void switchFrag(Fragment fragment, Bundle args) {
+        SwitchFragment callback = (SwitchFragment) this.getActivity();
+        if (callback != null) {
+            callback.switchFragment(fragment, args);
+        }
     }
 
-
-
-
+    public SearchType getSearchType() {
+        return searchType;
+    }
 }

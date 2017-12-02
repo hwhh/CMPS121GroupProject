@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Event {
+public class Event extends DataBaseItem {
 
 
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
@@ -20,11 +20,11 @@ public class Event {
 
     private String hostID;
 
+    private String nameLower;
+
     private Date startDate;
     private Date endDate;
 
-    private List<User> going;//TODO remove
-    private List<User> interested;//TODO remove
 
     private List<String> relatedActivities;
 
@@ -44,16 +44,23 @@ public class Event {
 
     private boolean expired;
 
+
     public Event() {
 
     }
 
     public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description, String hostID) {
+
         this.startDate = startDate;
         this.endDate = endDate;
+
         this.customLocation = customLocation;
         this.visibility = visibility;
         this.name = name;
+        this.nameLower = name.toLowerCase();
+
+
+
         this.description = description;
         this.hostID = hostID;
         init();
@@ -61,13 +68,12 @@ public class Event {
     }
 
     private void init(){
-        going = new ArrayList<>();
-        interested= new ArrayList<>();
         relatedActivities= new ArrayList<>();
         goingIDs= new ArrayList<>();
         relatedActivitiesIDs= new ArrayList<>();
         expired = checkExpired();
     }
+
 
     public boolean checkExpired(){
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
@@ -135,6 +141,7 @@ public class Event {
         this.visibility = visibility;
     }
 
+
     public String getName() {
         return name;
     }
@@ -165,6 +172,10 @@ public class Event {
 
     public void setExpired(boolean expired) {
         this.expired = expired;
+    }
+
+    public String getLowerCaseName() {
+        return nameLower;
     }
 }
 

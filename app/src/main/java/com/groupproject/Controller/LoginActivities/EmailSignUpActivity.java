@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.groupproject.Controller.MainActivity;
+import com.groupproject.Controller.BaseActivity;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -80,7 +80,8 @@ public class EmailSignUpActivity extends AppCompatActivity {
                                 Toast.makeText(EmailSignUpActivity.this,
                                         "Verification email sent to " + user.getEmail(),
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplication(), MainActivity.class);
+                                Intent intent = new Intent(getApplication(), BaseActivity
+                                        .class);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(EmailSignUpActivity.this,

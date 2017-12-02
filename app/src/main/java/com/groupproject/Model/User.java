@@ -5,9 +5,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class User {
+public class User extends DataBaseItem{
 
     private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -16,16 +18,12 @@ public class User {
         GOING,
     }
 
-    private List<User> connection;
-    private List<String> connectionIDs;
-
-    private List<Event> goingEvents;
+    private List<String> friendsIDs;
+    private List<String> requestsID;
     private List<String> goingEventsIDs;
-
-    private List<Event> interestedEvents;//TODO If interested cant be going and vice versa
     private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
-
+    private String nameLower;
     private CustomLocation location;
     private String name;
     private String email;
@@ -38,28 +36,50 @@ public class User {
     public User(String id, String name, String email) {
         this.id = id;
         this.name = name;
+        this.nameLower = name.toLowerCase();
         this.email = email;
         init();
         dataBaseAPI.writeNewUser(this);
     }
 
     private void init(){
-//        connection = new ArrayList<>();
-//        activities = new ArrayList<>();
-        goingEvents= new ArrayList<>();
-        interestedEvents= new ArrayList<>();
+        goingEventsIDs= new ArrayList<>();
+        interestedEventsIDs= new ArrayList<>();
+        friendsIDs= new ArrayList<>();
+        requestsID= new ArrayList<>();
     }
 
     public void addEvent(FirebaseUser user, Event e){
-        goingEvents.add(e);
         goingEventsIDs.add(e.getId());
         dataBaseAPI.addEventToUser(user, e);
 
     }
 
+    public void setGoingEventsIDs(Map<String, Object> map) {
+        if(goingEventsIDs == null)
+            goingEventsIDs = new ArrayList<>();
+        for (Object o : map.values()) {
+            goingEventsIDs.add(o.toString());
+        }
+    }
 
-    public List<String> getGoingEventsIDs() {
-        return goingEventsIDs;
+    public Map<String, Object> getGoingEventsIDs() {
+        if(goingEventsIDs != null) {
+            Map<String, Object> map = new HashMap<>();
+            for (String i : goingEventsIDs)
+                map.put(i, i);
+            return map;
+        }else{
+            return new HashMap<>();
+        }
+    }
+
+    public List<String> getFriendsIDs() {
+        return friendsIDs;
+    }
+
+    public List<String> getRequestsID() {
+        return requestsID;
     }
 
     public List<String> getInterestedEventsIDs() {
@@ -98,6 +118,10 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getLowerCaseName() {
+        return nameLower;
+    }
 }
 
 
@@ -125,30 +149,3 @@ public class User {
 
 
 
-//Path for events -> /users/{user.id}/interestedEvents
-//TODO Make an interface to extract db calls
-//    public void addEvent(Event event, EVENT_TYPE event_type){
-//        if(event_type == EVENT_TYPE.INTERESTED) {
-//            interestedEvents.add(event);
-//            event.getInterested().add(this);
-//        }else {
-//            goingEvents.add(event);
-//            if(event.getInterested().contains(this)){
-//                event.getInterested().remove(this);
-//            }
-//            event.getGoing().add(this);
-//        }
-
-
-
-//        String key = ref.child("users").push().getKey();
-//        Map<String, Object> eventMap = event.toMap();
-//        Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put("/users/" + id + "/interestedEvents", eventMap);
-//        childUpdates.put("/events/" + event.getId() + "/" + key, eventMap);
-//
-//        ref.updateChildren(childUpdates);
-
-
-
-//    }

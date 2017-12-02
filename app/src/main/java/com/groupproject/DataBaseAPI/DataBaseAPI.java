@@ -66,6 +66,18 @@ public class DataBaseAPI {
     }
 
 
+    public DatabaseReference getmUserRef() {
+        return mUserRef;
+    }
+
+    public DatabaseReference getmEventRef() {
+        return mEventRef;
+    }
+
+    public DatabaseReference getmGroupRef() {
+        return mGroupRef;
+    }
+
     //TODO Validate user
     public void writeNewUser(User user) {
         mUserRef.child(user.getId())
@@ -78,6 +90,13 @@ public class DataBaseAPI {
         mEventRef.child(event.getId())
                 .setValue(event);
     }
+
+    public boolean checkIfFriends(){
+        return true;
+    }
+
+
+
 
 
     public void addEventToUser(FirebaseUser firebaseUser, Event event) {

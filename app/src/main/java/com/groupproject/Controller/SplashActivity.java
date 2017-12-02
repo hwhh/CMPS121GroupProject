@@ -15,19 +15,16 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent;
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //Duration of splash screen in milliseconds
         int SPLASH_DISPLAY_LENGTH = 1000;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                AccessToken accessToken = AccessToken.getCurrentAccessToken();
                 Intent intent;
                 if (user != null) {
                     // User is signed in

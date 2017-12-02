@@ -1,108 +1,90 @@
 package com.groupproject.Controller.SearchActivities;
 
 
+
+
+import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-//import com.firebase.ui.database.FirebaseRecyclerAdapter;
-//import com.firebase.ui.database.FirebaseRecyclerOptions;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.Query;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
-import com.groupproject.Model.User;
+import com.groupproject.Model.DataBaseItem;
 import com.groupproject.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.UserViewHolder> {
+public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchAdapter.ViewHolder> {
 
-    private List<User> users;
+    private final SearchFragment searchFragment;
 
-    Query query = FirebaseDatabase.getInstance()
-            .getReference()
-            .child("users")
-            .child("name")
-            .limitToFirst(1);
-
-
-    FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>()
-            .setQuery(query, User.class)
-            .build();
-
-    public void setQuery(Query query) {
-        this.query = query;
-    }
-
-    SearchAdapter() {
-        users = new ArrayList<>();
-    }
-
-
-    void addItem(User user){
-        users.add(user);
-        System.out.println(users.size());
+    SearchAdapter(Query query, SearchFragment searchFragment) {
+        super(new FirebaseRecyclerOptions.Builder<DataBaseItem>().setQuery(query, DataBaseItem.class).build());
+        this.searchFragment = searchFragment;
     }
 
     @Override
-    public SearchAdapter.UserViewHolder onCreateViewHolder(ViewGroup viewGroup,int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.search_result, viewGroup, false);
 
-        return new UserViewHolder(itemView);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(UserViewHolder userViewHolder, int i) {
-        User user = users.get(i);
-        userViewHolder.vName.setText(user.getName());
-        userViewHolder.vEmail.setText(user.getEmail());
+    protected void onBindViewHolder(final ViewHolder holder, int position, DataBaseItem model) {
+        final Bundle args = new Bundle();
+        args.putString("id", model.getId());
+        holder.vName.setText(model.getName());
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (searchFragment.getSearchType() == SearchFragment.SearchType.Friends)
+                    searchFragment.switchFrag(new UserProfileFragment(), args);
+                if (searchFragment.getSearchType() == SearchFragment.SearchType.Events){}
+                if (searchFragment.getSearchType() == SearchFragment.SearchType.Groups){}
+            }
+        });
+
     }
 
 
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return users.size();
-    }
-
-
-    static class UserViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
 
         TextView vName;
-        TextView vEmail;
+        CardView cardView;
 
-        UserViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
-            vName =  (TextView) v.findViewById(R.id.txtName);
-            vEmail = (TextView)  v.findViewById(R.id.txtEmail);
+            vName = v.findViewById(R.id.txtName);
+            cardView = v.findViewById(R.id.card_view);
         }
+
     }
 
-    FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
-        @Override
-        public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            // Create a new instance of the ViewHolder, in this case we are using a custom
-            // layout called R.layout.message for each item
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.search_result, parent, false);
+    @Override
+    public void onDataChanged() {
+        // Called each time there is a new data snapshot. You may want to use this method
+        // to hide a loading spinner or check for the "no documents" state and update your UI.
+        // ...
+    }
 
-            return new UserViewHolder(view);
-        }
+    @Override
+    public void onError(DatabaseError e) {
+        // Called when there is an error getting data. You may want to update
+        // your UI to display an error message to the user.
+        // ...
+    }
 
-        @Override
-        protected void onBindViewHolder(UserViewHolder holder, int position, User model) {
-//            User user = users.get(position);
-            holder.vName.setText(model.getName());
-            holder.vEmail.setText(model.getEmail());
-        }
-    };
+
+
 }
+
+
