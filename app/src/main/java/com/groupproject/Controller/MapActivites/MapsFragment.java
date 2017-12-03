@@ -47,8 +47,6 @@ import java.util.Calendar;
 
 public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
-    //TODO When clicked back on create event pin stays, also the directions to which pin ???
-
     private static final int DEFAULT_ZOOM = 15;
     private boolean foundLocation;
     MapView mMapView;
@@ -154,10 +152,11 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     public void addPinsToMap() {
         googleMap.clear();
         for (Event event : DataBaseAPI.getEventMap().values()) {
-            googleMap.addMarker(new MarkerOptions()
+            Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
                     .title(event.getName())
                     .snippet(event.getEndDate().toString()));
+            marker.setTag(event.getId());
         }
     }
 
@@ -230,9 +229,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     @Override
     public boolean onMarkerClick(Marker marker) {
         Intent intent = new Intent(getActivity(), EventInfoActivity.class);
-        //TODO: pass event ID? or event?
-        intent.putExtra("name", marker.getTitle());
-        intent.putExtra("location", marker.getPosition());
+        intent.putExtra("event_id", (String) marker.getTag());
         startActivity(intent);
         return true;
     }

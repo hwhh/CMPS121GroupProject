@@ -181,6 +181,8 @@
     <string name="friends">Friends</string>
     <string name="events">Events</string>
     <string name="groups">Groups</string>
+    <string name="starts">Starts:</string>
+    <string name="ends">Ends:</string>
 
 
 </resources>
