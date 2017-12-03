@@ -13,16 +13,15 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
+
+
 public class Event extends DataBaseItem {
 
 
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
 
-    public enum VISIBILITY {
-        INVITE_ONLY,
-        PUBLIC
-    }
+
 
     private String hostID;
 
@@ -37,7 +36,7 @@ public class Event extends DataBaseItem {
 
     private CustomLocation customLocation;
 
-    private VISIBILITY visibility;
+    private Visability.VISIBILITY visibility;
 
     private String name;
     private String description;
@@ -50,7 +49,7 @@ public class Event extends DataBaseItem {
         init();
     }
 
-    public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description, String hostID) {
+    public Event(Date startDate, Date endDate, CustomLocation customLocation, Visability.VISIBILITY visibility, String name, String description, String hostID) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.customLocation = customLocation;
@@ -59,12 +58,13 @@ public class Event extends DataBaseItem {
         this.nameLower = name.toLowerCase();
         this.description = description;
         this.hostID = hostID;
+        this.goingIDs= new ArrayList<>();
+        goingIDs.add(hostID);
         init();
         dataBaseAPI.writeNewEvent(this);
     }
 
     private void init(){
-        goingIDs= new ArrayList<>();
         if(endDate != null)
             expired = checkExpired();
     }
@@ -91,8 +91,22 @@ public class Event extends DataBaseItem {
         return endDate.getTime() - System.currentTimeMillis();
     }
 
-    public List<String> getTags() {
-        return tags;
+
+    public String getHostID() {
+        return hostID;
+    }
+
+    public void setHostID(String hostID) {
+        this.hostID = hostID;
+    }
+
+    @Override
+    public String getNameLower() {
+        return nameLower;
+    }
+
+    public void setNameLower(String nameLower) {
+        this.nameLower = nameLower;
     }
 
     public Date getStartDate() {
@@ -111,20 +125,31 @@ public class Event extends DataBaseItem {
         this.endDate = endDate;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public CustomLocation getCustomLocation() {
         return customLocation;
     }
 
-    public void setCustomLocation(CustomLocation customLocation) {this.customLocation = customLocation;}
+    public void setCustomLocation(CustomLocation customLocation) {
+        this.customLocation = customLocation;
+    }
 
-    public VISIBILITY getVisibility() {
+    public Visability.VISIBILITY getVisibility() {
         return visibility;
     }
 
-    public void setVisibility(VISIBILITY visibility) {
+    public void setVisibility(Visability.VISIBILITY visibility) {
         this.visibility = visibility;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -141,6 +166,7 @@ public class Event extends DataBaseItem {
         this.description = description;
     }
 
+    @Override
     public String getId() {
         return id;
     }
@@ -155,10 +181,6 @@ public class Event extends DataBaseItem {
 
     public void setExpired(boolean expired) {
         this.expired = expired;
-    }
-
-    public String getLowerCaseName() {
-        return nameLower;
     }
 }
 

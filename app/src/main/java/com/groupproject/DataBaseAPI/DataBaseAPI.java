@@ -1,5 +1,8 @@
 package com.groupproject.DataBaseAPI;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -9,7 +12,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.groupproject.Controller.LoginActivities.LoginActivity;
 import com.groupproject.Model.Event;
+import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 
 import net.jodah.expiringmap.ExpirationListener;
@@ -33,9 +38,12 @@ public class DataBaseAPI {
     private static DatabaseReference mEventRef;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mGroupRef;
+    private DataBaseCallBacks dataBaseCallBacks;
 
     private static DataBaseAPI single_instance = null;
     private static ExpiringMap<String, Event> eventMap;
+
+
 
     public enum UserRelationship {
         ME,
@@ -70,11 +78,18 @@ public class DataBaseAPI {
         return single_instance;
     }
 
-    public void addChildListener(String collection, ChildEventListener childEventListener){
-        if(collection.equals("events")){
-            mEventRef.addChildEventListener(childEventListener);
-        }
+
+    public void signOut(Activity activity){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
     }
+
+
+    public String getCurrentUserID(){
+        return currentUser.getUid();
+    }
+
 
     public DatabaseReference getmUserRef() {
         return mUserRef;
@@ -113,8 +128,18 @@ public class DataBaseAPI {
 
     public void cancelRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(currentUser.getUid()).removeValue();
-
     }
+
+    public void writeNewGroup(Group group) {
+        group.setId(mGroupRef.push().getKey());
+        mGroupRef.child(group.getId()).setValue(group);
+    }
+
+    public void addGroupToUser(Group group) {
+        String key = mUserRef.child(getCurrentUserID()).child("joinedGroupIDs").push().getKey();
+        mUserRef.child(getCurrentUserID()).child("joinedGroupIDs").child(key).setValue(group.getId());
+    }
+
 
     public void acceptRequestUser (User user){
         //TODO Implement
@@ -131,9 +156,9 @@ public class DataBaseAPI {
         mEventRef.child(event.getId()).setValue(event);
     }
 
-    public void addEventToUser(FirebaseUser firebaseUser, Event event) {
-        String key = mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").push().getKey();
-        mUserRef.child(firebaseUser.getUid()).child("goingEventsIDs").child(key).setValue(event.getId());
+    public void addEventToUser(Event event) {
+        String key = mUserRef.child(getCurrentUserID()).child("goingEventsIDs").push().getKey();
+        mUserRef.child(getCurrentUserID()).child("goingEventsIDs").child(key).setValue(event.getId());
     }
 
     public static ExpiringMap<String, Event> getEventMap() {

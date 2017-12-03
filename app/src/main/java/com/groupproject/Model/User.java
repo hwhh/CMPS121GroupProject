@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class User extends DataBaseItem{
 
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     enum EVENT_TYPE {
         INTERESTED,
@@ -25,6 +25,12 @@ public class User extends DataBaseItem{
     public List<String> friendsIDs;
     public List<String> requestsID;
     public List<String> goingEventsIDs;
+
+
+    public List<String> joinedGroupIDs;
+    public List<String> requestsGroupIDs;
+
+
 //    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
     private String nameLower;
@@ -51,12 +57,6 @@ public class User extends DataBaseItem{
         goingEventsIDs= new ArrayList<>();
         friendsIDs= new ArrayList<>();
         requestsID= new ArrayList<>();
-    }
-
-    public void addEvent(FirebaseUser user, Event e){
-        goingEventsIDs.add(e.getId());
-        dataBaseAPI.addEventToUser(user, e);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -88,6 +88,28 @@ public class User extends DataBaseItem{
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getRequestsID() {
         return requestsID.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setJoinedGroupIDs(Map<String, Object> map) {
+        joinedGroupIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getJoinedGroupIDs() {
+        return joinedGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setRequestsGroupIDs(Map<String, Object> map) {
+        requestsGroupIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getRequestsGroupIDs() {
+        return requestsGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
 

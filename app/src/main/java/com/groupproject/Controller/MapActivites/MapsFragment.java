@@ -43,11 +43,11 @@ public class MapsFragment extends Fragment {
 
     //TODO When clicked back on create event pin stays, also the directions to which pin ???
 
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private static final int DEFAULT_ZOOM = 15;
     private boolean foundLocation;
     MapView mMapView;
     private GoogleMap googleMap;
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private LocationControl locationControlTask;
     View rootView;
 

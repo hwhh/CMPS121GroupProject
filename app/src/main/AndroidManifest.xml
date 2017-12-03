@@ -83,8 +83,8 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Controller.SearchActivities.UserProfileFragment" />
-        <activity android:name=".Controller.SideBarActivities.GroupsFragment" />
-        <activity android:name=".Controller.NewGroup"></activity>
+        <activity android:name=".Controller.SideBarActivities.SidebarFragment" />
+        <activity android:name=".Controller.GroupActivities.NewGroup"></activity>
     </application>
 
 </manifest>

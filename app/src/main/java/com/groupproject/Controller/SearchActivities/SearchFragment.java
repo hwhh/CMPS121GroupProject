@@ -2,6 +2,7 @@ package com.groupproject.Controller.SearchActivities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,7 @@ import com.groupproject.R;
 
 public class SearchFragment extends Fragment implements SearchType{
 
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private RecyclerView mRecyclerView;
     private DatabaseReference reference;
     private SearchAdapter mSearchAdapter;
@@ -38,6 +39,9 @@ public class SearchFragment extends Fragment implements SearchType{
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        FloatingActionButton floatingActionButton = rootView.findViewById(R.id.new_group);
+        floatingActionButton.setVisibility(View.GONE);
 
         mRecyclerView = rootView.findViewById(R.id.search_fragment);
         mRecyclerView.setLayoutManager(mLayoutManager);

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.CustomLocation;
 import com.groupproject.Model.Event;
+import com.groupproject.Model.Visability;
 import com.groupproject.R;
 
 import java.text.DateFormat;
@@ -31,8 +32,7 @@ import java.util.Locale;
 
 public class AddEventActivity extends AppCompatActivity  {
 
-    DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     private EditText name;
     private EditText description;
@@ -58,21 +58,17 @@ public class AddEventActivity extends AppCompatActivity  {
         setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
-        name = (EditText) findViewById(R.id.name);
-        description = (EditText) findViewById(R.id.desc);
-        startDate = (EditText) findViewById(R.id.start_date);
-        endDate = (EditText) findViewById(R.id.end_date);
+        name = findViewById(R.id.name);
+        description = findViewById(R.id.desc);
+        startDate = findViewById(R.id.start_date);
+        endDate = findViewById(R.id.end_date);
 
-        start_date_picker = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                updateCalendar(startDateCalendar, year, monthOfYear, dayOfMonth);
-                endDate.setText("");
-                int hour = startDateCalendar.get(Calendar.HOUR_OF_DAY);
-                int minute = startDateCalendar.get(Calendar.MINUTE);
-                createTimePicker(startDateCalendar, startDate, hour, minute, null);
-            }
+        start_date_picker = (view, year, monthOfYear, dayOfMonth) -> {
+            updateCalendar(startDateCalendar, year, monthOfYear, dayOfMonth);
+            endDate.setText("");
+            int hour = startDateCalendar.get(Calendar.HOUR_OF_DAY);
+            int minute = startDateCalendar.get(Calendar.MINUTE);
+            createTimePicker(startDateCalendar, startDate, hour, minute, null);
         };
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -143,14 +139,14 @@ public class AddEventActivity extends AppCompatActivity  {
                         Date sDate = sdf.parse(startDate.getText().toString());
                         Date fDate = sdf.parse(endDate.getText().toString());
                         Event e;
-                        Event.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
-                                Event.VISIBILITY.PUBLIC : Event.VISIBILITY.INVITE_ONLY;
+                        Visability.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
+                                Visability.VISIBILITY.PUBLIC : Visability.VISIBILITY.INVITE_ONLY;
 
                         if (eventLocation != null) {
                             e = new Event(sDate, fDate,
                                     new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
-                                    name.getText().toString(), description.getText().toString(), FirebaseAuth.getInstance().getUid());
-                            dataBaseAPI.addEventToUser(firebaseUser, e);
+                                    name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
+                            dataBaseAPI.addEventToUser(e);
                         }
 
                     } catch (ParseException e) {
@@ -168,7 +164,7 @@ public class AddEventActivity extends AppCompatActivity  {
         options.add("Public");
         options.add("Private");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
-        visibility = (Spinner)findViewById(R.id.visibility);
+        visibility = findViewById(R.id.visibility);
         visibility.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }

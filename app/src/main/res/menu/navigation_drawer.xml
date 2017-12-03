@@ -18,9 +18,9 @@
             android:title="Events" />
 
         <item
-            android:id="@+id/requests"
-            android:icon="@drawable/requests"
-            android:title="Friend Requests" />
+            android:id="@+id/notifications"
+            android:icon="@drawable/notification"
+            android:title="Notifications" />
 
     </group>
 
@@ -30,10 +30,6 @@
                 android:id="@+id/sign_out"
                 android:icon="@drawable/signout"
                 android:title="Sign Out" />
-            <item
-                android:id="@+id/delete_accout"
-                android:icon="@drawable/deleteaccount"
-                android:title="Delete Account" />
         </menu>
     </item>
 

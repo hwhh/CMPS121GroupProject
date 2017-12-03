@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.groupproject.Controller.NewGroup">
+    tools:context="com.groupproject.Controller.GroupActivities.NewGroup">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +14,7 @@
             android:id="@+id/createnewgroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create a new group"
+            android:text="@string/create_a_new_group"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
@@ -25,84 +24,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/eventpic" />
+            android:src="@drawable/eventpic"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/changephotoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:text="Click to change event photo"
+            android:text="@string/click_to_change_event_photo"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/eventnameText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Event Name"
-            android:textColor="@android:color/black" />
-
         <EditText
-            android:id="@+id/eventnameEdit"
+            android:id="@+id/GroupNameEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Event Name" />
+            android:hint="@string/group_name" />
 
-        <TextView
-            android:id="@+id/descriptionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Description"
-            android:textColor="@android:color/black" />
 
         <EditText
-            android:id="@+id/descriptionEdit"
+            android:id="@+id/GroupDescriptionEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Description" />
-
-        <TextView
-            android:id="@+id/tagsText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Tags"
-            android:textColor="@android:color/black" />
+            android:hint="@string/description" />
 
         <EditText
-            android:id="@+id/tagsEdit"
+            android:id="@+id/GroupTagsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Tags" />
+            android:hint="@string/tags" />
 
         <TextView
             android:id="@+id/visibilityText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text="Visibility"
+            android:paddingStart="5dp"
+            android:text="@string/visibility"
             android:textColor="@android:color/black" />
 
         <Spinner
-            android:id="@+id/visibilitySpinner"
+            android:id="@+id/GroupVisibilitySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/okButton"
+            android:id="@+id/createGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="OK"
+            android:text="@string/create"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="192dp" />
     </LinearLayout>
