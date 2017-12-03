@@ -8,7 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="68dp">
 
         <TextView
             android:id="@+id/createnewgroup"
@@ -24,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/eventpic"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@drawable/eventpic" />
 
         <TextView
             android:id="@+id/changephotoText"
@@ -42,8 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/group_name" />
+            android:hint="@string/group_name"
+            android:inputType="textPersonName" />
 
 
         <EditText
@@ -51,16 +53,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/description" />
+            android:hint="@string/description"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/GroupTagsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/tags" />
+            android:hint="@string/tags"
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/visibilityText"

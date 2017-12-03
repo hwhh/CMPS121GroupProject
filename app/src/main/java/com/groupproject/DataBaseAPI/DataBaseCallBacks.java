@@ -14,7 +14,7 @@ public interface DataBaseCallBacks<T> {
 
     void getGroup(Group g);
 
-    void executeQuery(T result);
+    void executeQuery(List<T> result);
 
     void createUserList(List<User> userList);
 

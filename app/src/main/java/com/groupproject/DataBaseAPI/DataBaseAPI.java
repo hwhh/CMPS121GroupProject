@@ -21,8 +21,10 @@ import com.groupproject.Model.User;
 import net.jodah.expiringmap.ExpirationListener;
 import net.jodah.expiringmap.ExpiringMap;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -140,20 +142,19 @@ public class DataBaseAPI {
         });
     }
 
-
-
-
-
     //TODO fix this
-    public void executeQuery(Query query, DataBaseItem object, DataBaseCallBacks callBacks){
+    public void executeQuery(Query query, DataBaseCallBacks callBacks){
+        List<String> ids = new ArrayList<>();
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                dataBaseCallBacks = callBacks;
                 if (dataSnapshot.exists()) {
-                    Group group = dataSnapshot.getValue(com.groupproject.Model.Group.class);
-                    dataBaseCallBacks = callBacks;
-                    dataBaseCallBacks.executeQuery(object);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        ids.add(snapshot.getValue(String.class));
+                    }
                 }
+                dataBaseCallBacks.executeQuery(ids);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

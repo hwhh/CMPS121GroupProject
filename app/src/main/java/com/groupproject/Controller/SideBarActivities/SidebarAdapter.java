@@ -1,6 +1,5 @@
 package com.groupproject.Controller.SideBarActivities;
 
-
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.Model.User;
+import com.groupproject.Model.DataBaseItem;
 import com.groupproject.R;
 
 import java.util.ArrayList;
@@ -18,11 +15,15 @@ import java.util.List;
 
 public class SidebarAdapter extends RecyclerView.Adapter<SidebarAdapter.ViewHolder>{
 
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-    private List<User> users = new ArrayList<>();
+    private List<DataBaseItem> items;
 
     public SidebarAdapter() {
         super();
+        items = new ArrayList<>();
+    }
+
+    List<DataBaseItem> getItems() {
+        return items;
     }
 
     @Override
@@ -34,12 +35,12 @@ public class SidebarAdapter extends RecyclerView.Adapter<SidebarAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.vName.setText((CharSequence) users.get(position));
+        holder.vName.setText((CharSequence) items.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return items.size();
     }
 
 

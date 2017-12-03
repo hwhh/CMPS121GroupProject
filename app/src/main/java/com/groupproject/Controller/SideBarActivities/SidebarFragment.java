@@ -31,13 +31,15 @@ import com.groupproject.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SidebarFragment extends Fragment implements SearchType, DataBaseCallBacks<DataBaseItem>{
+public class SidebarFragment extends Fragment implements SearchType, DataBaseCallBacks<String>{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     private SidebarAdapter mSearchAdapter;
+    private List<String> ids;
 
     private Type searchType;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
             searchType = Type.USERS;
             create.setVisibility(View.GONE);
             query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("requestsID");
+            dataBaseAPI.executeQuery(query, this);
         }else if(type.equals("events")) {
             searchType = Type.EVENTS;
             intent = new Intent(getActivity(), AddEventActivity.class);
@@ -66,6 +69,16 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
 
 
         }
+
+        mSearchAdapter = new SidebarAdapter();
+
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.swapAdapter(mSearchAdapter, true);
+
 
 //        Intent finalIntent = intent;
 //        create.setOnClickListener(view -> {
@@ -95,23 +108,24 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
 
     @Override
     public void getUser(User user) {
-
+        mSearchAdapter.getItems().add(user);
+        mSearchAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getEvent(Event event) {
-
-    }
+    public void getEvent(Event event) {}
 
     @Override
-    public void getGroup(Group g) {
-
-    }
+    public void getGroup(Group g) {}
 
     @Override
-    public void executeQuery(DataBaseItem result) {
-
+    public void executeQuery(List<String> result) {
+        this.ids = result;
+        for (String s : result) {
+            dataBaseAPI.getUser(s, this);
+        }
     }
+
 
     @Override
     public void createUserList(List<User> userList) {

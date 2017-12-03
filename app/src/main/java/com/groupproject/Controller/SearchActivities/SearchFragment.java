@@ -34,7 +34,7 @@ public class SearchFragment extends Fragment implements SearchType{
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

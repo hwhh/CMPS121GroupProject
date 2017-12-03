@@ -3,8 +3,6 @@ package com.groupproject.Controller.SearchActivities;
 
 
 
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -77,6 +74,8 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
 
     private void createUserDrawable(DataBaseItem model, final ViewHolder holder){
         Query getUser = DataBaseAPI.getDataBase().getmUserRef().child(model.getId());
+
+        //TODO change to get user from API
         getUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
