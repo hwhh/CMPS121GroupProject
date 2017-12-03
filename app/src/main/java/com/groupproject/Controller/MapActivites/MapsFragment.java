@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -33,9 +32,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.groupproject.Controller.EventActivities.AddEventActivity;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -47,11 +43,11 @@ import java.util.Calendar;
 
 public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private static final int DEFAULT_ZOOM = 15;
     private boolean foundLocation;
     MapView mMapView;
     private GoogleMap googleMap;
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private LocationControl locationControlTask;
     View rootView;
 
@@ -100,45 +96,9 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 });
             }
         });
-
-
-        setUpListener();
         return rootView;
     }
 
-    private void setUpListener() {
-        ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
-                if (event != null) {
-                    addPinsToMap();
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        dataBaseAPI.addChildListener("events", childEventListener);
-    }
 
 
 

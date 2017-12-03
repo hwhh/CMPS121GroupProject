@@ -181,6 +181,12 @@
     <string name="friends">Friends</string>
     <string name="events">Events</string>
     <string name="groups">Groups</string>
+    <string name="group_name">Group Name</string>
+    <string name="tags">Tags</string>
+    <string name="visibility">Visibility</string>
+    <string name="create">Create</string>
+    <string name="click_to_change_event_photo">Click to change event photo</string>
+    <string name="create_a_new_group">Create a new group</string>
     <string name="starts">Starts:</string>
     <string name="ends">Ends:</string>
 

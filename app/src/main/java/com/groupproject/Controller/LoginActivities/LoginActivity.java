@@ -45,8 +45,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-
-    private static User currentUser;
     private CallbackManager mCallbackManager;
 
 
@@ -65,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         setUpGoogle();
 
         /////////BUTTON LISTENERS/////////
-        FloatingActionButton facebookLogin = (FloatingActionButton) findViewById(R.id.FacebookFloatingButton);
+        FloatingActionButton facebookLogin = findViewById(R.id.FacebookFloatingButton);
         facebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton googleLogin = (FloatingActionButton) findViewById(R.id.GoogleFloatingButton);
+        FloatingActionButton googleLogin = findViewById(R.id.GoogleFloatingButton);
         googleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,17 +81,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button emailLogin = (Button) findViewById(R.id.loginButton);
+        Button emailLogin = findViewById(R.id.loginButton);
         emailLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText email = (EditText) findViewById(R.id.emailInput);
-                EditText password = (EditText) findViewById(R.id.passwordIn);
+                EditText email = findViewById(R.id.emailInput);
+                EditText password = findViewById(R.id.passwordIn);
                 signInEmail(email.getText().toString(), password.getText().toString());
             }
         });
 
-        Button createAccount = (Button) findViewById(R.id.createAccount);
+        Button createAccount = findViewById(R.id.createAccount);
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setUpFaceBook(){
-
         AppEventsLogger.activateApp(getApplication());
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager,

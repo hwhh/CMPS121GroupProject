@@ -1,6 +1,9 @@
 package com.groupproject.Controller;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,18 +23,23 @@ import android.widget.ImageView;
 
 import com.groupproject.Controller.MapActivites.MapsFragment;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
+import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.SideBarActivities.SidebarFragment;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SearchFragment.SwitchFragment {
+        implements NavigationView.OnNavigationItemSelectedListener, SearchFragment.SwitchFragment, NavigationView.OnCreateContextMenuListener {
 
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private InputMethodManager imm;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-    SearchFragment searchFrag = SearchFragment.newInstance();
+    SearchFragment searchFrag = new SearchFragment();
     Fragment mapsFrag = MapsFragment.newInstance();
     private SearchView searchView;
+    private Fragment currentFragment;
 
     boolean exited;
 
@@ -44,17 +53,38 @@ public class BaseActivity extends AppCompatActivity
         imm = (InputMethodManager) getApplication().getSystemService(BaseActivity.INPUT_METHOD_SERVICE);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        ActionBarDrawerToggle  actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                InputMethodManager inputMethodManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+                InputMethodManager inputMethodManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        };
+        drawer.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.dashboard_content, mapsFrag);
+        ft.replace(R.id.dashboard_content, mapsFrag, "maps");
+        currentFragment = mapsFrag;
         ft.commit();
     }
 
@@ -64,13 +94,12 @@ public class BaseActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (fragmentManager.findFragmentByTag("maps") == null) {
+        } else if (currentFragment != mapsFrag) {
             fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
             if (searchView != null) {
                 searchView.setQuery("", true);
                 searchView.clearFocus();
             }
-            exited = true;
         } else {
             super.onBackPressed();
         }
@@ -79,37 +108,26 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.navigation_bar, menu);
-
         final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
-
-
-
         searchView.setIconified(false);
         searchView.clearFocus();
-
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(b && !exited)  //check if just closed
+        searchView.setOnQueryTextFocusChangeListener((view, b) -> {
+            if(b){
+                if (currentFragment == mapsFrag) {
                     fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
-                else if(!b && exited)
-                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
-                else
-                    imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-
-                exited = false;
+                    currentFragment = searchFrag;
+                }
             }
         });
 
 
         ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.setQuery("", true);
-                fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
-            }
+        closeButton.setOnClickListener(v -> {
+            searchView.setQuery("", true);
+            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+            fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+            currentFragment = mapsFrag;
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -120,7 +138,9 @@ public class BaseActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String s) {
-                searchFrag.setQ(s.toLowerCase());
+                //TODO Download list if filtering
+                if(!exited)
+                    searchFrag.setQ(s.toLowerCase());
                 return false;
             }
         });
@@ -129,27 +149,32 @@ public class BaseActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Bundle bundle = new Bundle();
+        SidebarFragment sidebarFragment = new SidebarFragment();
         if (id == R.id.friends) {
-
-
+            bundle.putString("type", "friend");
+        }else if (id == R.id.events) {
+            bundle.putString("type", "events");
         } else if (id == R.id.groups) {
-
-        } else if (id == R.id.events) {
-
+            bundle.putString("type", "groups");
+        }else if (id == R.id.notifications) {
+            //TODO Implement
         } else if (id == R.id.sign_out) {
-
-        } else if (id == R.id.delete_accout) {
-
+            dataBaseAPI.signOut(this);
         }
-
+        sidebarFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "groups").remove(searchFrag).commitAllowingStateLoss();
+        currentFragment= sidebarFragment;
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
 
     @Override
     public void switchFragment(Fragment frag, Bundle args) {
@@ -160,4 +185,11 @@ public class BaseActivity extends AppCompatActivity
         exited = true;
 
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu var1, View var2, ContextMenu.ContextMenuInfo var3){
+        InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+    }
+
 }

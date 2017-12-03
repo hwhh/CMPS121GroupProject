@@ -2,6 +2,7 @@ package com.groupproject.Controller.SearchActivities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,20 +19,14 @@ import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchType{
 
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private RecyclerView mRecyclerView;
     private DatabaseReference reference;
     private SearchAdapter mSearchAdapter;
 
-    public enum SearchType{
-        Friends,
-        Events,
-        Groups
-    }
-
-    private SearchType searchType;
+    private Type searchType;
 
     public interface SwitchFragment{
         void switchFragment(Fragment frag, Bundle args);
@@ -45,6 +40,9 @@ public class SearchFragment extends Fragment {
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
+        FloatingActionButton floatingActionButton = rootView.findViewById(R.id.new_group);
+        floatingActionButton.setVisibility(View.GONE);
+
         mRecyclerView = rootView.findViewById(R.id.search_fragment);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -52,27 +50,20 @@ public class SearchFragment extends Fragment {
         RadioButton radioButton = rootView.findViewById(R.id.friendsRadio);
         radioButton.setChecked(true);
         reference = dataBaseAPI.getmUserRef();
-        searchType = SearchType.Friends;
+        searchType = SearchType.Type.USERS;
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case (R.id.friendsRadio):
-                        reference = dataBaseAPI.getmUserRef();
-                        searchType = SearchType.Friends;
-                        break;
-                    case (R.id.eventsRadio):
-                        reference = dataBaseAPI.getmEventRef();
-                        searchType = SearchType.Events;
-                        break;
-                    case (R.id.groupsRadio):
-                        reference = dataBaseAPI.getmGroupRef();
-                        searchType = SearchType.Groups;
-                        break;
-                }
-
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.friendsRadio) {
+                reference = dataBaseAPI.getmUserRef();
+                searchType = SearchType.Type.USERS;
+            } else if (checkedId == R.id.eventsRadio) {
+                reference = dataBaseAPI.getmEventRef();
+                searchType = SearchType.Type.EVENTS;
+            } else if (checkedId == R.id.groupsRadio) {
+                reference = dataBaseAPI.getmGroupRef();
+                searchType = SearchType.Type.GROUPS;
             }
+            setQ("");
         });
         setQ("");
         return rootView;
@@ -100,14 +91,6 @@ public class SearchFragment extends Fragment {
     }
 
 
-    public static SearchFragment newInstance(){
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
     public void switchFrag(Fragment fragment, Bundle args) {
         SwitchFragment callback = (SwitchFragment) this.getActivity();
         if (callback != null) {
@@ -115,7 +98,7 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    public SearchType getSearchType() {
+    public Type getSearchType() {
         return searchType;
     }
 }

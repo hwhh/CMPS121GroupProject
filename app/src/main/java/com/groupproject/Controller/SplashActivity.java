@@ -10,10 +10,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.Controller.LoginActivities.LoginActivity;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 public class SplashActivity extends AppCompatActivity {
-
-
 
 
     @Override

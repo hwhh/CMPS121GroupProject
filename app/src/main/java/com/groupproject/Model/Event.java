@@ -1,22 +1,27 @@
 package com.groupproject.Model;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+
 
 
 public class Event extends DataBaseItem {
 
 
-    private DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
 
-    public enum VISIBILITY {
-        INVITE_ONLY,
-        PUBLIC
-    }
+
 
     private String hostID;
 
@@ -25,18 +30,13 @@ public class Event extends DataBaseItem {
     private Date startDate;
     private Date endDate;
 
-
-    private List<String> relatedActivities;
-
     private List<String> goingIDs;
-    private List<String> interestedIDs;//TODO implement
-    private List<String> relatedActivitiesIDs;
 
     private List<String> tags;
 
     private CustomLocation customLocation;
 
-    private VISIBILITY visibility;
+    private Visability.VISIBILITY visibility;
 
     private String name;
     private String description;
@@ -46,32 +46,27 @@ public class Event extends DataBaseItem {
 
 
     public Event() {
-
+        init();
     }
 
-    public Event(Date startDate, Date endDate, CustomLocation customLocation, VISIBILITY visibility, String name, String description, String hostID) {
-
+    public Event(Date startDate, Date endDate, CustomLocation customLocation, Visability.VISIBILITY visibility, String name, String description, String hostID) {
         this.startDate = startDate;
         this.endDate = endDate;
-
         this.customLocation = customLocation;
         this.visibility = visibility;
         this.name = name;
         this.nameLower = name.toLowerCase();
-
-
-
         this.description = description;
         this.hostID = hostID;
+        this.goingIDs= new ArrayList<>();
+        goingIDs.add(hostID);
         init();
         dataBaseAPI.writeNewEvent(this);
     }
 
     private void init(){
-        relatedActivities= new ArrayList<>();
-        goingIDs= new ArrayList<>();
-        relatedActivitiesIDs= new ArrayList<>();
-        expired = checkExpired();
+        if(endDate != null)
+            expired = checkExpired();
     }
 
 
@@ -79,15 +74,40 @@ public class Event extends DataBaseItem {
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
     }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setGoingIDs(Map<String, Object> map) {
+        goingIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getGoingIDs() {
+        return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
+
     public long calculateTimeRemaining(){
         return endDate.getTime() - System.currentTimeMillis();
     }
 
 
-    public List<String> getTags() {
-        return tags;
+    public String getHostID() {
+        return hostID;
     }
 
+    public void setHostID(String hostID) {
+        this.hostID = hostID;
+    }
+
+    @Override
+    public String getNameLower() {
+        return nameLower;
+    }
+
+    public void setNameLower(String nameLower) {
+        this.nameLower = nameLower;
+    }
 
     public Date getStartDate() {
         return startDate;
@@ -105,24 +125,12 @@ public class Event extends DataBaseItem {
         this.endDate = endDate;
     }
 
-    public List<String> getRelatedActivities() {
-        return relatedActivities;
+    public List<String> getTags() {
+        return tags;
     }
 
-    public List<String> getGoingIDs() {
-        return goingIDs;
-    }
-
-    public List<String> getInterestedIDs() {
-        return interestedIDs;
-    }
-
-    public List<String> getRelatedActivitiesIDs() {
-        return relatedActivitiesIDs;
-    }
-
-    public void setRelatedActivitiesIDs(List<String> relatedActivitiesIDs) {
-        this.relatedActivitiesIDs = relatedActivitiesIDs;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public CustomLocation getCustomLocation() {
@@ -133,15 +141,15 @@ public class Event extends DataBaseItem {
         this.customLocation = customLocation;
     }
 
-    public VISIBILITY getVisibility() {
+    public Visability.VISIBILITY getVisibility() {
         return visibility;
     }
 
-    public void setVisibility(VISIBILITY visibility) {
+    public void setVisibility(Visability.VISIBILITY visibility) {
         this.visibility = visibility;
     }
 
-
+    @Override
     public String getName() {
         return name;
     }
@@ -158,6 +166,7 @@ public class Event extends DataBaseItem {
         this.description = description;
     }
 
+    @Override
     public String getId() {
         return id;
     }
@@ -172,10 +181,6 @@ public class Event extends DataBaseItem {
 
     public void setExpired(boolean expired) {
         this.expired = expired;
-    }
-
-    public String getLowerCaseName() {
-        return nameLower;
     }
 }
 
