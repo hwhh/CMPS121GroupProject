@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -22,13 +21,21 @@ import com.groupproject.Controller.GroupActivities.NewGroup;
 import com.groupproject.Controller.SearchActivities.SearchAdapter;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseItem;
+import com.groupproject.Model.Event;
+import com.groupproject.Model.Group;
+import com.groupproject.Model.User;
 import com.groupproject.R;
 
-public class SidebarFragment extends Fragment implements SearchType {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SidebarFragment extends Fragment implements SearchType, DataBaseCallBacks<DataBaseItem>{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
-    private SearchAdapter mSearchAdapter;
+    private SidebarAdapter mSearchAdapter;
 
     private Type searchType;
 
@@ -38,7 +45,6 @@ public class SidebarFragment extends Fragment implements SearchType {
         FrameLayout radioGroup = rootView.findViewById(R.id.radio_buttons);
         radioGroup.setVisibility(View.GONE);
         Bundle bundle = getArguments();
-
         String type = bundle.getString("type");
         FloatingActionButton create  = rootView.findViewById(R.id.new_group);
         Query query = null;
@@ -47,63 +53,68 @@ public class SidebarFragment extends Fragment implements SearchType {
         if(type.equals("friend")){
             searchType = Type.USERS;
             create.setVisibility(View.GONE);
-            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child();
-        }
-        if(type.equals("events")){
+            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("requestsID");
+        }else if(type.equals("events")) {
             searchType = Type.EVENTS;
             intent = new Intent(getActivity(), AddEventActivity.class);
-            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("goingEventsIDs");
-        }if(type.equals("groups")){
+            query = dataBaseAPI.getmEventRef().orderByChild("goingIDs/" + dataBaseAPI.getCurrentUserID());
+        }else if(type.equals("groups")){
             searchType = Type.GROUPS;
             intent = new Intent(getActivity(), NewGroup.class);
-            query = dataBaseAPI.getmGroupRef().orderByChild("membersIDs/").equalTo(FirebaseAuth.getInstance().getUid());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        System.out.println(dataSnapshot.getValue());
-                    }
-                }
+            query = dataBaseAPI.getmGroupRef().orderByChild("membersIDs/"+dataBaseAPI.getCurrentUserID());
+        }else if(type.equals("")){
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
 
         }
-        Intent finalIntent = intent;
-        create.setOnClickListener(view -> {
-            if(finalIntent != null)
-                startActivity(finalIntent);
-        });
 
-
-        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mSearchAdapter = new SearchAdapter(query, this);
-        mRecyclerView.swapAdapter(mSearchAdapter, true);
-        mSearchAdapter.startListening();
+//        Intent finalIntent = intent;
+//        create.setOnClickListener(view -> {
+//            if(finalIntent != null)
+//                startActivity(finalIntent);
+//        });
         return rootView;
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mSearchAdapter.stopListening();
+//        mSearchAdapter.stopListening();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mSearchAdapter.startListening();
+//        mSearchAdapter.startListening();
     }
 
 
     public Type getSearchType() {
         return searchType;
+    }
+
+    @Override
+    public void getUser(User user) {
+
+    }
+
+    @Override
+    public void getEvent(Event event) {
+
+    }
+
+    @Override
+    public void getGroup(Group g) {
+
+    }
+
+    @Override
+    public void executeQuery(DataBaseItem result) {
+
+    }
+
+    @Override
+    public void createUserList(List<User> userList) {
+
     }
 }

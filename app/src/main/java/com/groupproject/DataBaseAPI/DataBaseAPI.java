@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.LoginActivities.LoginActivity;
+import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
@@ -34,16 +35,12 @@ import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 public class DataBaseAPI {
 
     private static final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
     private static DatabaseReference mEventRef;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mGroupRef;
     private DataBaseCallBacks dataBaseCallBacks;
-
     private static DataBaseAPI single_instance = null;
     private static ExpiringMap<String, Event> eventMap;
-
-
 
     public enum UserRelationship {
         ME,
@@ -52,22 +49,17 @@ public class DataBaseAPI {
         NONE
     }
 
-
-
     private DataBaseAPI(){
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
         eventMap = ExpiringMap.builder().variableExpiration().build();
-        eventMap.addExpirationListener(new ExpirationListener<String, Event>() {
-            @Override
-            public void expired(String key, Event e) {
-                e.setExpired(true);
-                HashMap<String, Object> result = new HashMap<>();
-                result.put(e.getId(), e);
-                mEventRef.updateChildren(result);
-                eventMap.remove(e.getId());
-            }
+        eventMap.addExpirationListener((key, e) -> {
+            e.setExpired(true);
+            HashMap<String, Object> result = new HashMap<>();
+            result.put(e.getId(), e);
+            mEventRef.updateChildren(result);
+            eventMap.remove(e.getId());
         });
     }
 
@@ -86,10 +78,93 @@ public class DataBaseAPI {
     }
 
 
+    public void addChildListener(String collection, ChildEventListener childEventListener) {
+        if (collection.equals("events")) {
+            mEventRef.addChildEventListener(childEventListener);
+        }
+    }
+
+
+    public void getUser(String id, DataBaseCallBacks callBacks){
+        Query query = getmUserRef().child(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    User user = dataSnapshot.getValue(com.groupproject.Model.User.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.getUser(user);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    public void getEvent(String id, DataBaseCallBacks callBacks){
+        Query query = getmEventRef().child(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.getEvent(event);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getGroup(String id, DataBaseCallBacks callBacks){
+        Query query = getmGroupRef().child(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Group group = dataSnapshot.getValue(com.groupproject.Model.Group.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.getGroup(group);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
+
+    //TODO fix this
+    public void executeQuery(Query query, DataBaseItem object, DataBaseCallBacks callBacks){
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Group group = dataSnapshot.getValue(com.groupproject.Model.Group.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.executeQuery(object);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public String getCurrentUserID(){
         return currentUser.getUid();
     }
-
 
     public DatabaseReference getmUserRef() {
         return mUserRef;
@@ -102,7 +177,6 @@ public class DataBaseAPI {
     public DatabaseReference getmGroupRef() {
         return mGroupRef;
     }
-
 
     public UserRelationship getRelationShip(User user){
         if(user.getId().equals(currentUser.getUid())) {
@@ -147,6 +221,7 @@ public class DataBaseAPI {
 
     //TODO Validate user
     public void writeNewUser(User user) {
+
         mUserRef.child(user.getId()).setValue(user);
     }
 

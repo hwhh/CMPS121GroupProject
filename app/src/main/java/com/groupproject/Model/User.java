@@ -4,7 +4,6 @@ package com.groupproject.Model;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
@@ -25,10 +24,11 @@ public class User extends DataBaseItem{
     public List<String> friendsIDs;
     public List<String> requestsID;
     public List<String> goingEventsIDs;
+    public List<String> invitedEventsIDs;
 
 
     public List<String> joinedGroupIDs;
-    public List<String> requestsGroupIDs;
+    public List<String> invitedGroupIDs;
 
 
 //    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
@@ -57,6 +57,9 @@ public class User extends DataBaseItem{
         goingEventsIDs= new ArrayList<>();
         friendsIDs= new ArrayList<>();
         requestsID= new ArrayList<>();
+        invitedGroupIDs = new ArrayList<>();
+        invitedEventsIDs = new ArrayList<>();
+        joinedGroupIDs = new ArrayList<>();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -103,16 +106,25 @@ public class User extends DataBaseItem{
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setRequestsGroupIDs(Map<String, Object> map) {
-        requestsGroupIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    public void setInvitedGroupIDs(Map<String, Object> map) {
+        invitedGroupIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Object> getRequestsGroupIDs() {
-        return requestsGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    public Map<String, Object> getInvitedGroupIDs() {
+        return invitedGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setInvitedEventsIDs(Map<String, Object> map) {
+        invitedEventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getInvitedEventsIDs() {
+        return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
 
     public CustomLocation getLocation() {
         return location;

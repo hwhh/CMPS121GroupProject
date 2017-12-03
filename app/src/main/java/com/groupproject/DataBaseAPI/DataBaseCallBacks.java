@@ -4,12 +4,18 @@ import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 
-public interface DataBaseCallBacks {
+import java.util.List;
 
-    User getUser(String id);
+public interface DataBaseCallBacks<T> {
 
-    Event getEvent(String id);
+    void getUser(User user);
 
-    Group getGroup(String id);
+    void getEvent(Event event);
+
+    void getGroup(Group g);
+
+    void executeQuery(T result);
+
+    void createUserList(List<User> userList);
 
 }

@@ -24,7 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.SideBarActivities.SidebarFragment;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.DataBaseItem;
+import com.groupproject.Model.Event;
 import com.groupproject.Model.User;
+import com.groupproject.Model.Visability;
 import com.groupproject.R;
 
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
@@ -42,7 +44,6 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
     public SearchAdapter(Query query, Fragment fragment) {
         super(new FirebaseRecyclerOptions.Builder<DataBaseItem>().setQuery(query, DataBaseItem.class).build());
         this.fragment = fragment;
-
     }
 
     @Override
@@ -53,7 +54,6 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
 
     @Override
     protected void onBindViewHolder(ViewHolder holder, int position, DataBaseItem model) {
-
 
 //        holder.cardView.setOnClickListener(v -> {
 //            if (fragment.getSearchType() == SearchFragment.SearchType.USERS)
@@ -66,11 +66,12 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
             if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS)
                 createUserDrawable(model, holder);
             if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
+                createEvent(model, holder);
+            }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
 
             }
         }else if(fragment instanceof SidebarFragment){
             holder.vName.setText(model.getName());
-
         }
     }
 
@@ -100,6 +101,29 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, SearchA
                             dataBaseAPI.sendFriendRequest(user);
                         }
                     });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+    private void createEvent(DataBaseItem model, final ViewHolder holder){
+        Query getUser = DataBaseAPI.getDataBase().getmUserRef().child(model.getId());
+        getUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+                    if(event.getVisibility() == Visability.VISIBILITY.PUBLIC || event.getGoingIDs().containsKey(dataBaseAPI.getCurrentUserID())){
+                        holder.interact.setVisibility(View.VISIBLE);
+                    }else{
+                        holder.cardView.setVisibility(View.GONE);
+                    }
                 }
             }
             @Override

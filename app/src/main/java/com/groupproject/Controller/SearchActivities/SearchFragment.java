@@ -84,6 +84,7 @@ public class SearchFragment extends Fragment implements SearchType{
     public void setQ(String q) {
         if(reference != null) {
             Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
+
             mSearchAdapter = new SearchAdapter(query, this);
             mRecyclerView.swapAdapter(mSearchAdapter, true);
             mSearchAdapter.startListening();
