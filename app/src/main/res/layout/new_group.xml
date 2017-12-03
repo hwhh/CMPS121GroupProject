@@ -6,11 +6,105 @@
     android:layout_height="match_parent"
     tools:context="com.groupproject.Controller.NewGroup">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="192dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/createnewgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create a new group"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/eventpicbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/eventpic" />
+
+        <TextView
+            android:id="@+id/changephotoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="Click to change event photo"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/eventnameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="Event Name"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:id="@+id/eventnameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Event Name" />
+
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="Description"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:id="@+id/descriptionEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Description" />
+
+        <TextView
+            android:id="@+id/tagsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="Tags"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:id="@+id/tagsEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Tags" />
+
+        <TextView
+            android:id="@+id/visibilityText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="Visibility"
+            android:textColor="@android:color/black" />
+
+        <Spinner
+            android:id="@+id/visibilitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="192dp" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

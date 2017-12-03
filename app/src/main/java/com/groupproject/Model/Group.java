@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 public class Group extends DataBaseItem{
 
-    private List<String> membersIDs;
+    private List<String> membersIDs;//
 
     private List<String > eventsIDs;
 
-    private List<String > tags;
+    private List<String > tags;//
 
     private String name;
     private String description;
