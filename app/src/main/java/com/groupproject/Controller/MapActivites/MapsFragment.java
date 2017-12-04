@@ -118,6 +118,9 @@ public class MapsFragment extends Fragment {
                 });
             }
         });
+
+        setHasOptionsMenu(true);
+
         setUpListener();
         return rootView;
     }

@@ -91,7 +91,6 @@ public class SearchFragment extends Fragment implements SearchType{
         }
     }
 
-
     public void switchFrag(Fragment fragment, Bundle args) {
         SwitchFragment callback = (SwitchFragment) this.getActivity();
         if (callback != null) {

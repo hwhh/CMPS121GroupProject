@@ -29,11 +29,12 @@ public class Event extends DataBaseItem {
     private Date startDate;
     private Date endDate;
 
-    private List<String> goingIDs;
-    private List<String> tags;
+    public List<String> goingIDs;
+    public List<String> invitedIDs;
+    public List<String> tags;
 
     private CustomLocation customLocation;
-    private Visability.VISIBILITY visibility;
+    private Visibility.VISIBILITY visibility;
 
     private boolean expired;
 
@@ -42,7 +43,7 @@ public class Event extends DataBaseItem {
         init();
     }
 
-    public Event(Date startDate, Date endDate, CustomLocation customLocation, Visability.VISIBILITY visibility, String name, String description, String hostID) {
+    public Event(Date startDate, Date endDate, CustomLocation customLocation, Visibility.VISIBILITY visibility, String name, String description, String hostID) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.customLocation = customLocation;
@@ -76,6 +77,16 @@ public class Event extends DataBaseItem {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getGoingIDs() {
+        return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setInvitedIDs(Map<String, Object> map) {
+        goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getInvitedIDs() {
         return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
@@ -134,11 +145,11 @@ public class Event extends DataBaseItem {
         this.customLocation = customLocation;
     }
 
-    public Visability.VISIBILITY getVisibility() {
+    public Visibility.VISIBILITY getVisibility() {
         return visibility;
     }
 
-    public void setVisibility(Visability.VISIBILITY visibility) {
+    public void setVisibility(Visibility.VISIBILITY visibility) {
         this.visibility = visibility;
     }
 

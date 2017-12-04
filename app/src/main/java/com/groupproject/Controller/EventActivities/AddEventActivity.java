@@ -14,12 +14,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.CustomLocation;
 import com.groupproject.Model.Event;
-import com.groupproject.Model.Visability;
+import com.groupproject.Model.Visibility;
 import com.groupproject.R;
 
 import java.text.DateFormat;
@@ -139,8 +137,8 @@ public class AddEventActivity extends AppCompatActivity  {
                         Date sDate = sdf.parse(startDate.getText().toString());
                         Date fDate = sdf.parse(endDate.getText().toString());
                         Event e;
-                        Visability.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
-                                Visability.VISIBILITY.PUBLIC : Visability.VISIBILITY.INVITE_ONLY;
+                        Visibility.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
+                                Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
 
                         if (eventLocation != null) {
                             e = new Event(sDate, fDate,
