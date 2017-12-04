@@ -21,6 +21,7 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
     TextView groupName;
     TextView members;
     TextView groupDescription;
+    TextView events;
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
         groupName = (TextView) findViewById(R.id.groupName);
         members = (TextView) findViewById(R.id.memberInfo);
         groupDescription = (TextView) findViewById(R.id.groupDescription);
+        events = (TextView) findViewById(R.id.eventsGroup);
 
     }
 
@@ -51,6 +53,7 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
         groupName.setText(group.getName());
         members.setText(group.getMembersIDs().toString());
         groupDescription.setText(group.getDescription());
+        events.setText(group.getEventsIDs().toString());
     }
 
     @Override

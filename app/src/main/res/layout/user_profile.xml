@@ -74,19 +74,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="Events attending"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-            <ListView
-                android:id="@+id/list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="Group Name"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
 
@@ -80,6 +80,35 @@
                 android:paddingLeft="10dp"
 
                 android:text="Some bio here"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/eventsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Events"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/eventsGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+
+                android:text="Some events here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
