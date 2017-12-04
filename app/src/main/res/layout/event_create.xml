@@ -50,8 +50,7 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="@string/name"
-                android:textColor="#85b6da"
-                android:textStyle="bold"
+                android:textColor="@android:color/black"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="16dp" />
 
@@ -59,35 +58,40 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/eventname_txt"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:textColor="#85b6da"
+                android:text="Name"
+                android:textColor="@android:color/darker_gray"
                 tools:layout_editor_absoluteX="153dp"
-                tools:layout_editor_absoluteY="31dp"
-                android:layout_alignParentLeft="true" />
+                tools:layout_editor_absoluteY="31dp" />
 
             <TextView
                 android:id="@+id/desc_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="@string/description" />
+                android:text="@string/description"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:text="Description"
+                android:textColor="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/startdate_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="@string/start_date" />
+                android:text="@string/start_date"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/start_date"
@@ -103,7 +107,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="@string/end_date" />
+                android:text="End date"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/end_date"
@@ -119,7 +124,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Visibility" />
+                android:text="Visibility"
+                android:textColor="@android:color/black" />
 
             <Spinner
                 android:id="@+id/visibility"
@@ -133,7 +139,7 @@
                 android:background="@null"
                 android:text="@string/save"
                 android:textAllCaps="false"
-                android:textColor="#85b6da"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
         </LinearLayout>
