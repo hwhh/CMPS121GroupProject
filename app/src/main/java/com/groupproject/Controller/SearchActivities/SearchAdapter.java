@@ -1,5 +1,6 @@
 package com.groupproject.Controller.SearchActivities;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
+import com.groupproject.Controller.EventActivities.EventInfoFragment;
+import com.groupproject.Controller.ProfileActivity;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
@@ -43,20 +46,28 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
 
     @Override
     protected void onBindViewHolder(ViewHolder holder, int position, DataBaseItem model) {
-//        holder.cardView.setOnClickListener(v -> {
-//            if (fragment.getSearchType() == SearchFragment.SearchType.USERS)
-//            if (fragment.getSearchType() == SearchFragment.SearchType.EVENTS){}
-//            if (fragment.getSearchType() == SearchFragment.SearchType.GROUPS){}
-//        });
+        holder.cardView.setOnClickListener(v -> {
+
+        });
 
 
         holder.vName.setText(model.getName());
         if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS) {
             dataBaseAPI.getUser(model.getId(), this, holder);
-        }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
-//            createEvent(model, holder);
-        }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
+            holder.cardView.setOnClickListener(v -> {
+                Intent intent = new Intent(fragment.getActivity(), ProfileActivity.class);
 
+            });
+        }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
+            holder.cardView.setOnClickListener(v -> {
+                Intent intent = new Intent(fragment.getActivity(), EventInfoFragment.class);
+
+            });
+        }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
+            holder.cardView.setOnClickListener(v -> {
+//                Intent intent = new Intent(fragment.getActivity(), GroupInfo.class);
+
+            });
 
         }
     }
