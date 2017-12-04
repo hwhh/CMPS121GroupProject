@@ -21,20 +21,17 @@ public class SplashActivity extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //Duration of splash screen in milliseconds
         int SPLASH_DISPLAY_LENGTH = 1000;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent;
-                if (user != null) {
-                    // User is signed in
-                    intent = new Intent(SplashActivity.this, BaseActivity.class);
-                } else {
-                    intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    // No user is signed in
-                }
-                startActivity(intent);
-                finish();
+        new Handler().postDelayed(() -> {
+            Intent intent;
+            if (user != null) {
+                // User is signed in
+                intent = new Intent(SplashActivity.this, BaseActivity.class);
+            } else {
+                intent = new Intent(SplashActivity.this, LoginActivity.class);
+                // No user is signed in
             }
+            startActivity(intent);
+            finish();
         }, SPLASH_DISPLAY_LENGTH);
     }
 }

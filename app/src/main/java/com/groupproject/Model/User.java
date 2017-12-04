@@ -25,8 +25,6 @@ public class User extends DataBaseItem{
     public List<String> requestsID;
     public List<String> goingEventsIDs;
     public List<String> invitedEventsIDs;
-
-
     public List<String> joinedGroupIDs;
     public List<String> invitedGroupIDs;
 

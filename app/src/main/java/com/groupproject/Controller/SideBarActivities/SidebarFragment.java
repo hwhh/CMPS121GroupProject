@@ -54,7 +54,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
             case "friend":
                 searchType = Type.USERS;
                 create.setVisibility(View.GONE);
-                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("requestsID");
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("friendsIDs");
                 dataBaseAPI.executeQuery(query, this, Type.USERS);
                 break;
             case "events":
