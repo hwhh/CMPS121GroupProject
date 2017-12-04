@@ -175,6 +175,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="search">Search</string>
     <string name="email">Email</string>
+    <string name="join">join</string>
+    <string name="leave">leave</string>
     <string name="add_friend">Add Friend</string>
     <string name="friends">Friends</string>
     <string name="events">Events</string>
@@ -185,6 +187,8 @@
     <string name="create">Create</string>
     <string name="click_to_change_event_photo">Click to change event photo</string>
     <string name="create_a_new_group">Create a new group</string>
+    <string name="starts">Starts:</string>
+    <string name="ends">Ends:</string>
 
 
 </resources>

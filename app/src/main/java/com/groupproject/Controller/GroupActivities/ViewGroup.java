@@ -2,6 +2,7 @@ package com.groupproject.Controller.GroupActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
@@ -14,14 +15,16 @@ import com.groupproject.R;
 
 import java.util.List;
 
-public class ViewGroup extends Activity implements DataBaseCallBacks<Group> {
+public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Group> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle b = getIntent().getExtras();
+        String id = b.getString("key");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-//        dataBaseAPI.getGroup(dataBaseAPI.getmGroupRef().getKey(), this);
+        dataBaseAPI.getGroup(id, this, null);
 
     }
 

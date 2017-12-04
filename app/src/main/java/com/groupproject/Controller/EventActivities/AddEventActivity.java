@@ -145,13 +145,13 @@ public class AddEventActivity extends AppCompatActivity  {
                                     new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                     name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                             dataBaseAPI.addEventToUser(e);
+                            //TODO: return the event id?
+                            finish();
                         }
 
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-                    onBackPressed();
                 } else {
                     Toast.makeText(getApplicationContext(), "Please fill in all the data",
                             Toast.LENGTH_LONG).show();

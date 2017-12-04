@@ -28,6 +28,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +36,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.groupproject.Controller.EventActivities.AddEventActivity;
+import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
 import com.groupproject.R;
@@ -42,9 +44,7 @@ import com.groupproject.R;
 import java.util.Calendar;
 
 
-public class MapsFragment extends Fragment {
-
-    //TODO When clicked back on create event pin stays, also the directions to which pin ???
+public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private static final int DEFAULT_ZOOM = 15;
@@ -80,23 +80,6 @@ public class MapsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() { //THIS DEALS WITH THE FIRST TIME THE MAP IS LOADED
-                        addPinsToMap();
-                    }
-                });
-
-                askForLocationPermissions();
-            }
-
-        });
-
         FloatingActionButton createEvent
                 = (FloatingActionButton) rootView.findViewById(R.id.create_event_fab);
         createEvent.setOnClickListener(new View.OnClickListener() {
@@ -106,14 +89,12 @@ public class MapsFragment extends Fragment {
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(LatLng point) {
-                        MarkerOptions marker = new MarkerOptions().position(
-                                new LatLng(point.latitude, point.longitude)).title("");
-                        googleMap.addMarker(marker);
                         googleMap.setOnMapClickListener(null);
                         Intent intent = new Intent(getActivity(), AddEventActivity.class);
                         intent.putExtra("event_location",
                                 new LatLng(point.latitude, point.longitude));
                         startActivity(intent);
+                        //TODO: get id of created event?
                     }
                 });
             }
@@ -174,10 +155,11 @@ public class MapsFragment extends Fragment {
     public void addPinsToMap() {
         googleMap.clear();
         for (Event event : DataBaseAPI.getEventMap().values()) {
-            googleMap.addMarker(new MarkerOptions()
+            Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
                     .title(event.getName())
                     .snippet(event.getEndDate().toString()));
+            marker.setTag(event.getId());
         }
     }
 
@@ -186,6 +168,23 @@ public class MapsFragment extends Fragment {
         super.onResume();
         rootView.requestFocus();
         mMapView.onResume();
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+
+                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() { //THIS DEALS WITH THE FIRST TIME THE MAP IS LOADED
+                        addPinsToMap();
+                    }
+                });
+
+                askForLocationPermissions();
+                googleMap.setOnMarkerClickListener(MapsFragment.this);
+            }
+
+        });
     }
 
     @Override
@@ -228,6 +227,14 @@ public class MapsFragment extends Fragment {
                 alertDialog.show();
             }
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+        intent.putExtra("event_id", (String) marker.getTag());
+        startActivity(intent);
+        return true;
     }
 
     private void askForLocationPermissions() {

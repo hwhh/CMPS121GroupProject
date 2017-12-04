@@ -59,6 +59,7 @@
                 android:value="@string/facebook_app_id" />
         </activity>
         <activity android:name=".Controller.EventActivities.AddEventActivity" />
+        <activity android:name=".Controller.EventActivities.EventInfoActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
