@@ -2,6 +2,7 @@ package com.groupproject.Controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
@@ -15,7 +16,7 @@ import com.groupproject.R;
 import java.util.List;
 
 
-public class ProfileActivity extends Activity implements DataBaseCallBacks<User> {
+public class ProfileActivity extends AppCompatActivity implements DataBaseCallBacks<User> {
 
     TextView userName;
     TextView emailAddress;

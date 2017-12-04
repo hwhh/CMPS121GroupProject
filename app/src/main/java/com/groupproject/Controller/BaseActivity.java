@@ -20,10 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-
 import com.groupproject.Controller.MapActivites.MapsFragment;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
-import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.SideBarActivities.SidebarFragment;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
