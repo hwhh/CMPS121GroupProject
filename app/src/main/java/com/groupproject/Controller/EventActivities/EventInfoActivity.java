@@ -1,5 +1,6 @@
 package com.groupproject.Controller.EventActivities;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import com.groupproject.R;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class EventInfoActivity extends AppCompatActivity implements Callback {
+public class EventInfoActivity extends Activity implements Callback {
 
     private static final DataBaseAPI database = DataBaseAPI.getDataBase();
     private TextView eventText;
