@@ -65,6 +65,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
 
         rootView = inflater.inflate(R.layout.maps_fragment, container, false);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -100,7 +101,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             }
         });
 
-        setHasOptionsMenu(true);
 
         setUpListener();
         return rootView;

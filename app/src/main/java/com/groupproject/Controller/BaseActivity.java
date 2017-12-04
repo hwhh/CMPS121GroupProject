@@ -17,9 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.groupproject.Controller.MapActivites.MapsFragment;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
 import com.groupproject.Controller.SideBarActivities.SidebarFragment;
@@ -28,7 +32,7 @@ import com.groupproject.R;
 
 
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SearchFragment.SwitchFragment, NavigationView.OnCreateContextMenuListener {
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnCreateContextMenuListener, View.OnClickListener{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private InputMethodManager imm;
@@ -39,13 +43,14 @@ public class BaseActivity extends AppCompatActivity
     private SearchView searchView;
     private Fragment currentFragment;
 
-    boolean exited;
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_base);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         imm = (InputMethodManager) getApplication().getSystemService(BaseActivity.INPUT_METHOD_SERVICE);
@@ -73,11 +78,16 @@ public class BaseActivity extends AppCompatActivity
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         };
+
+
+
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -104,20 +114,42 @@ public class BaseActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                System.out.println("here");
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private final View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            System.out.println("here");
+        }
+    };
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.navigation_bar, menu);
         final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
-        searchView.setIconified(false);
         searchView.clearFocus();
-        searchView.setOnQueryTextFocusChangeListener((view, b) -> {
-            if(b){
-                if (currentFragment == mapsFrag) {
-                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
-                    currentFragment = searchFrag;
-                }
+        TextView searchText = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchText.setOnClickListener(listener);
+
+        searchView.setIconified(false);
+
+        searchView.setOnSearchClickListener(view -> {
+            if (currentFragment == mapsFrag) {
+                fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
+                currentFragment = searchFrag;
             }
         });
+        searchView.clearFocus();
 
 
         ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
@@ -126,6 +158,8 @@ public class BaseActivity extends AppCompatActivity
             imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
             fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
             currentFragment = mapsFrag;
+            searchView.clearFocus();
+            searchView.setIconified(true);
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -137,7 +171,7 @@ public class BaseActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String s) {
                 //TODO Download list if filtering
-                if(!exited)
+                if(currentFragment == searchFrag)
                     searchFrag.setQ(s.toLowerCase());
                 return false;
             }
@@ -174,21 +208,15 @@ public class BaseActivity extends AppCompatActivity
 
 
 
-
-    @Override
-    public void switchFragment(Fragment frag, Bundle args) {
-        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        frag.setArguments(args);
-        fragmentManager.beginTransaction().replace(R.id.dashboard_content, frag, "profile")
-                .commit();
-        exited = true;
-
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu var1, View var2, ContextMenu.ContextMenuInfo var3){
         InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
 
+
+    @Override
+    public void onClick(View view) {
+        System.out.println("here");
+    }
 }
