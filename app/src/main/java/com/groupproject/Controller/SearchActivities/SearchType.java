@@ -7,6 +7,7 @@ public interface SearchType {
     enum Type{
         USERS,
         EVENTS,
-        GROUPS
+        GROUPS,
+        NOTIFICATIONS
     }
 }

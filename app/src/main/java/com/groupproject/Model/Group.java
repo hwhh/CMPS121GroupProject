@@ -20,7 +20,7 @@ public class Group extends DataBaseItem{
 
     private String host;
     private List<String> membersIDs;//
-    private List<String> requestedMembersIDs;//
+//    private List<String> requestedMembersIDs;//
 
     private List<String > eventsIDs;
 
@@ -60,13 +60,14 @@ public class Group extends DataBaseItem{
     }
 
     private void init(){
-        eventsIDs= new ArrayList<>();
+        eventsIDs = new ArrayList<>();
+        membersIDs = new ArrayList<>();
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMembersIDs(Map<String, Object> map) {
-        membersIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        membersIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -76,7 +77,7 @@ public class Group extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setEventsIDs(Map<String, Object> map) {
-        eventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        eventsIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -85,15 +86,15 @@ public class Group extends DataBaseItem{
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setRequestedMembersIDs(Map<String, Object> map) {
-        requestedMembersIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Object> getRequestedMembersIDs() {
-        return requestedMembersIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public void setRequestedMembersIDs(Map<String, Object> map) {
+//        requestedMembersIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public Map<String, Object> getRequestedMembersIDs() {
+//        return requestedMembersIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+//    }
 
     public String getHost() {
         return host;

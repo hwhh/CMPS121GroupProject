@@ -20,27 +20,20 @@ public class Event extends DataBaseItem {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
-
-
-
     private String hostID;
-
     private String nameLower;
+    private String name;
+    private String description;
+    private String id;
 
     private Date startDate;
     private Date endDate;
 
     private List<String> goingIDs;
-
     private List<String> tags;
 
     private CustomLocation customLocation;
-
     private Visability.VISIBILITY visibility;
-
-    private String name;
-    private String description;
-    private String id;
 
     private boolean expired;
 
@@ -78,7 +71,7 @@ public class Event extends DataBaseItem {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingIDs(Map<String, Object> map) {
-        goingIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

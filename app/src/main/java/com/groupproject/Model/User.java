@@ -64,7 +64,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingEventsIDs(Map<String, Object> map) {
-        goingEventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        goingEventsIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -74,7 +74,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setFriendsIDs(Map<String, Object> map) {
-        friendsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        friendsIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -85,7 +85,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setRequestsID(Map<String, Object> map) {
-        requestsID = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        requestsID = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -96,7 +96,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setJoinedGroupIDs(Map<String, Object> map) {
-        joinedGroupIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        joinedGroupIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -107,7 +107,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setInvitedGroupIDs(Map<String, Object> map) {
-        invitedGroupIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        invitedGroupIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -118,7 +118,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setInvitedEventsIDs(Map<String, Object> map) {
-        invitedEventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        invitedEventsIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
