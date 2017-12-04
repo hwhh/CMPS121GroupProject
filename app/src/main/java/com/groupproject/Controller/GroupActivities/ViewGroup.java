@@ -19,9 +19,11 @@ public class ViewGroup extends Activity implements DataBaseCallBacks<Group> {
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle b = getIntent().getExtras();
+        String id = b.getString("key");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-//        dataBaseAPI.getGroup(dataBaseAPI.getmGroupRef().getKey(), this);
+        dataBaseAPI.getGroup(id, this, null);
 
     }
 
