@@ -161,11 +161,6 @@ public class DataBaseAPI {
         mUserRef.child(getCurrentUserID()).child("goingEventsIDs").child(key).setValue(event.getId());
     }
 
-    public void removeEventFromUser(Event event) {
-        String key = mUserRef.child(getCurrentUserID()).child("goingEventsIDs").push().getKey();
-        mUserRef.child(getCurrentUserID()).child("goingEventsIDs").child(key).removeValue();
-    }
-
     public static ExpiringMap<String, Event> getEventMap() {
         return eventMap;
     }

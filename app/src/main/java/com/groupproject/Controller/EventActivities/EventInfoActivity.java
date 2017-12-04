@@ -83,7 +83,7 @@ public class EventInfoActivity extends AppCompatActivity implements Callback {
             public void onClick(View v) {
                 if (event != null && user != null) {
                     if (userGoingToEvent()) {
-                        database.removeEventFromUser(event);
+                        database.leaveEvent(event);
 //                        switchButton();
                         finish();
                     } else {
