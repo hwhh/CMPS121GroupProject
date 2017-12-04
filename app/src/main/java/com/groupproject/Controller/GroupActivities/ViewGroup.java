@@ -3,6 +3,8 @@ package com.groupproject.Controller.GroupActivities;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
@@ -12,10 +14,6 @@ import com.groupproject.R;
 
 import java.util.List;
 
-/**
- * Created by haileypun on 03/12/2017.
- */
-
 public class ViewGroup extends Activity implements DataBaseCallBacks<Group> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
@@ -23,27 +21,28 @@ public class ViewGroup extends Activity implements DataBaseCallBacks<Group> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-        dataBaseAPI.getGroup(dataBaseAPI.getmGroupRef().getKey(), this);
+//        dataBaseAPI.getGroup(dataBaseAPI.getmGroupRef().getKey(), this);
+
+    }
+
+
+    @Override
+    public void getUser(User user, ViewHolder holder) {
 
     }
 
     @Override
-    public void getUser(User user) {
+    public void getEvent(Event event, ViewHolder holder) {
 
     }
 
     @Override
-    public void getEvent(Event event) {
+    public void getGroup(Group group, ViewHolder holder) {
 
     }
 
     @Override
-    public void getGroup(Group g) {
-
-    }
-
-    @Override
-    public void executeQuery(List<Group> result) {
+    public void executeQuery(List<Group> result, SearchType.Type type) {
 
     }
 
