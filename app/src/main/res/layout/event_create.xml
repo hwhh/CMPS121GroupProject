@@ -50,8 +50,7 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="@string/name"
-                android:textColor="#85b6da"
-                android:textStyle="bold"
+                android:textColor="@android:color/black"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="16dp" />
 
@@ -73,7 +72,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="@string/description" />
+                android:text="@string/description"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/desc"
@@ -87,7 +87,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="@string/start_date" />
+                android:text="@string/start_date"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/start_date"
@@ -103,7 +104,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="End date" />
+                android:text="End date"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/end_date"
@@ -119,7 +121,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="Visibility" />
+                android:text="Visibility"
+                android:textColor="@android:color/black" />
 
             <Spinner
                 android:id="@+id/visibility"
@@ -133,7 +136,7 @@
                 android:background="@null"
                 android:text="@string/save"
                 android:textAllCaps="false"
-                android:textColor="#85b6da"
+                android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
         </LinearLayout>

@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
-            android:text="Click icon to change event photo"
+            android:text="Click icon to change group photo"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
@@ -99,9 +99,10 @@
             android:id="@+id/createGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
             android:background="@null"
             android:text="create"
+            android:textAllCaps="false"
+            android:textSize="18sp"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="192dp" />
     </LinearLayout>
