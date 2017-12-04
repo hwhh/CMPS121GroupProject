@@ -30,7 +30,7 @@ public class Event extends DataBaseItem {
     private Date startDate;
     private Date endDate;
 
-    private List<String> goingIDs;
+    public List<String> goingIDs;
 
     private List<String> tags;
 

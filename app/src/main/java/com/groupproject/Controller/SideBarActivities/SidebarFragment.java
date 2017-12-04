@@ -47,7 +47,7 @@ public class SidebarFragment extends Fragment implements SearchType {
         if(type.equals("friend")){
             searchType = Type.USERS;
             create.setVisibility(View.GONE);
-            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child();
+            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID());
         }
         if(type.equals("events")){
             searchType = Type.EVENTS;
