@@ -12,98 +12,123 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.EventActivities.AddEventActivity;
 import com.groupproject.Controller.GroupActivities.NewGroup;
-import com.groupproject.Controller.SearchActivities.SearchAdapter;
 import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.Event;
+import com.groupproject.Model.Group;
+import com.groupproject.Model.User;
 import com.groupproject.R;
 
-public class SidebarFragment extends Fragment implements SearchType {
+import java.util.List;
+
+public class SidebarFragment extends Fragment implements SearchType, DataBaseCallBacks<String>{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
-    private SearchAdapter mSearchAdapter;
+    private SidebarAdapter mSearchAdapter;
 
-    private Type searchType;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_results, container, false);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+
         FrameLayout radioGroup = rootView.findViewById(R.id.radio_buttons);
         radioGroup.setVisibility(View.GONE);
-        Bundle bundle = getArguments();
 
-        String type = bundle.getString("type");
-        FloatingActionButton create  = rootView.findViewById(R.id.new_group);
-        Query query = null;
+        Type searchType = null;
         Intent intent = null;
 
-        if(type.equals("friend")){
-            searchType = Type.USERS;
-            create.setVisibility(View.GONE);
-            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID());
+        Bundle bundle = getArguments();
+        String type = bundle.getString("type");
+        FloatingActionButton create  = rootView.findViewById(R.id.new_group);
+        Query query;
+
+        assert type != null;
+        switch (type) {
+            case "friend":
+                searchType = Type.USERS;
+                create.setVisibility(View.GONE);
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("friendsIDs");
+                dataBaseAPI.executeQuery(query, this, Type.USERS);
+                break;
+            case "events":
+                searchType = Type.EVENTS;
+                intent = new Intent(getActivity(), AddEventActivity.class);
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("goingEventsIDs");
+                dataBaseAPI.executeQuery(query, this, Type.EVENTS);
+                break;
+            case "groups":
+                searchType = Type.GROUPS;
+                intent = new Intent(getActivity(), NewGroup.class);
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("joinedGroupIDs");
+                dataBaseAPI.executeQuery(query, this, Type.GROUPS);
+                break;
+            case "notifications":
+                searchType = Type.NOTIFICATIONS;
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("requestsID");
+                dataBaseAPI.executeQuery(query, this, Type.USERS);
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("invitedEventsIDs");
+                dataBaseAPI.executeQuery(query, this, Type.EVENTS);
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("invitedGroupIDs");
+                dataBaseAPI.executeQuery(query, this, Type.GROUPS);
+                break;
         }
-        if(type.equals("events")){
-            searchType = Type.EVENTS;
-            intent = new Intent(getActivity(), AddEventActivity.class);
-            query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("goingEventsIDs");
-        }if(type.equals("groups")){
-            searchType = Type.GROUPS;
-            intent = new Intent(getActivity(), NewGroup.class);
-            query = dataBaseAPI.getmGroupRef().orderByChild("membersIDs/").equalTo(FirebaseAuth.getInstance().getUid());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        System.out.println(dataSnapshot.getValue());
-                    }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+        mSearchAdapter = new SidebarAdapter(this, searchType);
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.swapAdapter(mSearchAdapter, true);
 
-                }
-            });
-
-        }
         Intent finalIntent = intent;
         create.setOnClickListener(view -> {
             if(finalIntent != null)
                 startActivity(finalIntent);
         });
-
-
-        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mSearchAdapter = new SearchAdapter(query, this);
-        mRecyclerView.swapAdapter(mSearchAdapter, true);
-        mSearchAdapter.startListening();
         return rootView;
+
+    }
+
+
+    @Override
+    public void getUser(User user, ViewHolder holder) {
+        mSearchAdapter.getItems().add(user);
+        mSearchAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        mSearchAdapter.stopListening();
+    public void getEvent(Event event, ViewHolder holder) {
+        mSearchAdapter.getItems().add(event);
+        mSearchAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mSearchAdapter.startListening();
+    public void getGroup(Group group, ViewHolder holder) {
+        mSearchAdapter.getItems().add(group);
+        mSearchAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void executeQuery(List<String> result, Type type) {
+        for (String s : result) {
+            if(type == Type.USERS)
+                dataBaseAPI.getUser(s, this, null);
+            else if(type == Type.EVENTS)
+                dataBaseAPI.getEvent(s, this, null);
+            else if(type == Type.GROUPS)
+                dataBaseAPI.getGroup(s, this, null);
+        }
     }
 
 
-    public Type getSearchType() {
-        return searchType;
+    @Override
+    public void createUserList(List<User> userList) {
+
     }
 }

@@ -1,15 +1,24 @@
 package com.groupproject.DataBaseAPI;
 
+import com.groupproject.Controller.SearchActivities.SearchAdapter;
+import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 
-public interface DataBaseCallBacks {
+import java.util.List;
 
-    User getUser(String id);
+public interface DataBaseCallBacks<T> {
 
-    Event getEvent(String id);
+    void getUser(User user, ViewHolder holder);
 
-    Group getGroup(String id);
+    void getEvent(Event event, ViewHolder holder);
+
+    void getGroup(Group group, ViewHolder holder);
+
+    void executeQuery(List<T> result, SearchType.Type type);
+
+    void createUserList(List<User> userList);
 
 }

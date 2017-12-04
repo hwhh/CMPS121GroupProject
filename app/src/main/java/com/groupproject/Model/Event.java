@@ -20,11 +20,7 @@ public class Event extends DataBaseItem {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
-
-
-
     private String hostID;
-
     private String nameLower;
 
     private Date startDate;
@@ -36,7 +32,7 @@ public class Event extends DataBaseItem {
 
     private CustomLocation customLocation;
 
-    private Visability.VISIBILITY visibility;
+    private Visibility.VISIBILITY visibility;
 
     private String name;
     private String description;
@@ -49,7 +45,7 @@ public class Event extends DataBaseItem {
         init();
     }
 
-    public Event(Date startDate, Date endDate, CustomLocation customLocation, Visability.VISIBILITY visibility, String name, String description, String hostID) {
+    public Event(Date startDate, Date endDate, CustomLocation customLocation, Visibility.VISIBILITY visibility, String name, String description, String hostID) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.customLocation = customLocation;
@@ -78,11 +74,21 @@ public class Event extends DataBaseItem {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingIDs(Map<String, Object> map) {
-        goingIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getGoingIDs() {
+        return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setInvitedIDs(Map<String, Object> map) {
+        goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getInvitedIDs() {
         return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
@@ -141,11 +147,11 @@ public class Event extends DataBaseItem {
         this.customLocation = customLocation;
     }
 
-    public Visability.VISIBILITY getVisibility() {
+    public Visibility.VISIBILITY getVisibility() {
         return visibility;
     }
 
-    public void setVisibility(Visability.VISIBILITY visibility) {
+    public void setVisibility(Visibility.VISIBILITY visibility) {
         this.visibility = visibility;
     }
 

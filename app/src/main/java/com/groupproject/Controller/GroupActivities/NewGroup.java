@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Group;
-import com.groupproject.Model.Visability;
+import com.groupproject.Model.Visibility;
 import com.groupproject.R;
 
 import java.util.ArrayList;
@@ -39,8 +39,8 @@ public class NewGroup extends Activity {
 
         createGroup.setOnClickListener(view -> {
             Group g;
-            Visability.VISIBILITY groupVis = (visibility.getSelectedItem().toString().equals("Public")) ?
-                    Visability.VISIBILITY.PUBLIC : Visability.VISIBILITY.INVITE_ONLY;
+            Visibility.VISIBILITY groupVis = (visibility.getSelectedItem().toString().equals("Public")) ?
+                    Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
             if(name.getText() != null && description.getText() != null){
                 g = new Group(name.getText().toString(), description.getText().toString(), groupVis, dataBaseAPI.getCurrentUserID());
                 dataBaseAPI.addGroupToUser(g);

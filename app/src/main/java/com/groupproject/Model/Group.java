@@ -3,7 +3,6 @@ package com.groupproject.Model;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
@@ -19,12 +18,10 @@ public class Group extends DataBaseItem{
 
 
     private String host;
-    private List<String> membersIDs;//
-    private List<String> requestedMembersIDs;//
+    public List<String> membersIDs;//
+    public List<String> invitedIDs;//TODO this might be tricky
 
-    private List<String > eventsIDs;
-
-//    private List<String > tags;//
+    public List<String > eventsIDs;
 
     private String name;
     private String description;
@@ -34,14 +31,14 @@ public class Group extends DataBaseItem{
     private String id;
 
 
-    private Visability.VISIBILITY visibility;
+    private Visibility.VISIBILITY visibility;
 
     public Group() {
         init();
     }
 
 
-    public Group(String name, String description, Visability.VISIBILITY visibility, String host) {
+    public Group(String name, String description, Visibility.VISIBILITY visibility, String host) {
         this.name = name;
         this.description = description;
         this.nameLower = name.toLowerCase();
@@ -60,13 +57,14 @@ public class Group extends DataBaseItem{
     }
 
     private void init(){
-        eventsIDs= new ArrayList<>();
+        eventsIDs = new ArrayList<>();
+        membersIDs = new ArrayList<>();
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMembersIDs(Map<String, Object> map) {
-        membersIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        membersIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -76,7 +74,7 @@ public class Group extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setEventsIDs(Map<String, Object> map) {
-        eventsIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+        eventsIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -84,15 +82,14 @@ public class Group extends DataBaseItem{
         return eventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setRequestedMembersIDs(Map<String, Object> map) {
-        requestedMembersIDs = map.values().stream().map(Object::toString).collect (Collectors.toList());
+    public void setInvitedIDs(Map<String, Object> map) {
+        invitedIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Object> getRequestedMembersIDs() {
-        return requestedMembersIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    public Map<String, Object> getInvitedIDs() {
+        return invitedIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
     public String getHost() {
@@ -120,7 +117,7 @@ public class Group extends DataBaseItem{
         this.nameLower = nameLower;
     }
 
-    public void setVisibility(Visability.VISIBILITY visibility) {
+    public void setVisibility(Visibility.VISIBILITY visibility) {
         this.visibility = visibility;
     }
 
@@ -136,7 +133,7 @@ public class Group extends DataBaseItem{
         return description;
     }
 
-    public Visability.VISIBILITY getVisibility() {
+    public Visibility.VISIBILITY getVisibility() {
         return visibility;
     }
 

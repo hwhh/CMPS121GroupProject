@@ -161,9 +161,10 @@ public class BaseActivity extends AppCompatActivity
         } else if (id == R.id.groups) {
             bundle.putString("type", "groups");
         }else if (id == R.id.notifications) {
-            //TODO Implement
+            bundle.putString("type", "notifications");
         } else if (id == R.id.sign_out) {
             dataBaseAPI.signOut(this);
+            return true;
         }
         sidebarFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "groups").remove(searchFrag).commitAllowingStateLoss();

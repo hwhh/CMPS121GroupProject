@@ -2,9 +2,9 @@ package com.groupproject.DataBaseAPI;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,15 +13,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.LoginActivities.LoginActivity;
+import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
+import com.groupproject.Model.Visibility;
 
-import net.jodah.expiringmap.ExpirationListener;
 import net.jodah.expiringmap.ExpiringMap;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -33,17 +37,12 @@ import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
 public class DataBaseAPI {
 
-    private static final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
     private static DatabaseReference mEventRef;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mGroupRef;
     private DataBaseCallBacks dataBaseCallBacks;
-
     private static DataBaseAPI single_instance = null;
     private static ExpiringMap<String, Event> eventMap;
-
-
 
     public enum UserRelationship {
         ME,
@@ -52,22 +51,24 @@ public class DataBaseAPI {
         NONE
     }
 
-
+    public enum STATUS {
+        JOINED,
+        INVITED,
+        PUBLIC,
+        HIDDEN
+    }
 
     private DataBaseAPI(){
         mUserRef = FirebaseDatabase.getInstance().getReference("users");
         mEventRef = FirebaseDatabase.getInstance().getReference("events");
         mGroupRef = FirebaseDatabase.getInstance().getReference("groups");
         eventMap = ExpiringMap.builder().variableExpiration().build();
-        eventMap.addExpirationListener(new ExpirationListener<String, Event>() {
-            @Override
-            public void expired(String key, Event e) {
-                e.setExpired(true);
-                HashMap<String, Object> result = new HashMap<>();
-                result.put(e.getId(), e);
-                mEventRef.updateChildren(result);
-                eventMap.remove(e.getId());
-            }
+        eventMap.addExpirationListener((key, e) -> {
+            e.setExpired(true);
+            HashMap<String, Object> result = new HashMap<>();
+            result.put(e.getId(), e);
+            mEventRef.updateChildren(result);
+            eventMap.remove(e.getId());
         });
     }
 
@@ -86,10 +87,91 @@ public class DataBaseAPI {
     }
 
 
-    public String getCurrentUserID(){
-        return currentUser.getUid();
+    public void addChildListener(String collection, ChildEventListener childEventListener) {
+        if (collection.equals("events")) {
+            mEventRef.addChildEventListener(childEventListener);
+        }
     }
 
+
+    public void getUser(String id, DataBaseCallBacks callBacks, @Nullable ViewHolder holder){
+        Query query = getmUserRef().child(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    User user = dataSnapshot.getValue(com.groupproject.Model.User.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.getUser(user, holder);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    public void getEvent(String id, DataBaseCallBacks callBacks, @Nullable ViewHolder holder){
+        Query query = getmEventRef().child(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.getEvent(event, holder);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getGroup(String id, DataBaseCallBacks callBacks, @Nullable ViewHolder holder){
+        Query query = getmGroupRef().child(id);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Group group = dataSnapshot.getValue(com.groupproject.Model.Group.class);
+                    dataBaseCallBacks = callBacks;
+                    dataBaseCallBacks.getGroup(group, holder);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void executeQuery(Query query, DataBaseCallBacks callBacks, SearchType.Type type){
+        List<String> ids = new ArrayList<>();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                dataBaseCallBacks = callBacks;
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        ids.add(snapshot.getKey());
+                    }
+                }
+                dataBaseCallBacks.executeQuery(ids, type);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public String getCurrentUserID(){
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
 
     public DatabaseReference getmUserRef() {
         return mUserRef;
@@ -103,53 +185,118 @@ public class DataBaseAPI {
         return mGroupRef;
     }
 
-
     public UserRelationship getRelationShip(User user){
-        if(user.getId().equals(currentUser.getUid())) {
+        if(user.getId().equals(getCurrentUserID())) {
             return ME;
-        }else if(user.friendsIDs.contains(currentUser.getUid())){
+        }else if(user.friendsIDs.contains(getCurrentUserID())){
             return FRIENDS;
-        }else if(user.requestsID.contains(currentUser.getUid())){
+        }else if(user.requestsID.contains(getCurrentUserID())){
             return REQUESTED;
         }else{
             return NONE;
         }
     }
 
-    public void sendFriendRequest(User user){
-        String key =getmUserRef().child(user.getId()).child("requestsID").push().getKey();
-        getmUserRef().child(user.getId()).child("requestsID").child(key).setValue(currentUser.getUid());
+    public STATUS getEventRelationShip(Event event){
+        if (event.goingIDs.contains(getCurrentUserID()))
+            return STATUS.JOINED;
+        else if (event.invitedIDs.contains(getCurrentUserID()))
+            return STATUS.INVITED;
+        else if (event.getVisibility() == Visibility.VISIBILITY.PUBLIC)
+            return STATUS.PUBLIC;
+        else
+            return STATUS.HIDDEN;
     }
+
+    public STATUS getGroupRelationShip(Group group){
+        if (group.membersIDs.contains(getCurrentUserID()))
+            return STATUS.JOINED;
+        else if (group.invitedIDs.contains(getCurrentUserID()))
+            return STATUS.INVITED;
+        else if (group.getVisibility() == Visibility.VISIBILITY.PUBLIC)
+            return STATUS.PUBLIC;
+        else
+            return STATUS.HIDDEN;
+    }
+
+
+    //TODO ON USER PROFILE INVITE TO EVENTS OR GROUPS ***
+    public void sendFriendRequest(User user){
+        getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
+    }
+
+    public void sendEventInvite(String userID, Event event){
+        getmEventRef().child(event.getId()).child("invitedIDs").child(userID).setValue(true);
+        getmUserRef().child(userID).child("invitedEventsIDs").child(event.getId()).setValue(true);
+    }
+
+    public void sendGroupInvite(String userID, Group group){
+        getmGroupRef().child(group.getId()).child("invitedIDs").child(userID).setValue(true);
+        getmUserRef().child(userID).child("invitedGroupIDs").child(group.getId()).setValue(true);
+    }
+
 
     public void removeFriend(User user){
-        getmUserRef().child(currentUser.getUid()).child("friendsIDs").child(user.getId()).removeValue();
-        getmUserRef().child(user.getId()).child("friendsIDs").child(currentUser.getUid()).removeValue();
+        getmUserRef().child(getCurrentUserID()).child("friendsIDs").child(user.getId()).removeValue();
+        getmUserRef().child(user.getId()).child("friendsIDs").child(getCurrentUserID()).removeValue();
     }
 
-    public void cancelRequest(User user){
-        getmUserRef().child(user.getId()).child("requestsID").child(currentUser.getUid()).removeValue();
+    public void leaveEvent(Event event){
+        getmEventRef().child(event.getId()).child("goingIDs").child(getCurrentUserID()).removeValue();
+        getmUserRef().child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).removeValue();
     }
+
+    public void leaveGroup(Group group){
+        getmEventRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
+        getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
+    }
+
+
+    public void cancelFriendRequest(User user){
+        getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).removeValue();
+    }
+
+
+    public void cancelEventInvite(User user){
+        getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).removeValue();
+    }
+
+    public void cancelGroupInvite(User user){
+        getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).removeValue();
+    }
+
+
+    public void acceptRequestUser (User user){
+        getmUserRef().child(getCurrentUserID()).child("friendsIDs").child(user.getId()).setValue(true);
+        getmUserRef().child(getCurrentUserID()).child("requestsID").child(user.getId()).removeValue();//Remove request
+
+        getmUserRef().child(user.getId()).child("friendsIDs").child(getCurrentUserID()).setValue(true);//Add current user to users friends
+    }
+
+    public void acceptEventInvite (Event event){
+        getmEventRef().child(event.getId()).child("goingIDs").child(getCurrentUserID()).setValue(true);
+
+        getmUserRef().child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).setValue(true);
+        getmUserRef().child(getCurrentUserID()).child("invitedEventsIDs").child(event.getId()).removeValue();//Remove request
+    }
+
+
+    public void acceptGroupInvite (Group group){
+        getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).setValue(true);
+
+        getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).setValue(true);
+        getmUserRef().child(getCurrentUserID()).child("invitedGroupIDs").child(group.getId()).removeValue();//Remove request
+    }
+
 
     public void writeNewGroup(Group group) {
         group.setId(mGroupRef.push().getKey());
         mGroupRef.child(group.getId()).setValue(group);
     }
 
-    public void addGroupToUser(Group group) {
-        String key = mUserRef.child(getCurrentUserID()).child("joinedGroupIDs").push().getKey();
-        mUserRef.child(getCurrentUserID()).child("joinedGroupIDs").child(key).setValue(group.getId());
-    }
-
-
-    public void acceptRequestUser (User user){
-        //TODO Implement
-    }
-
-    //TODO Validate user
     public void writeNewUser(User user) {
         mUserRef.child(user.getId()).setValue(user);
     }
-
 
     public void writeNewEvent(Event event) {
         event.setId(mEventRef.push().getKey());
@@ -157,9 +304,13 @@ public class DataBaseAPI {
     }
 
     public void addEventToUser(Event event) {
-        String key = mUserRef.child(getCurrentUserID()).child("goingEventsIDs").push().getKey();
-        mUserRef.child(getCurrentUserID()).child("goingEventsIDs").child(key).setValue(event.getId());
+        mUserRef.child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).setValue(true);
     }
+
+    public void addGroupToUser(Group group) {
+        mUserRef.child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).setValue(true);
+    }
+
 
     public static ExpiringMap<String, Event> getEventMap() {
         return eventMap;

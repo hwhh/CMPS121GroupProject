@@ -31,7 +31,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.BaseActivity;
+import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -44,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
+    private static final DataBaseAPI databaseAPI = DataBaseAPI.getDataBase();
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager mCallbackManager;
 
@@ -190,11 +195,26 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onSuccessfulSignUp(){
         FirebaseUser user = mAuth.getCurrentUser();
-        Intent intent = new Intent(getApplication(), BaseActivity.class);
         if (user != null) {
-           new User(user.getUid(), user.getDisplayName(), user.getEmail());
+            databaseAPI.getmUserRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    Intent intent = new Intent(getApplication(), BaseActivity.class);
+                    if (!snapshot.child(user.getUid()).exists()) {
+                        new User(user.getUid(), user.getDisplayName(), user.getEmail());
+                    }
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
-        startActivity(intent);
+
     }
 
 

@@ -8,59 +8,79 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/createnewgroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_a_new_group"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="68dp">
 
         <ImageButton
             android:id="@+id/eventpicbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/eventpic"
-            android:contentDescription="TODO" />
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:contentDescription="TODO"
+            android:src="@drawable/eventpic" />
 
         <TextView
             android:id="@+id/changephotoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:text="@string/click_to_change_event_photo"
+            android:padding="4dp"
+            android:text="Click icon to change group photo"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/groupNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Group Name"
+            android:textColor="@android:color/black" />
 
         <EditText
             android:id="@+id/GroupNameEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/group_name" />
+            android:hint="@string/group_name"
+            android:inputType="textPersonName" />
 
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Description"
+            android:textColor="@android:color/black" />
 
         <EditText
             android:id="@+id/GroupDescriptionEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/description" />
+            android:hint="@string/description"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/tagsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Tags"
+            android:textColor="@android:color/black" />
 
         <EditText
             android:id="@+id/GroupTagsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="@string/tags" />
+            android:hint="@string/tags"
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/visibilityText"
@@ -73,13 +93,16 @@
         <Spinner
             android:id="@+id/GroupVisibilitySpinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="35dp"/>
 
         <Button
             android:id="@+id/createGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create"
+            android:background="@null"
+            android:text="create"
+            android:textAllCaps="false"
+            android:textSize="18sp"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="192dp" />
     </LinearLayout>
