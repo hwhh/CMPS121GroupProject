@@ -2,6 +2,7 @@ package com.groupproject.Controller.GroupActivities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import com.groupproject.R;
 
 import java.util.ArrayList;
 
-public class NewGroup extends Activity {
+public class NewGroup extends AppCompatActivity {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 

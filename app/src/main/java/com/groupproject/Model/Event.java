@@ -22,21 +22,19 @@ public class Event extends DataBaseItem {
 
     private String hostID;
     private String nameLower;
+    private String name;
+    private String description;
+    private String id;
 
     private Date startDate;
     private Date endDate;
 
     public List<String> goingIDs;
-
-    private List<String> tags;
+    public List<String> invitedIDs;
+    public List<String> tags;
 
     private CustomLocation customLocation;
-
     private Visibility.VISIBILITY visibility;
-
-    private String name;
-    private String description;
-    private String id;
 
     private boolean expired;
 

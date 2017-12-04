@@ -110,10 +110,10 @@ public class EventInfoActivity extends Activity implements Callback {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
                 joinButton.setBackgroundColor(Color.RED);
-                joinButton.setText(R.string.leave);
+//                joinButton.setText(R.string.leave);
             } else {
                 joinButton.setBackgroundColor(Color.GREEN);
-                joinButton.setText(R.string.join);
+//                joinButton.setText(R.string.join);
             }
         }
     }
@@ -122,15 +122,15 @@ public class EventInfoActivity extends Activity implements Callback {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
                 joinButton.setBackgroundColor(Color.GREEN);
-                joinButton.setText(R.string.join);
+//                joinButton.setText(R.string.join);
             } else {
                 joinButton.setBackgroundColor(Color.RED);
-                joinButton.setText(R.string.leave);
+//                joinButton.setText(R.string.leave);
             }
         }
     }
 
-    @Override
+
     public void display(Event event) {
         eventText.setText(Html.fromHtml(changeStringDisplay(event.getName())));
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
@@ -143,6 +143,3 @@ public class EventInfoActivity extends Activity implements Callback {
 }
 
 
-interface Callback {
-    void display(Event e);
-}

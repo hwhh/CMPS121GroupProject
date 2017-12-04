@@ -85,9 +85,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Controller.SearchActivities.UserProfileFragment" />
         <activity android:name=".Controller.SideBarActivities.SidebarFragment" />
-        <activity android:name=".Controller.GroupActivities.NewGroup"></activity>
-        <activity android:name=".Controller.ProfileActivity"></activity>
-        <activity android:name=".Controller.GroupActivities.ViewGroup"></activity>
+        <activity android:name=".Controller.GroupActivities.NewGroup" />
+        <activity android:name=".Controller.ProfileActivity" />
+        <activity android:name=".Controller.GroupActivities.ViewGroup" />
+        <activity android:name=".aActivity" />
     </application>
 
 </manifest>

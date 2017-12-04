@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
-import com.groupproject.Controller.EventActivities.EventInfoFragment;
+import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.Controller.ProfileActivity;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -54,17 +54,23 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS) {
             dataBaseAPI.getUser(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-//                Intent intent = new Intent(fragment, )
+                Intent intent = new Intent(fragment.getActivity(), ProfileActivity.class);
+                intent.putExtra("key", model.getId());
+                fragment.getActivity().startActivity(intent);
             });
         }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
             dataBaseAPI.getEvent(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-//                Intent intent = new Intent(fragment, )
+                Intent intent = new Intent(fragment.getActivity(), EventInfoActivity.class);
+                intent.putExtra("key", model.getId());
+                fragment.getActivity().startActivity(intent);
             });
         }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
             dataBaseAPI.getGroup(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-//                Intent intent = new Intent(fragment, )
+                Intent intent = new Intent(fragment.getActivity(), ViewGroup.class);
+                intent.putExtra("key", model.getId());
+                fragment.getActivity().startActivity(intent);
             });
         }
     }
