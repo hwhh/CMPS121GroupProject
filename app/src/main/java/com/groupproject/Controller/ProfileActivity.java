@@ -2,6 +2,7 @@ package com.groupproject.Controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
@@ -18,21 +19,25 @@ import java.util.List;
 
 public class ProfileActivity extends Activity implements DataBaseCallBacks<User> {
 
+    TextView userName;
+    TextView emailAddress;
+    TextView location;
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
         dataBaseAPI.getUser(dataBaseAPI.getCurrentUserID(), this);
-
+        userName = (TextView) findViewById(R.id.userName);
+        emailAddress = (TextView) findViewById(R.id.emailAdd);
+        location = (TextView) findViewById(R.id.location);
     }
 
     @Override
     public void getUser(User user) {
-        user.getName();
-        user.getEmail();
-        user.getLocation();
-        user.get
+        userName.setText(user.getName());
+        emailAddress.setText(user.getEmail());
+        location.setText(user.getLocation().toString());
     }
 
     @Override
