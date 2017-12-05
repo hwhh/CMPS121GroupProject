@@ -254,27 +254,62 @@ public class DataBaseAPI {
 
     public void deleteEvent(Event event){
         getmEventRef().child(event.getId()).removeValue();
+        Query query1 = getmUserRef().orderByChild("goingEventsIDs").equalTo(event.getId()).getRef();
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot querySnapshot) {
+                 querySnapshot.getRef().removeValue();
+             }
 
-//
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-//        Map<String,Object> updates = new HashMap<String,Object>();
-//        updates.put("users/user1", null);
-//        updates.put("groups/group1/members/user", null);
-//        // Do a deep-path update
-//        ref.updateChildren(updatedUserData, new Firebase.CompletionListener() {
-//            @Override
-//            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-//                if (firebaseError != null) {
-//                    System.out.println("Error updating data: " + firebaseError.getMessage());
-//                }
-//            }
-//        });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        Query query2 = getmUserRef().orderByChild("invitedEventsIDs").equalTo(event.getId()).getRef();
+        query2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot querySnapshot) {
+                querySnapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
     public void deleteGroup(Group group){
 
+        getmEventRef().child(group.getId()).removeValue();
+        Query query1 = getmUserRef().orderByChild("joinedGroupIDs").equalTo(group.getId()).getRef();
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot querySnapshot) {
+                querySnapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Query query2 = getmUserRef().orderByChild("invitedEventsIDs").equalTo(group.getId()).getRef();
+        query2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot querySnapshot) {
+                querySnapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void cancelFriendRequest(User user){
