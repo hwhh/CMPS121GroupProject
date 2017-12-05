@@ -125,6 +125,10 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+                if (event != null) {
+                    DataBaseAPI.getEventMap().remove(event.getId());
+                    addPinsToMap();
+                }
             }
 
             @Override

@@ -27,6 +27,7 @@ public class SearchFragment extends Fragment implements SearchType{
     private SearchAdapter mSearchAdapter;
 
     private Type searchType;
+    private String q;
 
     public interface SwitchFragment{
         void switchFragment(Fragment frag, Bundle args);
@@ -35,8 +36,9 @@ public class SearchFragment extends Fragment implements SearchType{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setRetainInstance(true);
+//        setRetainInstance(true);
 
+        this.q = "";
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -66,10 +68,14 @@ public class SearchFragment extends Fragment implements SearchType{
             }
             setQ("");
         });
-        setQ("");
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setQ(q);
+    }
 
 
     public void setData(SearchAdapter mSearchAdapter) {
@@ -93,6 +99,7 @@ public class SearchFragment extends Fragment implements SearchType{
     }
 
     public void setQ(String q) {
+        this.q = q;
         if(reference != null) {
             Query query = reference.orderByChild("nameLower").startAt(q).endAt(q + "\uf8ff");
 
