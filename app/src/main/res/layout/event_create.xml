@@ -63,7 +63,7 @@
                 android:layout_below="@+id/eventname_txt"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
+                android:hint="Name"
                 android:textColor="@android:color/darker_gray"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="31dp" />
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Description"
+                android:hint="Description"
                 android:textColor="@android:color/darker_gray" />
 
             <TextView

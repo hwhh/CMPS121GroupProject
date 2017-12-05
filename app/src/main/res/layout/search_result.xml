@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:background="@null"
             android:paddingRight="5dp"
-            card_view:srcCompat="@drawable/add_button" />
+             />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

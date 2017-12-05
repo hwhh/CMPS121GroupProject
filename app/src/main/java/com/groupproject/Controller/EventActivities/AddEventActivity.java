@@ -51,7 +51,7 @@ public class AddEventActivity extends AppCompatActivity  {
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
         } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location");
+            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
         }
         setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
@@ -69,93 +69,80 @@ public class AddEventActivity extends AppCompatActivity  {
             createTimePicker(startDateCalendar, startDate, hour, minute, null);
         };
 
-        startDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        startDate.setOnClickListener(v -> {
+            DatePickerDialog datePickerDialog =  new DatePickerDialog(
+                    AddEventActivity.this,
+                    start_date_picker,
+                    startDateCalendar.get(Calendar.YEAR),
+                    startDateCalendar.get(Calendar.MONTH),
+                    startDateCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+            datePickerDialog.show();
+        });
+
+        end_date_picker = (view, year, monthOfYear, dayOfMonth) -> {
+            updateCalendar(endDateCalendar, year, monthOfYear, dayOfMonth);
+            updateCalendarTime(endDateCalendar, startDateCalendar.get(Calendar.HOUR_OF_DAY),
+                    startDateCalendar.get(Calendar.MINUTE));
+            endDateCalendar.add(Calendar.HOUR, 2);
+            int hour = endDateCalendar.get(Calendar.HOUR_OF_DAY);
+            int minute = endDateCalendar.get(Calendar.MINUTE);
+            createTimePicker(endDateCalendar, endDate, hour, minute, startDateCalendar);
+        };
+
+        endDate.setOnClickListener(v -> {
+            if (!startDate.getText().toString().trim().isEmpty()) {
+                //Get start date's date and assign in to the end date calendar
+                DateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.US);
+                Date date = null;
+                try {
+                    date = format.parse(startDate.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (date != null)
+                    endDateCalendar.setTime(date);
+                long minDate = endDateCalendar.getTimeInMillis();
                 DatePickerDialog datePickerDialog =  new DatePickerDialog(
                         AddEventActivity.this,
-                        start_date_picker,
-                        startDateCalendar.get(Calendar.YEAR),
-                        startDateCalendar.get(Calendar.MONTH),
-                        startDateCalendar.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                        end_date_picker,
+                        endDateCalendar.get(Calendar.YEAR),
+                        endDateCalendar.get(Calendar.MONTH),
+                        endDateCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(minDate);
                 datePickerDialog.show();
             }
         });
 
-        end_date_picker = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                updateCalendar(endDateCalendar, year, monthOfYear, dayOfMonth);
-                updateCalendarTime(endDateCalendar, startDateCalendar.get(Calendar.HOUR_OF_DAY),
-                        startDateCalendar.get(Calendar.MINUTE));
-                endDateCalendar.add(Calendar.HOUR, 2);
-                int hour = endDateCalendar.get(Calendar.HOUR_OF_DAY);
-                int minute = endDateCalendar.get(Calendar.MINUTE);
-                createTimePicker(endDateCalendar, endDate, hour, minute, startDateCalendar);
-            }
-        };
+        Button saveButton = findViewById(R.id.savebutton);
+        saveButton.setOnClickListener(v -> {
+            if (allDataEntered()) {
 
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!startDate.getText().toString().trim().isEmpty()) {
-                    //Get start date's date and assign in to the end date calendar
-                    DateFormat format = new SimpleDateFormat("MM/dd/yy", Locale.US);
-                    Date date = null;
-                    try {
-                        date = format.parse(startDate.getText().toString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                String myFormat = "MM/dd/yy hh:mm";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                try {
+                    Date sDate = sdf.parse(startDate.getText().toString());
+                    Date fDate = sdf.parse(endDate.getText().toString());
+                    Event e;
+                    Visibility.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
+                            Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
+
+                    if (eventLocation != null) {
+                        e = new Event(sDate, fDate,
+                                new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
+                                name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
+                        dataBaseAPI.addEventToUser(e);
+                        //TODO: return the event id?
+                        finish();
                     }
-                    if (date != null)
-                        endDateCalendar.setTime(date);
-                    long minDate = endDateCalendar.getTimeInMillis();
-                    DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                            AddEventActivity.this,
-                            end_date_picker,
-                            endDateCalendar.get(Calendar.YEAR),
-                            endDateCalendar.get(Calendar.MONTH),
-                            endDateCalendar.get(Calendar.DAY_OF_MONTH));
-                    datePickerDialog.getDatePicker().setMinDate(minDate);
-                    datePickerDialog.show();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            }
-        });
-
-        Button saveButton = (Button) findViewById(R.id.savebutton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (allDataEntered()) {
-
-                    String myFormat = "MM/dd/yy hh:mm";
-                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                    try {
-                        Date sDate = sdf.parse(startDate.getText().toString());
-                        Date fDate = sdf.parse(endDate.getText().toString());
-                        Event e;
-                        Visibility.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
-                                Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
-
-                        if (eventLocation != null) {
-                            e = new Event(sDate, fDate,
-                                    new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
-                                    name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
-                            dataBaseAPI.addEventToUser(e);
-                            //TODO: return the event id?
-                            finish();
-                        }
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please fill in all the data",
-                            Toast.LENGTH_LONG).show();
-                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Please fill in all the data",
+                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -172,26 +159,22 @@ public class AddEventActivity extends AppCompatActivity  {
                                   final Calendar calendarMin) {
         TimePickerDialog timePickerDialog;
         timePickerDialog = new TimePickerDialog(AddEventActivity.this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour,
-                                          int selectedMinute) {
-                        if (calendarMin != null) {
-                            updateCalendarTime(calendar, selectedHour, selectedMinute);
-                            if (calendar.getTime().compareTo(calendarMin.getTime()) > 0) {
-                                updateLabel(label, calendar, selectedHour,
-                                        selectedMinute);
-                                updateCalendarTime(calendar, selectedHour, selectedMinute);
-                            } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "End time cannot be before start time",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        } else {
+                (timePicker, selectedHour, selectedMinute) -> {
+                    if (calendarMin != null) {
+                        updateCalendarTime(calendar, selectedHour, selectedMinute);
+                        if (calendar.getTime().compareTo(calendarMin.getTime()) > 0) {
                             updateLabel(label, calendar, selectedHour,
                                     selectedMinute);
                             updateCalendarTime(calendar, selectedHour, selectedMinute);
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "End time cannot be before start time",
+                                    Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        updateLabel(label, calendar, selectedHour,
+                                selectedMinute);
+                        updateCalendarTime(calendar, selectedHour, selectedMinute);
                     }
                 }, hour, min, true);
         timePickerDialog.setTitle("Select Time");

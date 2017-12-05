@@ -2,13 +2,12 @@ package com.groupproject.Controller.SideBarActivities;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
@@ -20,24 +19,35 @@ import com.groupproject.Model.User;
 import com.groupproject.R;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder>{
+public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements Filterable {
 
     private static final DataBaseAPI databaseAPI = DataBaseAPI.getDataBase();
     private final SearchType.Type type;
     private List<DataBaseItem> items;
+    private final List<DataBaseItem> filteredItemsList;
+
+
     private final Fragment fragment;
+    private UserFilter filter;
+
 
     SidebarAdapter(Fragment fragment, SearchType.Type type) {
         super();
         items = new ArrayList<>();
+        filteredItemsList = new ArrayList<>();
         this.fragment = fragment;
         this.type = type;
     }
 
     List<DataBaseItem> getItems() {
         return items;
+    }
+
+    public void setItems(List<DataBaseItem> items) {
+        this.items = items;
     }
 
     @Override
@@ -67,7 +77,7 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder>{
                 //On card click view Group
                 break;
             case NOTIFICATIONS:
-                holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.accept_button));
+                holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_accept));
                 holder.interact.setOnClickListener(view -> {
                     if(dataBaseItem instanceof User) {
                         databaseAPI.acceptRequestUser((User) dataBaseItem);
@@ -89,5 +99,58 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder>{
     }
 
 
+    @Override
+    public Filter getFilter() {
+        if(filter == null) {
+            filter = new UserFilter(this, items);
+
+        }
+        return filter;
+    }
+
+    private static class UserFilter extends Filter {
+
+        private final SidebarAdapter adapter;
+
+        private final List<DataBaseItem> originalList;
+
+        private final List<DataBaseItem> filteredList;
+
+        private UserFilter(SidebarAdapter adapter, List<DataBaseItem> originalList) {
+            super();
+            this.adapter = adapter;
+            this.originalList = new LinkedList<>(originalList);
+            this.filteredList = new ArrayList<>();
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filteredList.clear();
+            final FilterResults results = new FilterResults();
+
+            if (constraint.length() == 0) {
+                filteredList.addAll(originalList);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (final DataBaseItem item : originalList) {
+                    if (item.getNameLower().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            results.values = filteredList;
+            results.count = filteredList.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            adapter.filteredItemsList.clear();
+            adapter.filteredItemsList.addAll((ArrayList<DataBaseItem>) results.values);
+            adapter.setItems((ArrayList<DataBaseItem>) results.values);
+            adapter.notifyDataSetChanged();
+        }
+    }
 
 }
