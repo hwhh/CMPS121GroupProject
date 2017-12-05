@@ -19,13 +19,14 @@
             android:id="@+id/groupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/segoeuil"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Group Name"
             android:textAlignment="center"
-            android:fontFamily="@font/josefin_sans_semibold"
             android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,9 +38,9 @@
                 android:id="@+id/memberTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:paddingLeft="10dp"
                 android:text="Members"
-                android:fontFamily="@font/josefin_sans_semibold"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -48,8 +49,9 @@
                 android:id="@+id/memberInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
+                android:fontFamily="@font/segoeuil"
 
+                android:paddingLeft="10dp"
                 android:text="Members here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
@@ -68,9 +70,9 @@
                 android:id="@+id/descriptionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:paddingLeft="10dp"
                 android:text="Group Description"
-                android:fontFamily="@font/josefin_sans_semibold"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -79,8 +81,8 @@
                 android:id="@+id/groupDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:paddingLeft="10dp"
-                android:fontFamily="@font/josefin_sans_semibold"
                 android:text="Some bio here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
@@ -98,19 +100,19 @@
                 android:id="@+id/eventsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:paddingLeft="10dp"
                 android:text="Events"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eventsGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:paddingLeft="10dp"
-                android:fontFamily="@font/josefin_sans_semibold"
                 android:text="Some events here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />

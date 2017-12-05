@@ -17,15 +17,19 @@
             android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/interact"
+            android:layout_toStartOf="@+id/interact"
+            android:fontFamily="@font/segoeuil"
             android:gravity="center_vertical"
-            android:paddingLeft="5dp"
             android:text="@string/name"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:paddingLeft="5dp"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/interact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

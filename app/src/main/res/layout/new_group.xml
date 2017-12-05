@@ -1,104 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.groupproject.Controller.GroupActivities.NewGroup">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="366dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginStart="41dp"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="68dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginStart="42dp">
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
             android:id="@+id/groupNameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/segoeuil"
             android:paddingBottom="4dp"
             android:paddingLeft="4dp"
             android:text="Group Name"
             android:textColor="@android:color/black"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/GroupNameEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/group_name"
-            android:inputType="textPersonName"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/segoeuil"
             android:padding="4dp"
             android:text="Description"
             android:textColor="@android:color/black"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/GroupDescriptionEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/description"
-            android:inputType="textPersonName"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/tagsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/segoeuil"
             android:padding="4dp"
             android:text="Tags"
             android:textColor="@android:color/black"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/GroupTagsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/tags"
-            android:inputType="textPersonName"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/visibilityText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/segoeuil"
             android:paddingStart="5dp"
             android:text="@string/visibility"
             android:textColor="@android:color/black"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/GroupVisibilitySpinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:fontFamily="@font/josefin_sans_semibold" />
 
         <Button
             android:id="@+id/createGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:fontFamily="@font/segoeuil"
             android:text="Create"
             android:textAllCaps="false"
-            android:textSize="14sp"
 
+            android:textSize="14sp"
+            android:textStyle="bold"
             tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="192dp"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            tools:layout_editor_absoluteY="192dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

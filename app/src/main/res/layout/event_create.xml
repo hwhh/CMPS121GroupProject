@@ -40,16 +40,17 @@
                 android:id="@+id/eventname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="50dp"
-                android:paddingLeft="4dp"
-                android:paddingBottom="4dp"
-                android:text="@string/name"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
+                android:fontFamily="@font/segoeuil"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingTop="50dp"
+                android:text="@string/name"
                 android:textColor="@android:color/black"
+                android:textStyle="bold"
                 tools:layout_editor_absoluteX="153dp"
-                tools:layout_editor_absoluteY="16dp"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                tools:layout_editor_absoluteY="16dp" />
 
             <EditText
                 android:id="@+id/name"
@@ -61,22 +62,23 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:ems="10"
+                android:fontFamily="@font/segoeuil"
                 android:hint="Name"
                 android:inputType="textPersonName"
                 tools:layout_editor_absoluteX="153dp"
-                tools:layout_editor_absoluteY="31dp"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                tools:layout_editor_absoluteY="31dp" />
 
             <TextView
                 android:id="@+id/desc_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="@string/description"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
+                android:fontFamily="@font/segoeuil"
+                android:padding="4dp"
+                android:text="@string/description"
                 android:textColor="@android:color/black"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/desc"
@@ -85,66 +87,66 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:ems="10"
+                android:fontFamily="@font/segoeuil"
                 android:hint="Description"
-                android:inputType="textPersonName"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/startdate_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="@string/start_date"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
-                android:textColor="@android:color/black"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:fontFamily="@font/segoeuil"
+                android:padding="4dp"
+                android:text="@string/start_date"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:clickable="true"
                 android:ems="10"
                 android:focusable="false"
-                android:layout_marginEnd="42dp"
-                android:layout_marginStart="42dp"
-                android:inputType="none"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:fontFamily="@font/segoeuil"
+                android:inputType="none" />
 
             <TextView
                 android:id="@+id/enddate_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="End date"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
-                android:textColor="@android:color/black"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:fontFamily="@font/segoeuil"
+                android:padding="4dp"
+                android:text="End date"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/end_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:clickable="true"
                 android:ems="10"
                 android:focusable="false"
-                android:inputType="none"
-                android:layout_marginEnd="42dp"
-                android:layout_marginStart="42dp"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:fontFamily="@font/segoeuil"
+                android:inputType="none" />
 
             <TextView
                 android:id="@+id/visibility_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="Visibility"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
-                android:textColor="@android:color/black"
-                android:fontFamily="@font/josefin_sans_semibold"/>
+                android:fontFamily="@font/segoeuil"
+                android:padding="4dp"
+                android:text="Visibility"
+                android:textColor="@android:color/black" />
 
             <Spinner
                 android:id="@+id/visibility"
@@ -166,7 +168,7 @@
                     android:layout_marginStart="42dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:fontFamily="@font/josefin_sans_semibold"
+                    android:fontFamily="@font/segoeuil"
                     android:text="Invite Friends"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
@@ -179,7 +181,7 @@
                     android:layout_marginEnd="42dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:fontFamily="@font/josefin_sans_semibold"
+                    android:fontFamily="@font/segoeuil"
                     android:text="Save"
                     android:textAllCaps="false"
                     android:textColor="@android:color/black"
