@@ -33,8 +33,8 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-//        setHasOptionsMenu(true);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -48,6 +48,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
         Bundle bundle = getArguments();
         String type = bundle.getString("type");
         FloatingActionButton create  = rootView.findViewById(R.id.new_group);
+
         Query query;
 
         assert type != null;
@@ -80,10 +81,6 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("invitedGroupIDs");
                 dataBaseAPI.executeQuery(query, this, Type.GROUPS);
                 break;
-            case "inviteFriend":
-                searchType = Type.USERS;
-                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("friendsIDs");
-                dataBaseAPI.executeQuery(query, this, Type.USERS);
         }
 
         mSearchAdapter = new SidebarAdapter(this, searchType);

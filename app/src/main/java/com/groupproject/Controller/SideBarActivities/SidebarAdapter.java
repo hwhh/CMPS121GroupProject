@@ -33,6 +33,7 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
     private final Fragment fragment;
     private UserFilter filter;
 
+    //TODO Where did i come from
 
     SidebarAdapter(Fragment fragment, SearchType.Type type) {
         super();
@@ -54,7 +55,6 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_result, viewGroup, false);
         return new ViewHolder(itemView);
-
     }
 
     @Override
