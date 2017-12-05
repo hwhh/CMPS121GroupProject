@@ -8,11 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -52,43 +47,6 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
             database.getEvent(event_id, this, null);
         }
         database.getUser(database.getCurrentUserID(), this, null);
-
-//        if (getIntent().hasExtra("event_id")) {
-//            String event_id = getIntent().getStringExtra("event_id");
-//            Query userQuery = database.getmUserRef().child(database.getCurrentUserID());
-//            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    user = dataSnapshot.getValue(com.groupproject.Model.User.class);
-//                    assignButton();
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-//            Query eventQuery = database.getmEventRef().orderByChild(event_id);
-//            Query eventQuery = database.getmEventRef().child(event_id);
-//            eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    if(dataSnapshot.exists()){
-//                        Event e = dataSnapshot.getValue(com.groupproject.Model.Event.class);
-//                        display(e);
-//                        event = e;
-//                        assignButton();
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-//        } else {
-//            throw new IllegalArgumentException("Activity cannot find  extras event_location");
-//        }
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
