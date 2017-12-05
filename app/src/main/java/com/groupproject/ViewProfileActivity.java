@@ -32,6 +32,7 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
         setContentView(R.layout.view_profile);
         Bundle b = getIntent().getExtras();
         String id = b.getString("key");
+        setContentView(R.layout.view_profile);
         dataBaseAPI.getUser(id, this, null);
 
         profileButton = (Button) findViewById(R.id.profileButton);

@@ -103,7 +103,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getEvent(Event event, ViewHolder holder) {
         DataBaseAPI.STATUS status = dataBaseAPI.getEventRelationShip(event);
-        if(status == HIDDEN) {
+        if(status == HIDDEN || event.isExpired()) {
             holder.cardView.setVisibility(View.GONE);
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);

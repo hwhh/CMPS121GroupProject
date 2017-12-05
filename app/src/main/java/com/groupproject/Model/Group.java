@@ -39,14 +39,13 @@ public class Group extends DataBaseItem{
 
 
     public Group(String name, String description, Visibility.VISIBILITY visibility, String host) {
+        init();
         this.name = name;
         this.description = description;
         this.nameLower = name.toLowerCase();
         this.visibility = visibility;
-        membersIDs = new ArrayList<>();
         membersIDs.add(host);
         this.host = host;
-        init();
         dataBaseAPI.writeNewGroup(this);
     }
 

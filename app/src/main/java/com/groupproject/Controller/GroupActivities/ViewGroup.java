@@ -1,9 +1,13 @@
 package com.groupproject.Controller.GroupActivities;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.groupproject.Controller.SearchActivities.SearchFragment;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -17,13 +21,20 @@ import java.util.List;
 
 public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Group> {
 
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     TextView groupName;
     TextView members;
     TextView groupDescription;
     TextView events;
-    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+
+
+    private static final String TAG_RETAINED_FRAGMENT = "search";
+    private Fragment mRetainedFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
+        FragmentManager fm = getFragmentManager();
+        mRetainedFragment = fm.findFragmentByTag(TAG_RETAINED_FRAGMENT);
+
         Bundle b = getIntent().getExtras();
         String id = b.getString("key");
         super.onCreate(savedInstanceState);
@@ -34,6 +45,20 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
         groupDescription = (TextView) findViewById(R.id.groupDescription);
         events = (TextView) findViewById(R.id.eventsGroup);
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+//        if (mRetainedFragment != null) {
+//            // add the fragment
+//            mRetainedFragment = new RetainedFragment();
+//            fm.beginTransaction().add(mRetainedFragment, TAG_RETAINED_FRAGMENT).commit();
+//            // load data from a data source or perform any calculation
+//            mRetainedFragment.setData(loadMyData());
+//        }else{
+//            super.onBackPressed();
+//        }
     }
 
 

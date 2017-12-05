@@ -35,6 +35,8 @@ public class SearchFragment extends Fragment implements SearchType{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setRetainInstance(true);
+
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -66,6 +68,16 @@ public class SearchFragment extends Fragment implements SearchType{
         });
         setQ("");
         return rootView;
+    }
+
+
+
+    public void setData(SearchAdapter mSearchAdapter) {
+        this.mSearchAdapter = mSearchAdapter;
+    }
+
+    public SearchAdapter getData() {
+        return mSearchAdapter;
     }
 
     @Override
