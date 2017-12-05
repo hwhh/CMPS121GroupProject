@@ -52,7 +52,6 @@ public class Event extends DataBaseItem {
         this.nameLower = name.toLowerCase();
         this.description = description;
         this.hostID = hostID;
-        this.goingIDs= new ArrayList<>();
         goingIDs.add(hostID);
         init();
         dataBaseAPI.writeNewEvent(this);
@@ -61,6 +60,9 @@ public class Event extends DataBaseItem {
     private void init(){
         if(endDate != null)
             expired = checkExpired();
+        this.goingIDs = new ArrayList<>();
+        this.invitedIDs = new ArrayList<>();
+
     }
 
 

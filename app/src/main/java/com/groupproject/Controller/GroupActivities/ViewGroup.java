@@ -1,6 +1,5 @@
 package com.groupproject.Controller.GroupActivities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,14 +16,22 @@ import java.util.List;
 
 public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Group> {
 
+    TextView groupName;
+    TextView members;
+    TextView groupDescription;
+    TextView events;
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     protected void onCreate(Bundle savedInstanceState) {
         Bundle b = getIntent().getExtras();
         String id = b.getString("key");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_profile);
+        setContentView(R.layout.view_group);
         dataBaseAPI.getGroup(id, this, null);
+        groupName = (TextView) findViewById(R.id.groupName);
+        members = (TextView) findViewById(R.id.memberInfo);
+        groupDescription = (TextView) findViewById(R.id.groupDescription);
+        events = (TextView) findViewById(R.id.eventsGroup);
 
     }
 
@@ -41,7 +48,10 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
 
     @Override
     public void getGroup(Group group, ViewHolder holder) {
-
+        groupName.setText(group.getName());
+        members.setText(group.getMembersIDs().toString());
+        groupDescription.setText(group.getDescription());
+        events.setText(group.getEventsIDs().toString());
     }
 
     @Override
