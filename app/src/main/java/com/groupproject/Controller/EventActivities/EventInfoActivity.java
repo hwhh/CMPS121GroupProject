@@ -8,19 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
+import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
-public class EventInfoActivity extends AppCompatActivity {
+public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<User> {
 
     private static final DataBaseAPI database = DataBaseAPI.getDataBase();
     private TextView eventText;
@@ -41,43 +42,11 @@ public class EventInfoActivity extends AppCompatActivity {
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
         joinButton = findViewById(R.id.btn_join);
-
         if (getIntent().hasExtra("event_id")) {
             String event_id = getIntent().getStringExtra("event_id");
-            Query userQuery = database.getmUserRef().child(database.getCurrentUserID());
-            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    user = dataSnapshot.getValue(com.groupproject.Model.User.class);
-                    assignButton();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-//            Query eventQuery = database.getmEventRef().orderByChild(event_id);
-            Query eventQuery = database.getmEventRef().child(event_id);
-            eventQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        Event e = dataSnapshot.getValue(com.groupproject.Model.Event.class);
-                        display(e);
-                        event = e;
-                        assignButton();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO YOU CANT DO THIS
+            database.getEvent(event_id, this, null);
         }
+        database.getUser(database.getCurrentUserID(), this, null);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -138,6 +107,35 @@ public class EventInfoActivity extends AppCompatActivity {
         endDateText.setText(dateFormat.format(event.getEndDate()));
         startTimeText.setText(timeFormat.format(event.getStartDate()));
         endTimeText.setText(timeFormat.format(event.getEndDate()));
+    }
+
+    @Override
+    public void getUser(User user, ViewHolder holder) {
+        this.user = user;
+        assignButton();
+    }
+
+    @Override
+    public void getEvent(Event event, ViewHolder holder) {
+        this.event = event;
+        display(event);
+        assignButton();
+    }
+
+    @Override
+    public void getGroup(Group group, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void executeQuery(List<User> result, SearchType.Type type) {
+
+    }
+
+
+    @Override
+    public void createUserList(List<User> userList) {
+
     }
 }
 
