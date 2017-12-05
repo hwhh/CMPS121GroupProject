@@ -126,4 +126,30 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="16dp" />
 
+    <TextView
+        android:id="@+id/goingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/josefin_sans_semibold"
+        android:text="@string/going"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="@+id/numOfPeopleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endsLabel" />
+
+    <TextView
+        android:id="@+id/numOfPeopleText"
+        android:layout_width="18dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/josefin_sans_semibold"
+        android:text="0"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/goingText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endTimeText" />
+
 </android.support.constraint.ConstraintLayout>

@@ -29,6 +29,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private TextView endDateText;
     private TextView startTimeText;
     private TextView endTimeText;
+    private TextView numOfPeopleText;
     private Button joinButton;
     private Event event;
     private User user;
@@ -41,6 +42,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         endDateText = findViewById(R.id.endDateText);
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
+        numOfPeopleText = findViewById(R.id.numOfPeopleText);
         joinButton = findViewById(R.id.btn_join);
         resetEvent();
         database.getUser(database.getCurrentUserID(), this, null);
@@ -82,10 +84,10 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private void assignButton() {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
-                joinButton.setBackgroundColor(Color.RED);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.red));
                 joinButton.setText(R.string.leave);
             } else {
-                joinButton.setBackgroundColor(Color.GREEN);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.green));
                 joinButton.setText(R.string.join);
             }
         }
@@ -94,15 +96,14 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private void switchButton() {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
-                joinButton.setBackgroundColor(Color.GREEN);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.green));
                 joinButton.setText(R.string.join);
             } else {
-                joinButton.setBackgroundColor(Color.RED);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.red));
                 joinButton.setText(R.string.leave);
             }
         }
     }
-
 
     public void display(Event event) {
         eventText.setText(Html.fromHtml(changeStringDisplay(event.getName())));
@@ -112,6 +113,12 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         endDateText.setText(dateFormat.format(event.getEndDate()));
         startTimeText.setText(timeFormat.format(event.getStartDate()));
         endTimeText.setText(timeFormat.format(event.getEndDate()));
+        String numOfPeople;
+        if (event.goingIDs == null)
+            numOfPeople = "0";
+        else
+            numOfPeople = "" + event.goingIDs.size();
+        numOfPeopleText.setText(numOfPeople);
     }
 
     @Override
