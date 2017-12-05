@@ -9,13 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageButton
-            android:id="@+id/imageButton2"
+
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@null"
-            app:srcCompat="@drawable/eventpic" />
+            android:layout_height="118dp"
+            app:srcCompat="@drawable/border" />
 
         <TextView
             android:id="@+id/userName"
@@ -26,6 +25,7 @@
             android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="24sp"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:textStyle="bold" />
 
         <TextView
@@ -35,6 +35,7 @@
             android:paddingLeft="10dp"
             android:text="Email Address"
             android:textAlignment="textStart"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
 
@@ -45,6 +46,7 @@
             android:paddingLeft="10dp"
             android:text="Location"
             android:textAlignment="textStart"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
 
@@ -61,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="About Me"
+                android:fontFamily="@font/josefin_sans_semibold"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -70,13 +73,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-
                 android:text="Some bio here"
+                android:fontFamily="@font/josefin_sans_semibold"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:background="@null"
+            android:textAllCaps="false"
+            android:fontFamily="@font/josefin_sans_semibold"
+            android:paddingBottom="30dp"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

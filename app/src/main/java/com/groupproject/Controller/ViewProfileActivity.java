@@ -3,6 +3,7 @@ package com.groupproject.Controller;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
@@ -21,6 +22,7 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
     TextView userName;
     TextView emailAddress;
     TextView location;
+    Button profileButton;
 
     DataBaseAPI.UserRelationship userRelationship;
 
@@ -34,6 +36,7 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
         setContentView(R.layout.view_profile);
         dataBaseAPI.getUser(id, this, null);
 
+        profileButton = (Button) findViewById(R.id.profileButton);
         userName = (TextView) findViewById(R.id.userName);
         emailAddress = (TextView) findViewById(R.id.emailAdd);
         location = (TextView) findViewById(R.id.location);
@@ -43,24 +46,23 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
     @Override
     public void getUser(User user, ViewHolder holder) {
         userRelationship = dataBaseAPI.getRelationShip(user);
-//        switch (userRelationship){
-//            case ME:
-//                button.setVisable(View.GONE);
-//                break;
-//            case FRIENDS:
-//                button.setText("Remove Friend");
-////                dataBaseAPI.removeFriend(user);
-//                break;
-//            case REQUESTED:
-//                button.setText("Cancel Request");
-////                dataBaseAPI.cancelFriendRequest(user);
-//                break;
-//            case NONE:
-//                button.setText("Send Request");
-////                dataBaseAPI.removeFriend(user);
-//                break;
-//        }
-
+        switch (userRelationship){
+            case ME:
+                profileButton.setVisibility(View.GONE);
+                break;
+            case FRIENDS:
+                profileButton.setText("Remove Friend");
+                dataBaseAPI.removeFriend(user);
+                break;
+            case REQUESTED:
+                profileButton.setText("Cancel Request");
+                dataBaseAPI.cancelFriendRequest(user);
+                break;
+            case NONE:
+                profileButton.setText("Send Request");
+                dataBaseAPI.sendFriendRequest(user);
+                break;
+        }
 
         userName.setText(user.getName());
         emailAddress.setText(user.getEmail());

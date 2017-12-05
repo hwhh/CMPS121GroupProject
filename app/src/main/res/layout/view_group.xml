@@ -9,13 +9,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imageButton3"
-            app:srcCompat="@drawable/eventpic"
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:padding="10dp" />
+            android:layout_height="120dp"
+            app:srcCompat="@drawable/border" />
 
         <TextView
             android:id="@+id/groupName"
@@ -25,6 +23,7 @@
             android:paddingRight="10dp"
             android:text="Group Name"
             android:textAlignment="center"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:textColor="@android:color/black"
             android:textSize="24sp" />
 
@@ -40,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="Members"
+                android:fontFamily="@font/josefin_sans_semibold"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -70,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="Group Description"
+                android:fontFamily="@font/josefin_sans_semibold"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -79,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-
+                android:fontFamily="@font/josefin_sans_semibold"
                 android:text="Some bio here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
@@ -101,14 +102,15 @@
                 android:text="Events"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:fontFamily="@font/josefin_sans_semibold"/>
 
             <TextView
                 android:id="@+id/eventsGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
-
+                android:fontFamily="@font/josefin_sans_semibold"
                 android:text="Some events here"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
