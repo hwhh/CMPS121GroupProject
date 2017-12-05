@@ -39,11 +39,11 @@ public class User extends DataBaseItem{
     }
 
     public User(String id, String name, String email) {
+        init();
         this.id = id;
         this.name = name;
         this.nameLower = name.toLowerCase();
         this.email = email;
-        init();
         dataBaseAPI.writeNewUser(this);
     }
 
