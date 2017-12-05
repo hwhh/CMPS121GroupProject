@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -247,10 +248,34 @@ public class DataBaseAPI {
     }
 
     public void leaveGroup(Group group){
-        getmEventRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
+        getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
     }
 
+    public void deleteEvent(Event event){
+        getmEventRef().child(event.getId()).removeValue();
+
+//
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+//        Map<String,Object> updates = new HashMap<String,Object>();
+//        updates.put("users/user1", null);
+//        updates.put("groups/group1/members/user", null);
+//        // Do a deep-path update
+//        ref.updateChildren(updatedUserData, new Firebase.CompletionListener() {
+//            @Override
+//            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+//                if (firebaseError != null) {
+//                    System.out.println("Error updating data: " + firebaseError.getMessage());
+//                }
+//            }
+//        });
+
+
+    }
+
+    public void deleteGroup(Group group){
+
+    }
 
     public void cancelFriendRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).removeValue();

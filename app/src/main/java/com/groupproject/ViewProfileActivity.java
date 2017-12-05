@@ -2,6 +2,7 @@ package com.groupproject;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
@@ -19,13 +20,15 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
     TextView userName;
     TextView emailAddress;
     TextView location;
+
+    DataBaseAPI.UserRelationship userRelationship;
+
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_profile);
         Bundle b = getIntent().getExtras();
-
         String id = b.getString("key");
         dataBaseAPI.getUser(id, this, null);
 
@@ -37,6 +40,26 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
 
     @Override
     public void getUser(User user, ViewHolder holder) {
+        userRelationship = dataBaseAPI.getRelationShip(user);
+//        switch (userRelationship){
+//            case ME:
+//                button.setVisable(View.GONE);
+//                break;
+//            case FRIENDS:
+//                button.setText("Remove Friend");
+////                dataBaseAPI.removeFriend(user);
+//                break;
+//            case REQUESTED:
+//                button.setText("Cancel Request");
+////                dataBaseAPI.cancelFriendRequest(user);
+//                break;
+//            case NONE:
+//                button.setText("Send Request");
+////                dataBaseAPI.removeFriend(user);
+//                break;
+//        }
+
+
         userName.setText(user.getName());
         emailAddress.setText(user.getEmail());
     }
