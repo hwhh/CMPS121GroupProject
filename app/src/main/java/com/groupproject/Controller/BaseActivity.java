@@ -2,6 +2,7 @@ package com.groupproject.Controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +34,7 @@ import com.groupproject.R;
 
 
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnCreateContextMenuListener, View.OnClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnCreateContextMenuListener{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private InputMethodManager imm;
@@ -45,12 +47,14 @@ public class BaseActivity extends AppCompatActivity
 
 
     private Toolbar toolbar;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_base);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         imm = (InputMethodManager) getApplication().getSystemService(BaseActivity.INPUT_METHOD_SERVICE);
@@ -78,22 +82,24 @@ public class BaseActivity extends AppCompatActivity
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             }
         };
-
-
-
         drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
 
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.dashboard_content, mapsFrag, "maps");
         currentFragment = mapsFrag;
         ft.commit();
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration configuration){
+        super.onConfigurationChanged(configuration);
+        actionBarDrawerToggle.onConfigurationChanged(configuration);
     }
 
 
@@ -113,24 +119,20 @@ public class BaseActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                System.out.println("here");
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_search:
+//                fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
+//                currentFragment = searchFrag;
+//                break;
+//            default:
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
-    private final View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            System.out.println("here");
-        }
-    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,18 +140,28 @@ public class BaseActivity extends AppCompatActivity
         final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.clearFocus();
-        TextView searchText = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchText.setOnClickListener(listener);
-
+//        TextView searchText = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+//        searchText.setOnClickListener(listener);
+//        searchView.clearFocus();
+        searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
 
-        searchView.setOnSearchClickListener(view -> {
-            if (currentFragment == mapsFrag) {
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
                 fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
                 currentFragment = searchFrag;
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+                //DO SOMETHING WHEN THE SEARCHVIEW IS CLOSING
+                currentFragment = mapsFrag;
+                return true;
             }
         });
-        searchView.clearFocus();
 
 
         ImageView closeButton = searchView.findViewById(R.id.search_close_btn);
@@ -159,7 +171,6 @@ public class BaseActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
             currentFragment = mapsFrag;
             searchView.clearFocus();
-            searchView.setIconified(true);
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -208,6 +219,7 @@ public class BaseActivity extends AppCompatActivity
 
 
 
+
     @Override
     public void onCreateContextMenu(ContextMenu var1, View var2, ContextMenu.ContextMenuInfo var3){
         InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -215,8 +227,4 @@ public class BaseActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public void onClick(View view) {
-        System.out.println("here");
-    }
 }
