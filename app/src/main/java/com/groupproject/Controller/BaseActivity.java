@@ -22,16 +22,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.groupproject.Controller.MapActivites.MapsFragment;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
+import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.SideBarActivities.SidebarFragment;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.Event;
+import com.groupproject.Model.Group;
+import com.groupproject.Model.User;
 import com.groupproject.R;
+
+import java.util.List;
 
 
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnCreateContextMenuListener{
+        implements NavigationView.OnNavigationItemSelectedListener, NavigationView.OnCreateContextMenuListener,
+        DataBaseCallBacks<User> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private InputMethodManager imm;
@@ -43,12 +52,15 @@ public class BaseActivity extends AppCompatActivity
     private SearchView searchView;
     private Fragment currentFragment;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    TextView userProfileName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        userProfileName = (TextView) findViewById(R.id.userProfile);
+        dataBaseAPI.getUser(dataBaseAPI.getCurrentUserID(), this, null);
 
         setContentView(R.layout.navigation_base);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -230,4 +242,23 @@ public class BaseActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void getUser(User user, ViewHolder holder) {
+        userProfileName.setText(user.getName());
+    }
+
+    @Override
+    public void getEvent(Event event, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void getGroup(Group group, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void executeQuery(List<User> result, SearchType.Type type) {
+
+    }
 }
