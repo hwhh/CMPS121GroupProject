@@ -26,6 +26,7 @@
             android:ems="10"
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
+            android:layout_marginBottom="24dp"
             android:hint="@string/Name"
             android:inputType="textPersonName"
             android:fontFamily="@font/josefin_sans_semibold"
@@ -37,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:layout_marginBottom="24dp"
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
             android:hint="@string/email"
@@ -53,6 +55,7 @@
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
             android:hint="@string/password"
+
             android:inputType="textPassword"
             android:fontFamily="@font/josefin_sans_semibold"
             android:paddingBottom="15dp"
