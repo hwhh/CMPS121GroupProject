@@ -57,7 +57,6 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
                 intent.putExtra("key", model.getId());
-
                 fragment.getActivity().startActivity(intent);
             });
         }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
@@ -148,10 +147,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
 
     }
 
-    @Override
-    public void createUserList(List<User> userList) {
 
-    }
 
 
 }

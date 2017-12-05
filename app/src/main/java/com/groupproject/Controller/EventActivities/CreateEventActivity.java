@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -28,7 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class AddEventActivity extends AppCompatActivity  {
+public class CreateEventActivity extends AppCompatActivity  {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -61,6 +59,7 @@ public class AddEventActivity extends AppCompatActivity  {
         startDate = findViewById(R.id.start_date);
         endDate = findViewById(R.id.end_date);
 
+
         start_date_picker = (view, year, monthOfYear, dayOfMonth) -> {
             updateCalendar(startDateCalendar, year, monthOfYear, dayOfMonth);
             endDate.setText("");
@@ -71,7 +70,7 @@ public class AddEventActivity extends AppCompatActivity  {
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                    AddEventActivity.this,
+                    CreateEventActivity.this,
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -104,7 +103,7 @@ public class AddEventActivity extends AppCompatActivity  {
                     endDateCalendar.setTime(date);
                 long minDate = endDateCalendar.getTimeInMillis();
                 DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                        AddEventActivity.this,
+                        CreateEventActivity.this,
                         end_date_picker,
                         endDateCalendar.get(Calendar.YEAR),
                         endDateCalendar.get(Calendar.MONTH),
@@ -112,6 +111,14 @@ public class AddEventActivity extends AppCompatActivity  {
                 datePickerDialog.getDatePicker().setMinDate(minDate);
                 datePickerDialog.show();
             }
+        });
+
+
+        Button inviteButton = findViewById(R.id.invitebutton);
+        inviteButton.setOnClickListener(view -> {
+
+
+
         });
 
         Button saveButton = findViewById(R.id.savebutton);
@@ -158,7 +165,7 @@ public class AddEventActivity extends AppCompatActivity  {
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
                                   final Calendar calendarMin) {
         TimePickerDialog timePickerDialog;
-        timePickerDialog = new TimePickerDialog(AddEventActivity.this,
+        timePickerDialog = new TimePickerDialog(CreateEventActivity.this,
                 (timePicker, selectedHour, selectedMinute) -> {
                     if (calendarMin != null) {
                         updateCalendarTime(calendar, selectedHour, selectedMinute);

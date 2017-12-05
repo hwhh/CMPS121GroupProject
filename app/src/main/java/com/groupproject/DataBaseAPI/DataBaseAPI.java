@@ -35,11 +35,9 @@ import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTE
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
 
-interface UserIDCallBack{
-    void cascadeDelete(List<String> result, String child, String idToBeRemoved);
-}
 
-public class DataBaseAPI implements UserIDCallBack{
+
+public class DataBaseAPI {
 
 
 
@@ -428,8 +426,7 @@ public class DataBaseAPI implements UserIDCallBack{
     }
 
 
-    @Override
-    public void cascadeDelete(List<String> result, String child, String idToBeRemoved) {
+    private void cascadeDelete(List<String> result, String child, String idToBeRemoved) {
         Query query;
         if(!result.isEmpty()) {
             for (String id : result) {

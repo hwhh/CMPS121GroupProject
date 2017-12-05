@@ -39,17 +39,6 @@
             android:textColor="@android:color/black"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="Location"
-            android:textAlignment="textStart"
-            android:fontFamily="@font/josefin_sans_semibold"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,26 +46,21 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="About Me"
-                android:fontFamily="@font/josefin_sans_semibold"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="Some bio here"
                 android:fontFamily="@font/josefin_sans_semibold"
+                android:paddingLeft="10dp"
+                android:text="Going Events"
+                android:textAlignment="textStart"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/goingEventsLists"/>
 
 
         </LinearLayout>

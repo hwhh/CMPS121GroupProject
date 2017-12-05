@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.google.firebase.database.Query;
-import com.groupproject.Controller.EventActivities.AddEventActivity;
 import com.groupproject.Controller.GroupActivities.NewGroup;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
@@ -61,7 +60,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 break;
             case "events":
                 searchType = Type.EVENTS;
-                //intent = new Intent(getActivity(), AddEventActivity.class);
+                //intent = new Intent(getActivity(), CreateEventActivity.class);
                 create.setVisibility(View.GONE);
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("goingEventsIDs");
                 dataBaseAPI.executeQuery(query, this, Type.EVENTS);
@@ -81,6 +80,10 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("invitedGroupIDs");
                 dataBaseAPI.executeQuery(query, this, Type.GROUPS);
                 break;
+            case "inviteFriend":
+                searchType = Type.USERS;
+                query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("friendsIDs");
+                dataBaseAPI.executeQuery(query, this, Type.USERS);
         }
 
         mSearchAdapter = new SidebarAdapter(this, searchType);
@@ -134,8 +137,5 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
         mSearchAdapter.getFilter().filter(string);
     }
 
-    @Override
-    public void createUserList(List<User> userList) {
 
-    }
 }
