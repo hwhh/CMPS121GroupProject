@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<User> {
+public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
     private static final DataBaseAPI database = DataBaseAPI.getDataBase();
     private TextView eventText;
@@ -128,7 +128,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     @Override
-    public void executeQuery(List<User> result, SearchType.Type type) {
+    public void executeQuery(List<String> result, SearchType.Type type) {
 
     }
 
