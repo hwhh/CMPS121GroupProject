@@ -1,22 +1,20 @@
-package com.groupproject.Controller;
+package com.groupproject;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.widget.TextView;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
-import com.groupproject.R;
 
 import java.util.List;
 
-
-public class ProfileActivity extends AppCompatActivity implements DataBaseCallBacks<User> {
+public class ViewProfileActivity extends AppCompatActivity implements DataBaseCallBacks<User> {
 
     TextView userName;
     TextView emailAddress;
@@ -36,6 +34,9 @@ public class ProfileActivity extends AppCompatActivity implements DataBaseCallBa
         emailAddress = (TextView) findViewById(R.id.emailAdd);
         location = (TextView) findViewById(R.id.location);
     }
+
+    @Override
+    public void
 
     @Override
     public void getUser(User user, ViewHolder holder) {
