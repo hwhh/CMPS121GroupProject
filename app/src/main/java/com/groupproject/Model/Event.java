@@ -52,8 +52,8 @@ public class Event extends DataBaseItem {
         this.nameLower = name.toLowerCase();
         this.description = description;
         this.hostID = hostID;
-        goingIDs.add(hostID);
         init();
+        goingIDs.add(hostID);
         dataBaseAPI.writeNewEvent(this);
     }
 

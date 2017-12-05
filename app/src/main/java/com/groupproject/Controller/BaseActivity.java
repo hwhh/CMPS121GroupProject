@@ -51,6 +51,11 @@ public class BaseActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // we will not need this fragment anymore, this may also be a good place to signal
+        // to the retained fragment object to perform its own cleanup.
+
+
         setContentView(R.layout.navigation_base);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
