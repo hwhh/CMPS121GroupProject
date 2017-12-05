@@ -190,6 +190,7 @@
     <string name="starts">Starts:</string>
     <string name="ends">Ends:</string>
     <string name="going">Going:</string>
+    <string name="Delete">Delete</string>
 
 
 </resources>
