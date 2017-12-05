@@ -9,13 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageButton
-            android:id="@+id/imageButton2"
+
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@null"
-            app:srcCompat="@drawable/eventpic" />
+            android:layout_height="162dp"
+            app:srcCompat="@drawable/border" />
 
         <TextView
             android:id="@+id/userName"
@@ -77,6 +76,15 @@
 
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:background="@null"
+            android:textAllCaps="false"
+            android:paddingBottom="30dp"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
