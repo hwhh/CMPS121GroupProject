@@ -28,6 +28,7 @@
             android:layout_marginStart="42dp"
             android:hint="@string/Name"
             android:inputType="textPersonName"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:paddingBottom="15dp"
             android:textSize="17sp"/>
 
@@ -41,6 +42,7 @@
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:paddingBottom="15dp"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:textSize="17sp"/>
 
         <EditText
@@ -52,6 +54,7 @@
             android:layout_marginStart="42dp"
             android:hint="@string/password"
             android:inputType="textPassword"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:paddingBottom="15dp"
             android:textSize="17sp"/>
 
@@ -60,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:fontFamily="@font/josefin_sans_semibold"
             android:text="Sign Up"
             android:textAllCaps="false"
             android:paddingTop="15dp"
