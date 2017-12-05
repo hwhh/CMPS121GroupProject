@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<User> {
+public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
     private static final DataBaseAPI database = DataBaseAPI.getDataBase();
     private TextView eventText;
@@ -29,6 +29,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private TextView endDateText;
     private TextView startTimeText;
     private TextView endTimeText;
+    private TextView numOfPeopleText;
     private Button joinButton;
     private Event event;
     private User user;
@@ -41,11 +42,9 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         endDateText = findViewById(R.id.endDateText);
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
+        numOfPeopleText = findViewById(R.id.numOfPeopleText);
         joinButton = findViewById(R.id.btn_join);
-        if (getIntent().hasExtra("event_id")) {
-            String event_id = getIntent().getStringExtra("event_id");
-            database.getEvent(event_id, this, null);
-        }
+        resetEvent();
         database.getUser(database.getCurrentUserID(), this, null);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
@@ -53,16 +52,24 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
                 if (event != null && user != null) {
                     if (userGoingToEvent()) {
                         database.leaveEvent(event);
-//                        switchButton();
-                        finish();
+                        resetEvent();
+                        switchButton();
                     } else {
-                        database.addEventToUser(event);
-//                        switchButton();
-                        finish();
+                        database.acceptEventInvite(event);
+                        resetEvent();
+                        switchButton();
                     }
                 }
             }
         });
+    }
+
+    private void resetEvent() {
+        event = null;
+        if (getIntent().hasExtra("key")) {
+            String event_id = getIntent().getStringExtra("key");
+            database.getEvent(event_id, this, null);
+        }
     }
 
     private String changeStringDisplay(String string) {
@@ -71,16 +78,16 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     private boolean userGoingToEvent() {
-        return event.goingIDs.contains(database.getCurrentUserID());
+        return event.goingIDs != null && event.goingIDs.contains(database.getCurrentUserID());
     }
 
     private void assignButton() {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
-                joinButton.setBackgroundColor(Color.RED);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.red));
                 joinButton.setText(R.string.leave);
             } else {
-                joinButton.setBackgroundColor(Color.GREEN);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.green));
                 joinButton.setText(R.string.join);
             }
         }
@@ -89,15 +96,14 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private void switchButton() {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
-                joinButton.setBackgroundColor(Color.GREEN);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.green));
                 joinButton.setText(R.string.join);
             } else {
-                joinButton.setBackgroundColor(Color.RED);
+                joinButton.setBackgroundColor(getResources().getColor(R.color.red));
                 joinButton.setText(R.string.leave);
             }
         }
     }
-
 
     public void display(Event event) {
         eventText.setText(Html.fromHtml(changeStringDisplay(event.getName())));
@@ -107,6 +113,12 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         endDateText.setText(dateFormat.format(event.getEndDate()));
         startTimeText.setText(timeFormat.format(event.getStartDate()));
         endTimeText.setText(timeFormat.format(event.getEndDate()));
+        String numOfPeople;
+        if (event.goingIDs == null)
+            numOfPeople = "0";
+        else
+            numOfPeople = "" + event.goingIDs.size();
+        numOfPeopleText.setText(numOfPeople);
     }
 
     @Override
@@ -128,7 +140,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     @Override
-    public void executeQuery(List<User> result, SearchType.Type type) {
+    public void executeQuery(List<String> result, SearchType.Type type) {
 
     }
 
