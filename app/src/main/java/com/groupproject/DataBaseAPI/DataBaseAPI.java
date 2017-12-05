@@ -275,6 +275,7 @@ public class DataBaseAPI {
 
     public void acceptEventInvite (Event event){
         getmEventRef().child(event.getId()).child("goingIDs").child(getCurrentUserID()).setValue(true);
+        getmEventRef().child(event.getId()).child("invitedIDs").child(getCurrentUserID()).removeValue();
 
         getmUserRef().child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).setValue(true);
         getmUserRef().child(getCurrentUserID()).child("invitedEventsIDs").child(event.getId()).removeValue();//Remove request
@@ -283,16 +284,14 @@ public class DataBaseAPI {
 
     public void acceptGroupInvite (Group group){
         getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).setValue(true);
+        getmEventRef().child(group.getId()).child("invitedIDs").child(getCurrentUserID()).removeValue();
+
 
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).setValue(true);
         getmUserRef().child(getCurrentUserID()).child("invitedGroupIDs").child(group.getId()).removeValue();//Remove request
     }
 
 
-    public void writeNewGroup(Group group) {
-        group.setId(mGroupRef.push().getKey());
-        mGroupRef.child(group.getId()).setValue(group);
-    }
 
     public void writeNewUser(User user) {
         mUserRef.child(user.getId()).setValue(user);
@@ -302,6 +301,12 @@ public class DataBaseAPI {
         event.setId(mEventRef.push().getKey());
         mEventRef.child(event.getId()).setValue(event);
     }
+
+    public void writeNewGroup(Group group) {
+        group.setId(mGroupRef.push().getKey());
+        mGroupRef.child(group.getId()).setValue(group);
+    }
+
 
     public void addEventToUser(Event event) {
         mUserRef.child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).setValue(true);

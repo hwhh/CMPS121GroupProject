@@ -23,11 +23,10 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_profile);
+        setContentView(R.layout.view_profile);
         Bundle b = getIntent().getExtras();
 
         String id = b.getString("key");
-        setContentView(R.layout.user_profile);
         dataBaseAPI.getUser(id, this, null);
 
         userName = (TextView) findViewById(R.id.userName);
@@ -35,8 +34,6 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
         location = (TextView) findViewById(R.id.location);
     }
 
-    @Override
-    public void
 
     @Override
     public void getUser(User user, ViewHolder holder) {

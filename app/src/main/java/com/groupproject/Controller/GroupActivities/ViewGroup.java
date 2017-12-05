@@ -23,7 +23,7 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
         Bundle b = getIntent().getExtras();
         String id = b.getString("key");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_profile);
+//        setContentView(R.layout.layout);
         dataBaseAPI.getGroup(id, this, null);
 
     }
