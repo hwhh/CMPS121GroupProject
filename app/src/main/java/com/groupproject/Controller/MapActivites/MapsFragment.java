@@ -67,7 +67,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.maps_fragment, container, false);
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView = rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -100,7 +100,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             }
         });
 
-        setHasOptionsMenu(true);
 
         setUpListener();
         return rootView;
@@ -218,11 +217,9 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 alertDialog.setMessage("Please enable location settings. " +
                         "If no request is appearing, go to Settings > Apps > Pinned > Permissions ");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                askForLocationPermissions();
-                            }
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                            askForLocationPermissions();
                         });
                 alertDialog.show();
             }
@@ -327,23 +324,20 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 .getFusedLocationProviderClient(getActivity());
         //Ignore the red line - we check for permissions before this function is called
         Task<Location> lastLocation = mFusedLocationProviderClient.getLastLocation();
-        lastLocation.addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                if (task.isSuccessful()) {
-                    // Set the map's camera position to the current location of the device.
-                    Location location = task.getResult();
-                    if (location == null) {
-                        locationControlTask = new LocationControl();
-                        locationControlTask.execute(getActivity());
-                    } else {
-                        LatLng currentLatLng = new LatLng(location.getLatitude(),
-                                location.getLongitude());
-                        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(currentLatLng,
-                                DEFAULT_ZOOM);
-                        googleMap.moveCamera(update);
-                        foundLocation = true;
-                    }
+        lastLocation.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // Set the map's camera position to the current location of the device.
+                Location location = task.getResult();
+                if (location == null) {
+                    locationControlTask = new LocationControl();
+                    locationControlTask.execute(getActivity());
+                } else {
+                    LatLng currentLatLng = new LatLng(location.getLatitude(),
+                            location.getLongitude());
+                    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(currentLatLng,
+                            DEFAULT_ZOOM);
+                    googleMap.moveCamera(update);
+                    foundLocation = true;
                 }
             }
         });

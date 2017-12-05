@@ -59,6 +59,7 @@ public class Group extends DataBaseItem{
     private void init(){
         eventsIDs = new ArrayList<>();
         membersIDs = new ArrayList<>();
+        invitedIDs = new ArrayList<>();
     }
 
 

@@ -61,7 +61,7 @@
                 android:layout_marginStart="42dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
+                android:hint="Name"
                 android:textColor="@android:color/darker_gray"
                 tools:layout_editor_absoluteX="153dp"
                 tools:layout_editor_absoluteY="31dp" />
@@ -84,7 +84,7 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:inputType="textPersonName"
-                android:text="Description"
+                android:hint="Description"
                 android:textColor="@android:color/darker_gray" />
 
             <TextView

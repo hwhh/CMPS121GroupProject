@@ -35,6 +35,8 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+//        setHasOptionsMenu(true);
+
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -59,7 +61,8 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 break;
             case "events":
                 searchType = Type.EVENTS;
-                intent = new Intent(getActivity(), AddEventActivity.class);
+                //intent = new Intent(getActivity(), AddEventActivity.class);
+                create.setVisibility(View.GONE);
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("goingEventsIDs");
                 dataBaseAPI.executeQuery(query, this, Type.EVENTS);
                 break;
@@ -126,6 +129,10 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
         }
     }
 
+
+    public void filterResults(String string){
+        mSearchAdapter.getFilter().filter(string);
+    }
 
     @Override
     public void createUserList(List<User> userList) {

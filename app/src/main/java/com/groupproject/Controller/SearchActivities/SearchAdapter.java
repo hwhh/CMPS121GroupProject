@@ -11,7 +11,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
-import com.groupproject.Controller.ProfileActivity;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
@@ -20,6 +19,8 @@ import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 import com.groupproject.R;
+import com.groupproject.ViewProfileActivity;
+
 import java.util.List;
 
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
@@ -54,21 +55,21 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS) {
             dataBaseAPI.getUser(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(fragment.getActivity(), ProfileActivity.class);
+                Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
                 intent.putExtra("key", model.getId());
                 fragment.getActivity().startActivity(intent);
             });
-        }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
+        }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
             dataBaseAPI.getEvent(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(fragment.getActivity(), EventInfoActivity.class);
                 intent.putExtra("key", model.getId());
                 fragment.getActivity().startActivity(intent);
             });
-        }if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
+        }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
             dataBaseAPI.getGroup(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(fragment.getActivity(), ViewGroup.class);
+                Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
                 intent.putExtra("key", model.getId());
                 fragment.getActivity().startActivity(intent);
             });
@@ -83,9 +84,9 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(userRelationship == FRIENDS) {
             holder.interact.setImageDrawable(null); //TODO go to profile to remove
         } else if(userRelationship == REQUESTED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.cancel_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_cancel));
         }else if(userRelationship == NONE) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add));
         }
         holder.interact.setOnClickListener(view -> {
             if(userRelationship == FRIENDS) {
@@ -107,7 +108,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button)); //TODO CREATE ACCEPT BUTTON
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add)); //TODO CREATE ACCEPT BUTTON
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
@@ -116,6 +117,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
                 dataBaseAPI.acceptEventInvite(event);
             }
         });
+        holder.vName.setText(event.getName());
     }
 
     @Override
@@ -126,7 +128,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button)); //TODO CREATE ACCEPT BUTTON
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add)); //TODO CREATE ACCEPT BUTTON
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
@@ -135,6 +137,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
                 dataBaseAPI.acceptGroupInvite(group);
             }
         });
+        holder.vName.setText(group.getName());
     }
 
 

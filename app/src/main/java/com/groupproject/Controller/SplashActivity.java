@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import com.facebook.AccessToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.groupproject.Controller.LoginActivities.LoginActivity;
-import com.groupproject.Controller.SearchActivities.SearchFragment;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
 
 public class SplashActivity extends AppCompatActivity {
 

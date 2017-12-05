@@ -35,7 +35,6 @@ public class SearchFragment extends Fragment implements SearchType{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -83,7 +82,7 @@ public class SearchFragment extends Fragment implements SearchType{
 
     public void setQ(String q) {
         if(reference != null) {
-            Query query = reference.orderByChild("lowerCaseName").startAt(q).endAt(q + "\uf8ff");
+            Query query = reference.orderByChild("nameLower").startAt(q).endAt(q + "\uf8ff");
 
             mSearchAdapter = new SearchAdapter(query, this);
             mRecyclerView.swapAdapter(mSearchAdapter, true);
