@@ -229,7 +229,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     @Override
     public boolean onMarkerClick(Marker marker) {
         Intent intent = new Intent(getActivity(), EventInfoActivity.class);
-        intent.putExtra("event_id", (String) marker.getTag());
+        intent.putExtra("key", (String) marker.getTag());
         startActivity(intent);
         return true;
     }

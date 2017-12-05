@@ -42,10 +42,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
         joinButton = findViewById(R.id.btn_join);
-        if (getIntent().hasExtra("event_id")) {
-            String event_id = getIntent().getStringExtra("event_id");
-            database.getEvent(event_id, this, null);
-        }
+        resetEvent();
         database.getUser(database.getCurrentUserID(), this, null);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
@@ -53,16 +50,24 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
                 if (event != null && user != null) {
                     if (userGoingToEvent()) {
                         database.leaveEvent(event);
-//                        switchButton();
-                        finish();
+                        resetEvent();
+                        switchButton();
                     } else {
-                        database.addEventToUser(event);
-//                        switchButton();
-                        finish();
+                        database.acceptEventInvite(event);
+                        resetEvent();
+                        switchButton();
                     }
                 }
             }
         });
+    }
+
+    private void resetEvent() {
+        event = null;
+        if (getIntent().hasExtra("key")) {
+            String event_id = getIntent().getStringExtra("key");
+            database.getEvent(event_id, this, null);
+        }
     }
 
     private String changeStringDisplay(String string) {
@@ -71,7 +76,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     private boolean userGoingToEvent() {
-        return event.goingIDs.contains(database.getCurrentUserID());
+        return event.goingIDs != null && event.goingIDs.contains(database.getCurrentUserID());
     }
 
     private void assignButton() {

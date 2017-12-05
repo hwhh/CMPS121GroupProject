@@ -55,7 +55,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS) {
             dataBaseAPI.getUser(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(fragment.getActivity(), ProfileActivity.class);
+                Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
                 intent.putExtra("key", model.getId());
                 fragment.getActivity().startActivity(intent);
             });
