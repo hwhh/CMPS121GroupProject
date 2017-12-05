@@ -91,7 +91,7 @@
             android:id="@+id/GroupVisibilitySpinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:fontFamily="@font/josefin_sans_semibold" />
+            android:fontFamily="@font/segoeuil" />
 
         <Button
             android:id="@+id/createGroup"

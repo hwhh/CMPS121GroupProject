@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,7 +60,6 @@ public class BaseActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        userProfileName = (TextView) findViewById(R.id.userProfile);
         dataBaseAPI.getUser(dataBaseAPI.getCurrentUserID(), this, null);
 
         setContentView(R.layout.navigation_base);
@@ -244,7 +244,8 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void getUser(User user, ViewHolder holder) {
-//        userProfileName.setText(user.getName());
+        userProfileName = findViewById(R.id.userProfile);
+        userProfileName.setText(user.getName());
     }
 
     @Override

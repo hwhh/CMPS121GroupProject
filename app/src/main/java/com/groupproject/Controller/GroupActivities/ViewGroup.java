@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -70,6 +72,11 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
         members.setText(group.getMembersIDs().toString());
         groupDescription.setText(group.getDescription());
         events.setText(group.getEventsIDs().toString());
+        StorageReference storageReference = mStorageRef.child(group.getId()+".jpg");
+        Glide.with(this)
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .into(groupPic);
     }
 
     @Override
@@ -77,17 +84,5 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
 
     }
 
-    public void downloadFile() throws IOException {
-        File localFile = File.createTempFile("images", "jpg");
-        StorageReference riversRef = mStorageRef.child("images/rivers.jpg");
-        riversRef.getFile(localFile)
-                .addOnSuccessListener(taskSnapshot -> {
-                    // Successfully downloaded data to local file
-                    // ...
-                }).addOnFailureListener(exception -> {
-                    // Handle failed download
-                    // ...
-                });
-    }
 
 }
