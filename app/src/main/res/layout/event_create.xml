@@ -9,7 +9,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="6dp"
-        android:layout_marginTop="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -31,24 +30,21 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true">
 
-            <ImageButton
-                android:id="@+id/eventpic"
+            <ImageView
+                android:id="@+id/imageView5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                app:srcCompat="@drawable/eventpic"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
+                android:layout_height="158dp"
+                app:srcCompat="@drawable/border" />
 
             <TextView
                 android:id="@+id/eventname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:text="@string/name"
                 android:textColor="@android:color/black"
                 tools:layout_editor_absoluteX="153dp"
@@ -61,6 +57,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/eventname_txt"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
@@ -73,6 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:text="@string/description"
                 android:textColor="@android:color/black" />
 
@@ -81,6 +81,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:inputType="textPersonName"
                 android:text="Description"
                 android:textColor="@android:color/darker_gray" />
@@ -90,6 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:text="@string/start_date"
                 android:textColor="@android:color/black" />
 
@@ -98,6 +102,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:ems="10"
                 android:focusable="false"
                 android:inputType="none" />
@@ -106,6 +112,8 @@
                 android:id="@+id/enddate_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:padding="4dp"
                 android:text="End date"
                 android:textColor="@android:color/black" />
@@ -115,6 +123,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:ems="10"
                 android:focusable="false"
                 android:inputType="none" />
@@ -123,6 +133,8 @@
                 android:id="@+id/visibility_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:padding="4dp"
                 android:text="Visibility"
                 android:textColor="@android:color/black" />
@@ -130,13 +142,17 @@
             <Spinner
                 android:id="@+id/visibility"
                 android:layout_width="match_parent"
-                android:layout_height="35dp" />
+                android:layout_height="35dp"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"/>
 
             <Button
                 android:id="@+id/savebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:text="@string/save"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"

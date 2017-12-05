@@ -9,13 +9,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imageButton3"
-            app:srcCompat="@drawable/eventpic"
+
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:padding="10dp" />
+            android:layout_height="158dp"
+            app:srcCompat="@drawable/border" />
 
         <TextView
             android:id="@+id/groupName"

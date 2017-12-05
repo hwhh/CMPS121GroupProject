@@ -9,18 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ImageButton
-            android:id="@+id/imageButton2"
+
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@null"
-            app:srcCompat="@drawable/eventpic" />
+            android:layout_height="158dp"
+            app:srcCompat="@drawable/border" />
 
         <TextView
             android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:text="Name"
             android:textAlignment="textStart"
