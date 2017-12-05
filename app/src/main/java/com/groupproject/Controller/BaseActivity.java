@@ -244,7 +244,7 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void getUser(User user, ViewHolder holder) {
-        userProfileName.setText(user.getName());
+//        userProfileName.setText(user.getName());
     }
 
     @Override
