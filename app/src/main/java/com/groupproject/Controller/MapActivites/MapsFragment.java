@@ -27,6 +27,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -154,11 +156,21 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     public void addPinsToMap() {
         googleMap.clear();
         for (Event event : DataBaseAPI.getEventMap().values()) {
-            Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
-                    .title(event.getName())
-                    .snippet(event.getEndDate().toString()));
-            marker.setTag(event.getId());
+            if( public ) {
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
+                        .title(event.getName())
+                        .snippet(event.getEndDate().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                marker.setTag(event.getId());
+            }else{
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
+                        .title(event.getName())
+                        .snippet(event.getEndDate().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                marker.setTag(event.getId());
+            }
         }
     }
 
