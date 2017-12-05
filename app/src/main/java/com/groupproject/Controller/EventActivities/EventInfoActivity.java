@@ -109,10 +109,10 @@ public class EventInfoActivity extends AppCompatActivity {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
                 joinButton.setBackgroundColor(Color.RED);
-//                joinButton.setText(R.string.leave);
+                joinButton.setText(R.string.leave);
             } else {
                 joinButton.setBackgroundColor(Color.GREEN);
-//                joinButton.setText(R.string.join);
+                joinButton.setText(R.string.join);
             }
         }
     }
@@ -121,10 +121,10 @@ public class EventInfoActivity extends AppCompatActivity {
         if (event != null && user != null) {
             if (userGoingToEvent()) {
                 joinButton.setBackgroundColor(Color.GREEN);
-//                joinButton.setText(R.string.join);
+                joinButton.setText(R.string.join);
             } else {
                 joinButton.setBackgroundColor(Color.RED);
-//                joinButton.setText(R.string.leave);
+                joinButton.setText(R.string.leave);
             }
         }
     }
