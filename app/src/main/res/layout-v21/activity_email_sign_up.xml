@@ -28,10 +28,10 @@
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
             android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/Name"
             android:inputType="textPersonName"
             android:paddingBottom="15dp"
-            android:fontFamily="@font/josefin_sans_semibold"
             android:textSize="17sp" />
 
         <EditText
@@ -42,10 +42,10 @@
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
             android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:paddingBottom="15dp"
-            android:fontFamily="@font/josefin_sans_semibold"
             android:textSize="17sp" />
 
         <EditText
@@ -55,23 +55,24 @@
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
             android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:fontFamily="@font/josefin_sans_semibold"
             android:paddingBottom="15dp"
             android:textSize="17sp" />
 
         <Button
             android:id="@+id/SignUp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
             android:background="@null"
+            android:fontFamily="@font/segoeuil"
             android:paddingTop="15dp"
             android:text="Sign Up"
             android:textAllCaps="false"
-            android:fontFamily="@font/josefin_sans_semibold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

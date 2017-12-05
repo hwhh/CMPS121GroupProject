@@ -37,18 +37,21 @@
                 android:id="@+id/friendsRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:text="@string/friends" />
 
             <RadioButton
                 android:id="@+id/eventsRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:text="@string/events" />
 
             <RadioButton
                 android:id="@+id/groupsRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
                 android:text="@string/groups" />
 
         </RadioGroup>

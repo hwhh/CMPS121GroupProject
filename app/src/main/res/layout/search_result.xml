@@ -22,10 +22,11 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/interact"
             android:layout_toStartOf="@+id/interact"
+            android:fontFamily="@font/segoeuil"
             android:gravity="center_vertical"
+            android:paddingLeft="5dp"
             android:text="@string/name"
-            android:textSize="14sp"
-            android:paddingLeft="5dp"/>
+            android:textSize="14sp" />
 
         <ImageButton
             android:id="@+id/interact"
