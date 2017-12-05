@@ -16,10 +16,6 @@ public class User extends DataBaseItem{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
-    enum EVENT_TYPE {
-        INTERESTED,
-        GOING,
-    }
 
     public List<String> friendsIDs;
     public List<String> requestsID;
@@ -154,11 +150,12 @@ public class User extends DataBaseItem{
         this.id = id;
     }
 
-    public String getLowerCaseName() {
+    @Override
+    public String getNameLower() {
         return nameLower;
     }
 
-    public void setLowerCaseName(String nameLower) {
+    public void setLowerLower(String nameLower) {
         this.nameLower = nameLower;
     }
 }

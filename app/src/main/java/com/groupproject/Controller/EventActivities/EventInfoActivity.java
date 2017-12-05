@@ -76,7 +76,7 @@ public class EventInfoActivity extends AppCompatActivity {
                 }
             });
         } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location");
+            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO YOU CANT DO THIS
         }
 
         joinButton.setOnClickListener(new View.OnClickListener() {

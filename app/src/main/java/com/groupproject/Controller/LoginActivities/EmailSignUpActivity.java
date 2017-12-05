@@ -54,12 +54,13 @@ public class EmailSignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            sendEmailVerification();
-                            // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 new User(user.getUid(), name, email);
                             }
+                            sendEmailVerification();
+                            // Sign in success, update UI with the signed-in user's information
+
                         } else {
                             Toast.makeText(EmailSignUpActivity.this, "Authentication failed. " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
@@ -77,6 +78,7 @@ public class EmailSignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+
                                 Toast.makeText(EmailSignUpActivity.this,
                                         "Verification email sent to " + user.getEmail(),
                                         Toast.LENGTH_SHORT).show();

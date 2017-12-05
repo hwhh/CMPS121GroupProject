@@ -33,35 +33,28 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/friendsRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/friends" />
 
-                <RadioButton
-                    android:id="@+id/friendsRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/friends" />
+            <RadioButton
+                android:id="@+id/eventsRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/events" />
 
-                <RadioButton
-                    android:id="@+id/groupsRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/groups" />
-
-                <RadioButton
-                    android:id="@+id/eventsRadio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/events" />
-            </LinearLayout>
+            <RadioButton
+                android:id="@+id/groupsRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/groups" />
 
         </RadioGroup>
     </FrameLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_fragment"
