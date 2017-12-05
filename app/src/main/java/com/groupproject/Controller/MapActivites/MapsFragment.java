@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -54,6 +55,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     MapView mMapView;
     private GoogleMap googleMap;
     private LocationControl locationControlTask;
+    private Spinner visibility;
     View rootView;
 
     public static Fragment newInstance(){
@@ -156,7 +158,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     public void addPinsToMap() {
         googleMap.clear();
         for (Event event : DataBaseAPI.getEventMap().values()) {
-            if( public ) {
+            if( visibility.getSelectedItem().toString().equals("Public")) {
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
                         .title(event.getName())
