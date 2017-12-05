@@ -108,7 +108,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add)); //TODO CREATE ACCEPT BUTTON
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.accept_button));
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
@@ -128,7 +128,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add)); //TODO CREATE ACCEPT BUTTON
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.accept_button));
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
