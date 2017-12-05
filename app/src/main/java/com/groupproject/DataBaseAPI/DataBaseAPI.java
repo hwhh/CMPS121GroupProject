@@ -283,7 +283,6 @@ public class DataBaseAPI {
     }
 
     public void deleteGroup(Group group){
-
         getmEventRef().child(group.getId()).removeValue();
         Query query1 = getmUserRef().orderByChild("joinedGroupIDs").equalTo(group.getId()).getRef();
         query1.addListenerForSingleValueEvent(new ValueEventListener() {
