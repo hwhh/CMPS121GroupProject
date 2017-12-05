@@ -1,4 +1,4 @@
-package com.groupproject;
+package com.groupproject.Controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
+import com.groupproject.R;
 
 import java.util.List;
 

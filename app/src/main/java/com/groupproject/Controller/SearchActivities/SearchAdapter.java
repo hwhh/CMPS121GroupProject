@@ -19,7 +19,7 @@ import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 import com.groupproject.R;
-import com.groupproject.ViewProfileActivity;
+import com.groupproject.Controller.ViewProfileActivity;
 
 import java.util.List;
 
@@ -57,6 +57,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
                 intent.putExtra("key", model.getId());
+
                 fragment.getActivity().startActivity(intent);
             });
         }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
