@@ -44,6 +44,7 @@ public class Event extends DataBaseItem {
     }
 
     public Event(Date startDate, Date endDate, CustomLocation customLocation, Visibility.VISIBILITY visibility, String name, String description, String hostID) {
+        init();
         this.startDate = startDate;
         this.endDate = endDate;
         this.customLocation = customLocation;
@@ -53,7 +54,6 @@ public class Event extends DataBaseItem {
         this.description = description;
         this.hostID = hostID;
         goingIDs.add(hostID);
-        init();
         dataBaseAPI.writeNewEvent(this);
     }
 

@@ -1,7 +1,8 @@
 package com.groupproject.Controller.EventActivities;
 
-import android.graphics.Color;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
@@ -47,9 +48,20 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         resetEvent();
         database.getUser(database.getCurrentUserID(), this, null);
 
-        joinButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (event != null && user != null) {
+        joinButton.setOnClickListener(v -> {
+            if (event != null && user != null) {
+                if (userIsHost()) {
+                    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            database.deleteEvent(event);
+                            finish();
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Are you sure you want to delete the event?")
+                            .setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                } else {
                     if (userGoingToEvent()) {
                         database.leaveEvent(event);
                         resetEvent();
@@ -81,8 +93,12 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         return event.goingIDs != null && event.goingIDs.contains(database.getCurrentUserID());
     }
 
+    private boolean userIsHost() {
+        return event != null && event.getHostID().equals(database.getCurrentUserID());
+    }
+
     private void assignButton() {
-        if (event != null && user != null) {
+        if (event != null && user != null && !userIsHost()) {
             if (userGoingToEvent()) {
                 joinButton.setBackgroundColor(getResources().getColor(R.color.red));
                 joinButton.setText(R.string.leave);
@@ -94,7 +110,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     private void switchButton() {
-        if (event != null && user != null) {
+        if (event != null && user != null && !userIsHost()) {
             if (userGoingToEvent()) {
                 joinButton.setBackgroundColor(getResources().getColor(R.color.green));
                 joinButton.setText(R.string.join);
@@ -119,6 +135,10 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         else
             numOfPeople = "" + event.goingIDs.size();
         numOfPeopleText.setText(numOfPeople);
+        if (userIsHost()) {
+            joinButton.setText(R.string.Delete);
+            joinButton.setBackgroundColor(getResources().getColor(R.color.red));
+        }
     }
 
     @Override
