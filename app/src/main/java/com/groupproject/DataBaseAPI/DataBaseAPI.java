@@ -291,57 +291,44 @@ public class DataBaseAPI implements UserIDCallBack{
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-
-        getmEventRef().child(event.getId()).removeValue()
-//
-//        query1.addListenerForSingleValueEvent(new ValueEventListener() {
-//             @Override
-//             public void onDataChange(DataSnapshot dataSnapshot) {
-//                 if(dataSnapshot.exists()){
-//                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                         snapshot.getRef().child("goingEventsIDs").child(event.getId()).removeValue();
-//                     }
-//                 }
-//             }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//        getmEventRef().child(event.getId()).removeValue();
-
-
+        getmEventRef().child(event.getId()).removeValue();
     }
 
     public void deleteGroup(Group group){
-        getmEventRef().child(group.getId()).removeValue();
-        Query query1 = getmUserRef().orderByChild("joinedGroupIDs").equalTo(group.getId()).getRef();
+        List<String> goingIDs = new ArrayList<>();
+        List<String> invitedIDs = new ArrayList<>();
+        Query query1 = getmGroupRef().child(group.getId()).child("membersIDs");
         query1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot querySnapshot) {
-                querySnapshot.getRef().removeValue();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        goingIDs.add(snapshot.getKey());
+                    }
+                    cascadeDelete(goingIDs, "joinedGroupIDs", group.getId());
+                }
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
-        Query query2 = getmUserRef().orderByChild("invitedEventsIDs").equalTo(group.getId()).getRef();
+        Query query2 = getmGroupRef().child(group.getId()).child("invitedIDs");
         query2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot querySnapshot) {
-                querySnapshot.getRef().removeValue();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        invitedIDs.add(snapshot.getKey());
+                    }
+                    cascadeDelete(invitedIDs, "invitedGroupIDs", group.getId());
+                }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
+
+
     }
 
     public void cancelFriendRequest(User user){
@@ -413,6 +400,7 @@ public class DataBaseAPI implements UserIDCallBack{
         return eventMap;
     }
 
+
     public static void loadActiveEvents() {
         Date date = new Date();
         Query activeEvents = mEventRef.orderByChild("endDate/time").startAt(date.getTime());
@@ -443,20 +431,22 @@ public class DataBaseAPI implements UserIDCallBack{
     @Override
     public void cascadeDelete(List<String> result, String child, String idToBeRemoved) {
         Query query;
-        for (String id : result) {
-            query = getmUserRef().child(id).child(child);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    dataSnapshot.getRef().removeValue();
-                }
+        if(!result.isEmpty()) {
+            for (String id : result) {
+                query = getmUserRef().child(id).child(child).child(idToBeRemoved);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataSnapshot.getRef().removeValue();
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
 
+            }
         }
     }
 
