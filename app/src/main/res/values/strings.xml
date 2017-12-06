@@ -192,6 +192,7 @@
     <string name="going">Going:</string>
     <string name="Delete">Delete</string>
     <string name="pinned">Pinned</string>
+    <string name="done">done</string>
 
 
 </resources>

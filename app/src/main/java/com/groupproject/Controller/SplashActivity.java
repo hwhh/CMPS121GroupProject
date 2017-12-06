@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.groupproject.Controller.EventActivities.InviteActivity;
 import com.groupproject.Controller.LoginActivities.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent;
             if (user != null) {
                 // User is signed in
-                intent = new Intent(SplashActivity.this, BaseActivity.class);
+                intent = new Intent(SplashActivity.this, InviteActivity.class);
             } else {
                 intent = new Intent(SplashActivity.this, LoginActivity.class);
                 // No user is signed in

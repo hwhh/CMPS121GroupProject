@@ -230,14 +230,14 @@ public class DataBaseAPI {
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
     }
 
-    public void sendEventInvite(String userID, Event event){
-        getmEventRef().child(event.getId()).child("invitedIDs").child(userID).setValue(true);
-        getmUserRef().child(userID).child("invitedEventsIDs").child(event.getId()).setValue(true);
+    public void sendEventInvite(String userID, String eventID){
+        getmEventRef().child(eventID).child("invitedIDs").child(userID).setValue(true);
+        getmUserRef().child(userID).child("invitedEventsIDs").child(eventID).setValue(true);
     }
 
-    public void sendGroupInvite(String userID, Group group){
-        getmGroupRef().child(group.getId()).child("invitedIDs").child(userID).setValue(true);
-        getmUserRef().child(userID).child("invitedGroupIDs").child(group.getId()).setValue(true);
+    public void sendGroupInvite(String userID, String groupID){
+        getmGroupRef().child(groupID).child("invitedIDs").child(userID).setValue(true);
+        getmUserRef().child(userID).child("invitedGroupIDs").child(groupID).setValue(true);
     }
 
 

@@ -83,7 +83,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 break;
         }
 
-        mSearchAdapter = new SidebarAdapter(this, searchType);
+        mSearchAdapter = new SidebarAdapter(this.getActivity(), searchType);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
         mRecyclerView.setLayoutManager(mLayoutManager);

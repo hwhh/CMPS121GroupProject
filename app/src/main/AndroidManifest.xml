@@ -85,7 +85,8 @@
         <activity android:name=".Controller.GroupActivities.ViewGroup" />
         <activity android:name=".Controller.EventActivities.CreateEventActivity" />
         <activity android:name=".Controller.EventActivities.EventInfoActivity" />
-        <activity android:name=".Controller.ViewProfileActivity"></activity>
+        <activity android:name=".Controller.ViewProfileActivity" />
+        <activity android:name=".Controller.EventActivities.InviteActivity"></activity>
     </application>
 
 </manifest>
