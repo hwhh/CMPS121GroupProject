@@ -3,8 +3,10 @@ package com.groupproject.Model;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.google.firebase.storage.StorageReference;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +147,7 @@ public class Group extends DataBaseItem{
     public void setId(String id) {
         this.id = id;
     }
+
 }
 
 
