@@ -120,6 +120,16 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/joinGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/segoeuil"
+            android:text="Join Group"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,14 +47,16 @@ public class NewGroup extends AppCompatActivity {
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     private StorageReference mStorageRef;
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
-    String fileName;
+    private InputStream image;
     EditText name;
+    ImageButton upload;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_group);
 
         Button createGroup = findViewById(R.id.createGroup);
+        upload = findViewById(R.id.upload);
 
         name = findViewById(R.id.GroupNameEdit);
         EditText description = findViewById(R.id.GroupDescriptionEdit);
@@ -66,6 +70,8 @@ public class NewGroup extends AppCompatActivity {
 
         //TODO add tags
 
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         createGroup.setOnClickListener(view -> {
             Group g;
             Visibility.VISIBILITY groupVis = (visibility.getSelectedItem().toString().equals("Public")) ?
@@ -73,19 +79,52 @@ public class NewGroup extends AppCompatActivity {
             if (name.getText() != null && description.getText() != null) {
                 g = new Group(name.getText().toString(), description.getText().toString(), groupVis, dataBaseAPI.getCurrentUserID());
                 dataBaseAPI.addGroupToUser(g);//TODO fix this and use a callback
-                Intent intent = new Intent(this, ImageStorage.class);
-                intent.putExtra("id", g.getId());
-                intent.putExtra("type", "groups");
-                startActivity(intent);
-
-
+                StorageReference groupRef = mStorageRef.child(g.getId()+".jpg");
+                UploadTask uploadTask = groupRef.putStream(image);
+                uploadTask.addOnFailureListener(exception -> {
+                    // Handle unsuccessful uploads
+                }).addOnSuccessListener(taskSnapshot -> {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                });
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Please fill in all the data",
                         Toast.LENGTH_LONG).show();
             }
         });
 
+        upload.setOnClickListener(view -> {
+            pickImage();
+        });
 
+
+    }
+
+    public void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+            try {
+                //e.g. create user, then change "images" to where i was called from
+                InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
+                image = inputStream;
+                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
+        }
     }
 
 

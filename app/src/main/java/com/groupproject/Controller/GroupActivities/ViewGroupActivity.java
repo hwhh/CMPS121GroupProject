@@ -56,6 +56,10 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void getUser(User user, ViewHolder holder) {

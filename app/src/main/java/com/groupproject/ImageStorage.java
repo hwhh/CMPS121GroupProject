@@ -1,75 +1,36 @@
 package com.groupproject;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageButton;
-import android.widget.Toast;
-
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
  * Created by haileypun on 05/12/2017.
  */
 
-public class ImageStorage extends AppCompatActivity {
+public class ImageStorage {
 
     private StorageReference mStorageRef;
-    private static final int PICK_PHOTO_FOR_AVATAR = 0;
     private String id, group;
-    ImageButton imageButton;
+    private InputStream image;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.image_upload);
-        Bundle b = getIntent().getExtras();
-        this.id = b.getString("id");
-        this.group = b.getString("type");
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        imageButton = (ImageButton) findViewById(R.id.uploadImage);
-        imageButton.setOnClickListener(view -> {
-            pickImage();
+
+    public ImageStorage(String id, InputStream image){
+        this.id = id;
+        this.image = image;
+
+    }
+
+    public void storeImage(){
+        StorageReference groupRef = mStorageRef.child(id+".jpg");
+        UploadTask uploadTask = groupRef.putStream(image);
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+        }).addOnSuccessListener(taskSnapshot -> {
+            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+            Uri downloadUrl = taskSnapshot.getDownloadUrl();
         });
-    }
-
-    public void pickImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
-            if (data == null) {
-                //Display an error
-                return;
-            }
-            try {
-                //e.g. create user, then change "images" to where i was called from
-                InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
-                StorageReference groupRef = mStorageRef.child(id+".jpg");
-                UploadTask uploadTask = groupRef.putStream(inputStream);
-                uploadTask.addOnFailureListener(exception -> {
-                    // Handle unsuccessful uploads
-                }).addOnSuccessListener(taskSnapshot -> {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                });
-                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
-        }
     }
 }

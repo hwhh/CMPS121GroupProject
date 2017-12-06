@@ -6,8 +6,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -33,6 +38,8 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private Button joinButton;
     private Event event;
     private User user;
+    private StorageReference mStorageRef;
+    private ImageView eventPic;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +53,8 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         joinButton = findViewById(R.id.btn_join);
         resetEvent();
         database.getUser(database.getCurrentUserID(), this, null);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        eventPic = findViewById(R.id.eventPic);
 
         joinButton.setOnClickListener(v -> {
             if (event != null && user != null) {
@@ -149,6 +158,11 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     @Override
     public void getEvent(Event event, ViewHolder holder) {
         this.event = event;
+        StorageReference storageReference = mStorageRef.child(event.getId()+".jpg");
+        Glide.with(this)
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .into(eventPic);
         display(event);
         assignButton();
     }
@@ -162,7 +176,6 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     public void executeQuery(List<String> result, SearchType.Type type) {
 
     }
-
 
 }
 
