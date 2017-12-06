@@ -40,8 +40,6 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private TextView endTimeText;
     private TextView numOfPeopleText;
     private Button interact;
-
-
     List<String> goingEventsLists = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private AlertDialog.Builder builder;
@@ -60,7 +58,6 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         numOfPeopleText = findViewById(R.id.numOfPeopleText);
         interact = findViewById(R.id.btn_join);
         builder = new AlertDialog.Builder(this);
-
         Bundle b = getIntent().getExtras();
         String id = b.getString("key");
         dataBaseAPI.getEvent((id), this, null);
@@ -121,9 +118,6 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
                 updateButton(DataBaseAPI.STATUS.JOINED, event);
             }
         });
-
-
-
     }
 
     public void updateButton(DataBaseAPI.STATUS status, Event event){
