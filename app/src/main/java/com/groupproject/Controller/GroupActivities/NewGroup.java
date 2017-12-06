@@ -2,45 +2,27 @@ package com.groupproject.Controller.GroupActivities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.groupproject.Controller.SearchActivities.SearchType;
-import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
-import com.groupproject.ImageStorage;
-import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
-import com.groupproject.Model.User;
 import com.groupproject.Model.Visibility;
 import com.groupproject.R;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewGroup extends AppCompatActivity {
 

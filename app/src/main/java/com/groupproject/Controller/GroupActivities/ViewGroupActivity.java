@@ -5,6 +5,8 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
     TextView members;
     TextView groupDescription;
     TextView events;
+    Button joinGroup;
     ImageView groupPic;
     private StorageReference mStorageRef;
 
@@ -51,6 +54,8 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         groupDescription = findViewById(R.id.groupDescription);
         events = findViewById(R.id.eventsGroup);
         groupPic = findViewById(R.id.groupPic);
+        joinGroup = findViewById(R.id.joinGroup);
+
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -82,6 +87,10 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
                 .using(new FirebaseImageLoader())
                 .load(storageReference)
                 .into(groupPic);
+        joinGroup.setOnClickListener(view -> {
+            dataBaseAPI.acceptGroupInvite(group);
+            finish();
+        });
     }
 
     @Override

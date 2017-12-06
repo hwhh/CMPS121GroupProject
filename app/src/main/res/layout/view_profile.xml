@@ -15,6 +15,7 @@
             android:id="@+id/profileUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             app:srcCompat="@drawable/eventpic" />
 
         <TextView
