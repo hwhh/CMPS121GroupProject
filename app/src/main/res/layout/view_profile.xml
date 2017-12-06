@@ -10,11 +10,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView2"
+
+        <ImageButton
+            android:id="@+id/profileUpload"
             android:layout_width="match_parent"
-            android:layout_height="118dp"
-            app:srcCompat="@drawable/border" />
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingTop="5dp"
+            app:srcCompat="@drawable/defaultpic" />
 
         <TextView
             android:id="@+id/userName"

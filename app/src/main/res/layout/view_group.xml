@@ -10,10 +10,11 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/groupPic"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            app:srcCompat="@drawable/border" />
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            app:srcCompat="@drawable/defaultpic" />
 
         <TextView
             android:id="@+id/groupName"
@@ -119,6 +120,16 @@
 
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/joinGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/segoeuil"
+            android:text="Join Group"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

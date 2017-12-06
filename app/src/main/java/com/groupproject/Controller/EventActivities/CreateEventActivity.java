@@ -2,19 +2,17 @@ package com.groupproject.Controller.EventActivities;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -22,7 +20,9 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Query;
 import com.groupproject.Controller.SearchActivities.SearchType;
-import com.groupproject.Controller.SideBarActivities.SidebarFragment;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
@@ -33,6 +33,8 @@ import com.groupproject.Model.User;
 import com.groupproject.Model.Visibility;
 import com.groupproject.R;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,8 +44,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class CreateEventActivity extends AppCompatActivity implements DataBaseCallBacks<String>
-{
+public class CreateEventActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -56,6 +57,10 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
     private DatePickerDialog.OnDateSetListener start_date_picker;
     private DatePickerDialog.OnDateSetListener end_date_picker;
     private Spinner visibility, groupSelector;
+    private ImageButton upload;
+    private StorageReference mStorageRef;
+    private InputStream image;
+    private static final int PICK_PHOTO_FOR_AVATAR = 0;
 
     ArrayList<String> options = new ArrayList<>();
     ArrayList<Group> groups = new ArrayList<>();
@@ -66,13 +71,16 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
         super.onCreate(savedInstanceState);
         final LatLng eventLocation;
 
+        setContentView(R.layout.event_create);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
         } else {
             throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
         }
         setContentView(R.layout.event_create);
-
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
         name =findViewById(R.id.name);
@@ -91,6 +99,14 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
 
 
 
+        name = findViewById(R.id.name);
+        description = findViewById(R.id.desc);
+        startDate = findViewById(R.id.start_date);
+        endDate = findViewById(R.id.end_date);
+        upload = findViewById(R.id.uploadEvent);
+        upload.setOnClickListener(view -> {
+            pickImage();
+        });
 
         start_date_picker = (view, year, monthOfYear, dayOfMonth) -> {
             updateCalendar(startDateCalendar, year, monthOfYear, dayOfMonth);
@@ -102,7 +118,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                  this,
+                    CreateEventActivity.this,
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -175,6 +191,17 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                         dataBaseAPI.addEventToUser(e);
 
+                        StorageReference groupRef = mStorageRef.child(e.getId()+".jpg");
+                        UploadTask uploadTask = groupRef.putStream(image);
+                        uploadTask.addOnFailureListener(exception -> {
+                            // Handle unsuccessful uploads
+                        }).addOnSuccessListener(taskSnapshot -> {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        });
+                        //TODO: return the event id?
+                        finish();
+
                         Bundle newBundle = new Bundle();
                         Intent intent = new Intent(this, EventInfoActivity.class);
                         newBundle.putString("key", e.getId());
@@ -211,6 +238,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                                     selectedMinute);
                             updateCalendarTime(calendar, selectedHour, selectedMinute);
                         } else {
+                            Toast.makeText(getApplicationContext(),
                             Toast.makeText(this,
                                     "End time cannot be before start time",
                                     Toast.LENGTH_LONG).show();
@@ -271,6 +299,35 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
     public void getEvent(Event event, ViewHolder holder) {
 
     }
+
+    public void pickImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_PHOTO_FOR_AVATAR);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+            try {
+                //e.g. create user, then change "images" to where i was called from
+                InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
+                image = inputStream;
+                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
+        }
+    }
+
+
+
 
     @Override
     public void getGroup(Group group, ViewHolder holder) {
