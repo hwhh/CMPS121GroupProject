@@ -99,19 +99,19 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                 break;
             case INVITE:
                 User user = (User) dataBaseItem;
-                boolean userInvited =user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID);
-                if(userInvited){
+                if(user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID)){
                     holder.selected.setChecked(true);
                 }else {
                     holder.selected.setChecked(false);
                 }
                 holder.interact.setImageDrawable(null);
                 holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
+                    boolean userInvited =user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID);
                     if (b && !userInvited) {
                         invited.add(dataBaseItem.getId());
                         if(univited.contains(dataBaseItem.getId()))
                             univited.remove(dataBaseItem.getId());
-                    }else if(b && userInvited){
+                    }else if(!b && userInvited){
                         holder.selected.setChecked(false);
                         univited.add(dataBaseItem.getId());
                         if(invited.contains(dataBaseItem.getId()))
