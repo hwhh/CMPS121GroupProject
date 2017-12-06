@@ -60,8 +60,6 @@ public class BaseActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dataBaseAPI.getUser(dataBaseAPI.getCurrentUserID(), this, null);
-
         setContentView(R.layout.navigation_base);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -137,6 +135,8 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        String currentUserID = dataBaseAPI.getCurrentUserID();
+        dataBaseAPI.getUser(currentUserID, this, null);
         getMenuInflater().inflate(R.menu.navigation_bar, menu);
         final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
