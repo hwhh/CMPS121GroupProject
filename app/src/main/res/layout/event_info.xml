@@ -5,21 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="25dp">
 
 
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/segoeuil"
         android:text="Event Name"
         android:textAlignment="center"
         android:textSize="30sp"
-        app:layout_constraintLeft_toLeftOf="@+id/startDateText"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,78 +27,69 @@
         android:id="@+id/startsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
         android:fontFamily="@font/segoeuil"
         android:text="@string/starts"
         android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="@+id/startDateText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eventName" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/startDateText"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/startDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="92dp"
-        android:layout_marginStart="92dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/segoeuil"
         android:text="12/11/2017"
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/startsLabel"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/startTimeText"
+        app:layout_constraintStart_toEndOf="@+id/startTimeText"
         app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
     <TextView
         android:id="@+id/startTimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
+        android:layout_marginStart="30dp"
         android:fontFamily="@font/segoeuil"
         android:text="13:00"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startsLabel"
         app:layout_constraintTop_toBottomOf="@+id/startDateText" />
 
     <TextView
         android:id="@+id/endsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="1dp"
         android:fontFamily="@font/segoeuil"
         android:text="@string/ends"
         android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="@+id/endDateText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startsLabel" />
+        app:layout_constraintTop_toTopOf="@+id/endDateText" />
 
     <TextView
         android:id="@+id/endDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="92dp"
-        android:layout_marginStart="92dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/segoeuil"
         android:text="12/11/2017"
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/endsLabel"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/startTimeText"
+        app:layout_constraintStart_toEndOf="@+id/startTimeText"
         app:layout_constraintTop_toBottomOf="@+id/startTimeText" />
 
     <TextView
         android:id="@+id/endTimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
         android:fontFamily="@font/segoeuil"
         android:text="16:00"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/numOfPeopleText"
+        app:layout_constraintStart_toEndOf="@+id/numOfPeopleText"
         app:layout_constraintTop_toBottomOf="@+id/endDateText" />
 
     <ImageView
@@ -108,54 +99,59 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/eventName"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/eventpic" />
 
     <Button
         android:id="@+id/btn_join"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/segoeuil"
         android:text="..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/goingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
         android:fontFamily="@font/segoeuil"
         android:text="@string/going"
         android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="@+id/numOfPeopleText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endsLabel" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/numOfPeopleText"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/numOfPeopleText"
         android:layout_width="18dp"
         android:layout_height="24dp"
-        android:layout_marginStart="92dp"
+        android:layout_marginStart="27dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/segoeuil"
         android:text="0"
         android:textSize="18sp"
-        app:layout_constraintLeft_toRightOf="@+id/goingText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/goingText"
         app:layout_constraintTop_toBottomOf="@+id/endTimeText" />
 
     <Button
         android:id="@+id/invite_friends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="46dp"
-        android:layout_marginEnd="38dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="27dp"
         android:text="@string/invite_friends"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_join" />
+
+    <ListView
+        android:id="@+id/goingUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="273dp" />
 
 </android.support.constraint.ConstraintLayout>
