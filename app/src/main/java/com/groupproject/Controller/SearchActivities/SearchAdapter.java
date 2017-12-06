@@ -52,6 +52,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
 
     @Override
     protected void onBindViewHolder(ViewHolder holder, int position, DataBaseItem model) {
+        holder.selected.setVisibility(View.GONE);
         if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS) {
             dataBaseAPI.getUser(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
@@ -79,6 +80,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getUser(User user, ViewHolder holder) {
         DataBaseAPI.UserRelationship userRelationship = dataBaseAPI.getRelationShip(user);
+
         if(userRelationship == ME) {
             holder.interact.setImageDrawable(null);
         } else if(userRelationship == FRIENDS) {
