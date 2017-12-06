@@ -109,8 +109,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/eventpic"
-        android:layout_marginRight="16dp" />
+        app:srcCompat="@drawable/eventpic" />
 
     <Button
         android:id="@+id/btn_join"
@@ -148,5 +147,15 @@
         app:layout_constraintLeft_toRightOf="@+id/goingText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/endTimeText" />
+
+    <Button
+        android:id="@+id/invite_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="46dp"
+        android:layout_marginEnd="38dp"
+        android:text="@string/invite_friends"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,7 +1,5 @@
-package com.groupproject.Controller.EventActivities;
+package com.groupproject.Controller;
 
-import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,16 +8,12 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.firebase.database.Query;
-import com.groupproject.Controller.BaseActivity;
-import com.groupproject.Controller.GroupActivities.NewGroup;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.SideBarActivities.SidebarAdapter;
-import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
@@ -39,10 +33,10 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
     private String type;
 
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
+
         type = b.getString("type");
         id = b.getString("id");
 
@@ -58,7 +52,7 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
 
         Query query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("friendsIDs");
         dataBaseAPI.executeQuery(query, this, Type.USERS);
-        mSearchAdapter = new SidebarAdapter(null, Type.INVITE);
+        mSearchAdapter = new SidebarAdapter(null, Type.INVITE, id);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView mRecyclerView = findViewById(R.id.friends_invite);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -93,7 +87,7 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_menu_done:
-                Set<String> ids = mSearchAdapter.getSelected();
+                Set<String> ids = mSearchAdapter.getInvited();
                 for (String userID : ids) {
                     if(type.equals("group")){
                         dataBaseAPI.sendGroupInvite(userID, id);
@@ -101,7 +95,11 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
                         dataBaseAPI.sendEventInvite(userID, id);
                     }
                 }
+                Toast.makeText(this, "Invites sent", Toast.LENGTH_LONG).show();
+                super.onBackPressed();
                 return true;
+            case android.R.id.home:
+                super.onBackPressed();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -115,6 +113,8 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
+
+
     }
 
     @Override

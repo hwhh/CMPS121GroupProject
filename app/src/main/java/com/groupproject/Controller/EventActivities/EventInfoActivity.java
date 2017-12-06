@@ -1,6 +1,7 @@
 package com.groupproject.Controller.EventActivities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.text.Html;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.groupproject.Controller.InviteActivity;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -73,6 +75,16 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
                 }
             }
         });
+
+        Button button = findViewById(R.id.invite_friends);
+        button.setOnClickListener(view -> {
+            Intent intent = new Intent(this, InviteActivity.class);
+            intent.putExtra("type", "event");
+            intent.putExtra("id", event.getId());
+            startActivity(intent);
+        });
+
+
     }
 
     private void resetEvent() {

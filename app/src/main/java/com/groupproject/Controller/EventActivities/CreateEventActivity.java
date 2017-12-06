@@ -1,6 +1,7 @@
 package com.groupproject.Controller.EventActivities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -146,8 +147,11 @@ public class CreateEventActivity extends Fragment {
                                 new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                         dataBaseAPI.addEventToUser(e);
-                        //TODO: return the event id?
-//                        finish();
+
+                        Bundle newBundle = new Bundle();
+                        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+                        newBundle.putString("key", e.getId());
+                        startActivity(intent);
                     }
 
                 } catch (ParseException e) {

@@ -1,16 +1,14 @@
 package com.groupproject.Controller.SideBarActivities;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.RadioGroup;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
@@ -31,22 +29,22 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
 
     private static final DataBaseAPI databaseAPI = DataBaseAPI.getDataBase();
     private final SearchType.Type type;
-    private Set<String> selected = new HashSet<>();
+    private Set<String> invited = new HashSet<>();
+    private Set<String> univited = new HashSet<>();
     private List<DataBaseItem> items;
     private final List<DataBaseItem> filteredItemsList;
-
+    private String dataBaseItemID;
 
     private final Activity activity;
     private UserFilter filter;
 
-    //TODO Where did i come from
-
-    public SidebarAdapter(Activity activity, SearchType.Type type) {
+    public SidebarAdapter(Activity activity, SearchType.Type type, @Nullable  String dataBaseItemID) {
         super();
         items = new ArrayList<>();
         filteredItemsList = new ArrayList<>();
         this.activity = activity;
         this.type = type;
+        this.dataBaseItemID = dataBaseItemID;
     }
 
     public List<DataBaseItem> getItems() {
@@ -100,21 +98,27 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                 });
                 break;
             case INVITE:
-                holder.interact.setImageDrawable(null);
-                holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
-                    if(b){
-                        selected.add(dataBaseItem.getName());
-                    }else{
-                        selected.remove(dataBaseItem.getName());
-                    }
-                });
+                User user = (User) dataBaseItem;
+                if(user.invitedEventsIDs.contains(dataBaseItemID)
+                        || user.invitedGroupIDs.contains(dataBaseItemID)){
+                    holder.selected.setChecked(true);
+                }else {
 
-
+                    holder.interact.setImageDrawable(null);
+                    holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
+                        if (b) {
+                            invited.add(dataBaseItem.getId());
+                        } else {
+                            invited.remove(dataBaseItem.getId());
+                            univited.add(dataBaseItem.getId());
+                        }
+                    });
+                }
         }
     }
 
-    public Set<String> getSelected() {
-        return selected;
+    public Set<String> getInvited() {
+        return invited;
     }
 
     @Override
