@@ -158,7 +158,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     public void addPinsToMap() {
         googleMap.clear();
         for (Event event : DataBaseAPI.getEventMap().values()) {
-            if( visibility.getSelectedItem().toString().equals("Public")) {
+            if( event.getVisibility().toString().equals("Public")) {
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
                         .title(event.getName())
