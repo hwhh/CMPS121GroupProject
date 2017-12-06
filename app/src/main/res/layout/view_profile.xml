@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            app:srcCompat="@drawable/eventpic" />
+            android:paddingTop="5dp"
+            app:srcCompat="@drawable/defaultpic" />
 
         <TextView
             android:id="@+id/userName"

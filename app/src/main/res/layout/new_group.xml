@@ -23,7 +23,8 @@
             android:id="@+id/upload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/eventpic" />
+            android:background="@null"
+            app:srcCompat="@drawable/defaultpic" />
 
         <TextView
             android:id="@+id/groupNameText"

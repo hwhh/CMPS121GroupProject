@@ -28,26 +28,23 @@
             android:paddingLeft="5dp"
             android:text="@string/name"
             android:textSize="14sp"
+            android:layout_marginStart="5dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/interact"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/interact"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="35dp"
+            android:layout_width="70dp"
+            android:layout_marginEnd="5dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:background="@null"
             android:paddingRight="5dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/txtName"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <RadioButton
