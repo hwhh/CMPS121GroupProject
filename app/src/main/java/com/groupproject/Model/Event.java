@@ -26,6 +26,8 @@ public class Event extends DataBaseItem {
     private String description;
     private String id;
 
+    private String nameLower_expired;
+
     private Date startDate;
     private Date endDate;
 
@@ -53,6 +55,7 @@ public class Event extends DataBaseItem {
         this.nameLower = name.toLowerCase();
         this.description = description;
         this.hostID = hostID;
+        this.nameLower_expired = nameLower+"_"+isExpired();
         goingIDs.add(hostID);
         dataBaseAPI.writeNewEvent(this);
     }
@@ -69,6 +72,7 @@ public class Event extends DataBaseItem {
     public boolean checkExpired(){
         return (endDate.getTime() - System.currentTimeMillis()) < 0 ;
     }
+
 
 
 
@@ -93,10 +97,17 @@ public class Event extends DataBaseItem {
     }
 
 
+    public String getNameLower_expired() {
+        return this.nameLower_expired = nameLower+"_"+isExpired();
+    }
+
+    public void setNameLower_expired(String nameLower_expired) {
+        this.nameLower_expired = nameLower_expired;
+    }
+
     public long calculateTimeRemaining(){
         return endDate.getTime() - System.currentTimeMillis();
     }
-
 
     public String getHostID() {
         return hostID;
