@@ -35,32 +35,19 @@
 
         <ImageButton
             android:id="@+id/interact"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:background="@null"
-            android:maxHeight="30dp"
-            android:maxWidth="60dp"
-            android:paddingRight="5dp"
-            android:scaleType="fitCenter"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/txtName"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
-        <RadioButton
+        <CheckBox
             android:id="@+id/selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="28dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="3dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="@+id/interact" />
+
+
     </android.support.constraint.ConstraintLayout>
 
 

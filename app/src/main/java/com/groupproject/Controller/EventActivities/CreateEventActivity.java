@@ -35,7 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CreateEventActivity extends AppCompatActivity  {
+public class CreateEventActivity extends AppCompatActivity {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -55,9 +55,17 @@ public class CreateEventActivity extends AppCompatActivity  {
 
     ArrayList<String> options = new ArrayList<>();
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LatLng eventLocation;
+
+        if (getIntent().hasExtra("event_location")) {
+            eventLocation = getIntent().getExtras().getParcelable("event_location");
+        } else {
+            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
+        }
+        setContentView(R.layout.event_create);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -69,6 +77,11 @@ public class CreateEventActivity extends AppCompatActivity  {
         setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
+        name =findViewById(R.id.name);
+        description =findViewById(R.id.desc);
+        startDate =findViewById(R.id.start_date);
+        endDate =findViewById(R.id.end_date);
+
         name = findViewById(R.id.name);
         description = findViewById(R.id.desc);
         startDate = findViewById(R.id.start_date);
@@ -88,7 +101,7 @@ public class CreateEventActivity extends AppCompatActivity  {
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                    CreateEventActivity.this,
+                  this,
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -121,7 +134,7 @@ public class CreateEventActivity extends AppCompatActivity  {
                     endDateCalendar.setTime(date);
                 long minDate = endDateCalendar.getTimeInMillis();
                 DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                        CreateEventActivity.this,
+                        this,
                         end_date_picker,
                         endDateCalendar.get(Calendar.YEAR),
                         endDateCalendar.get(Calendar.MONTH),
@@ -129,14 +142,6 @@ public class CreateEventActivity extends AppCompatActivity  {
                 datePickerDialog.getDatePicker().setMinDate(minDate);
                 datePickerDialog.show();
             }
-        });
-
-
-        Button inviteButton = findViewById(R.id.invitebutton);
-        inviteButton.setOnClickListener(view -> {
-
-
-
         });
 
         Button saveButton = findViewById(R.id.savebutton);
@@ -158,6 +163,11 @@ public class CreateEventActivity extends AppCompatActivity  {
                                 new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                         dataBaseAPI.addEventToUser(e);
+
+                        Bundle newBundle = new Bundle();
+                        Intent intent = new Intent(this, EventInfoActivity.class);
+                        newBundle.putString("key", e.getId());
+                        startActivity(intent);
                         StorageReference groupRef = mStorageRef.child(e.getId()+".jpg");
                         UploadTask uploadTask = groupRef.putStream(image);
                         uploadTask.addOnFailureListener(exception -> {
@@ -174,7 +184,7 @@ public class CreateEventActivity extends AppCompatActivity  {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Please fill in all the data",
+                Toast.makeText(this, "Please fill in all the data",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -191,7 +201,7 @@ public class CreateEventActivity extends AppCompatActivity  {
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
                                   final Calendar calendarMin) {
         TimePickerDialog timePickerDialog;
-        timePickerDialog = new TimePickerDialog(CreateEventActivity.this,
+        timePickerDialog = new TimePickerDialog(this,
                 (timePicker, selectedHour, selectedMinute) -> {
                     if (calendarMin != null) {
                         updateCalendarTime(calendar, selectedHour, selectedMinute);
@@ -200,7 +210,7 @@ public class CreateEventActivity extends AppCompatActivity  {
                                     selectedMinute);
                             updateCalendarTime(calendar, selectedHour, selectedMinute);
                         } else {
-                            Toast.makeText(getApplicationContext(),
+                            Toast.makeText(this,
                                     "End time cannot be before start time",
                                     Toast.LENGTH_LONG).show();
                         }

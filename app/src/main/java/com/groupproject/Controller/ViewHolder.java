@@ -3,6 +3,7 @@ package com.groupproject.Controller;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -15,7 +16,7 @@ public class ViewHolder extends RecyclerView.ViewHolder  {
         public TextView vName;
         public CardView cardView;
         public ImageButton interact;
-        public RadioButton selected;
+        public CheckBox selected;
 
         public ViewHolder(View v) {
             super(v);
