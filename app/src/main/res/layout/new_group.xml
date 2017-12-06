@@ -27,6 +27,21 @@
             app:srcCompat="@drawable/defaultpic" />
 
         <TextView
+            android:id="@+id/clickText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="42dp"
+            android:layout_marginStart="42dp"
+            android:fontFamily="@font/segoeuil"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp"
+            android:text="Click icon to add group picture"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/groupNameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

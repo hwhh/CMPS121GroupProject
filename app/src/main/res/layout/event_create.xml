@@ -37,7 +37,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
-                app:srcCompat="@drawable/eventpic" />
+                android:background="@null"
+                app:srcCompat="@drawable/defaultpic" />
+
+            <TextView
+                android:id="@+id/clickText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
+                android:fontFamily="@font/segoeuil"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:text="Click icon to add event picture"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/eventname_txt"

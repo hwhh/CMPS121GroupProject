@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/eventName"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/eventpic" />
+        app:srcCompat="@drawable/defaultpic" />
 
     <Button
         android:id="@+id/btn_join_leave_del"
@@ -111,6 +111,7 @@
         android:layout_marginTop="136dp"
         android:fontFamily="@font/segoeuil"
         android:text="..."
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -139,12 +140,15 @@
 
     <Button
         android:id="@+id/invite_friends"
-        android:layout_width="wrap_content"
+        android:background="@null"
+        android:layout_width="126dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/invite_friends"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textAllCaps="false"
+        android:fontFamily="@font/segoeuil"
         app:layout_constraintTop_toBottomOf="@+id/btn_join_leave_del" />
 
     <ListView
