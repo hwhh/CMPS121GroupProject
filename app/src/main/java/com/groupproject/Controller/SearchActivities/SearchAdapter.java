@@ -52,12 +52,12 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
 
     @Override
     protected void onBindViewHolder(ViewHolder holder, int position, DataBaseItem model) {
+        holder.selected.setVisibility(View.GONE);
         if (((SearchFragment) fragment).getSearchType() == SearchType.Type.USERS) {
             dataBaseAPI.getUser(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
                 intent.putExtra("key", model.getId());
-
                 fragment.getActivity().startActivity(intent);
             });
         }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.EVENTS) {
@@ -80,14 +80,15 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getUser(User user, ViewHolder holder) {
         DataBaseAPI.UserRelationship userRelationship = dataBaseAPI.getRelationShip(user);
+
         if(userRelationship == ME) {
             holder.interact.setImageDrawable(null);
         } else if(userRelationship == FRIENDS) {
             holder.interact.setImageDrawable(null); //TODO go to profile to remove
         } else if(userRelationship == REQUESTED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.remove_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_cancel));
         }else if(userRelationship == NONE) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add));
         }
         holder.interact.setOnClickListener(view -> {
             if(userRelationship == FRIENDS) {
@@ -104,12 +105,12 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getEvent(Event event, ViewHolder holder) {
         DataBaseAPI.STATUS status = dataBaseAPI.getEventRelationShip(event);
-        if(status == HIDDEN || event.isExpired()) {
+        if(status == HIDDEN) {
             holder.cardView.setVisibility(View.GONE);
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.accept_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add));
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
@@ -129,7 +130,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.accept_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add));
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
@@ -148,10 +149,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
 
     }
 
-    @Override
-    public void createUserList(List<User> userList) {
 
-    }
 
 
 }

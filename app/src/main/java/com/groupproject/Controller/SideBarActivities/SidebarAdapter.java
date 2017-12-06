@@ -1,6 +1,7 @@
 package com.groupproject.Controller.SideBarActivities;
 
-import android.support.v4.app.Fragment;
+import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,34 +20,38 @@ import com.groupproject.Model.User;
 import com.groupproject.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements Filterable {
 
     private static final DataBaseAPI databaseAPI = DataBaseAPI.getDataBase();
     private final SearchType.Type type;
+    private Set<String> invited = new HashSet<>();
+    private Set<String> univited = new HashSet<>();
     private List<DataBaseItem> items;
     private final List<DataBaseItem> filteredItemsList;
+    private String dataBaseItemID;
 
-
-    private final Fragment fragment;
+    private final Activity activity;
     private UserFilter filter;
 
-
-    SidebarAdapter(Fragment fragment, SearchType.Type type) {
+    public SidebarAdapter(Activity activity, SearchType.Type type, @Nullable  String dataBaseItemID) {
         super();
         items = new ArrayList<>();
         filteredItemsList = new ArrayList<>();
-        this.fragment = fragment;
+        this.activity = activity;
         this.type = type;
+        this.dataBaseItemID = dataBaseItemID;
     }
 
-    List<DataBaseItem> getItems() {
+    public List<DataBaseItem> getItems() {
         return items;
     }
 
-    public void setItems(List<DataBaseItem> items) {
+    void setItems(List<DataBaseItem> items) {
         this.items = items;
     }
 
@@ -54,7 +59,6 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_result, viewGroup, false);
         return new ViewHolder(itemView);
-
     }
 
     @Override
@@ -65,19 +69,22 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
             case USERS:
                 //On card click view User
                 holder.interact.setImageDrawable(null);
+                holder.selected.setVisibility(View.GONE);
 
                 break;
             case EVENTS:
                 //On card click view Event
                 holder.interact.setImageDrawable(null);
-
+                holder.selected.setVisibility(View.GONE);
                 break;
             case GROUPS:
                 holder.interact.setImageDrawable(null);
+                holder.selected.setVisibility(View.GONE);
                 //On card click view Group
                 break;
             case NOTIFICATIONS:
-                holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_accept));
+                holder.selected.setVisibility(View.GONE);
+                holder.interact.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.button_accept));
                 holder.interact.setOnClickListener(view -> {
                     if(dataBaseItem instanceof User) {
                         databaseAPI.acceptRequestUser((User) dataBaseItem);
@@ -90,7 +97,28 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                     this.notifyDataSetChanged();
                 });
                 break;
+            case INVITE:
+                User user = (User) dataBaseItem;
+                if(user.invitedEventsIDs.contains(dataBaseItemID)
+                        || user.invitedGroupIDs.contains(dataBaseItemID)){
+                    holder.selected.setChecked(true);
+                }else {
+
+                    holder.interact.setImageDrawable(null);
+                    holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
+                        if (b) {
+                            invited.add(dataBaseItem.getId());
+                        } else {
+                            invited.remove(dataBaseItem.getId());
+                            univited.add(dataBaseItem.getId());
+                        }
+                    });
+                }
         }
+    }
+
+    public Set<String> getInvited() {
+        return invited;
     }
 
     @Override

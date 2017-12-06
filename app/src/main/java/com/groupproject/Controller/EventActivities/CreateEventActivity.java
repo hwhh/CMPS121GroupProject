@@ -1,19 +1,23 @@
 package com.groupproject.Controller.EventActivities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.groupproject.Controller.SideBarActivities.SidebarFragment;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.CustomLocation;
 import com.groupproject.Model.Event;
@@ -28,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class AddEventActivity extends AppCompatActivity  {
+public class CreateEventActivity extends Fragment {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -44,22 +48,21 @@ public class AddEventActivity extends AppCompatActivity  {
 
     ArrayList<String> options = new ArrayList<>();
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        final LatLng eventLocation;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.event_create, container, false);
 
-        if (getIntent().hasExtra("event_location")) {
-            eventLocation = getIntent().getExtras().getParcelable("event_location");
-        } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
-        }
-        setContentView(R.layout.event_create);
+        Bundle bundle = getArguments();
+        LatLng eventLocation = bundle.getParcelable("event_location");
+
+
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
-        name = findViewById(R.id.name);
-        description = findViewById(R.id.desc);
-        startDate = findViewById(R.id.start_date);
-        endDate = findViewById(R.id.end_date);
+        name = rootView.findViewById(R.id.name);
+        description = rootView.findViewById(R.id.desc);
+        startDate = rootView.findViewById(R.id.start_date);
+        endDate = rootView.findViewById(R.id.end_date);
+
 
         start_date_picker = (view, year, monthOfYear, dayOfMonth) -> {
             updateCalendar(startDateCalendar, year, monthOfYear, dayOfMonth);
@@ -71,7 +74,7 @@ public class AddEventActivity extends AppCompatActivity  {
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                    AddEventActivity.this,
+                  getActivity(),
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -104,7 +107,7 @@ public class AddEventActivity extends AppCompatActivity  {
                     endDateCalendar.setTime(date);
                 long minDate = endDateCalendar.getTimeInMillis();
                 DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                        AddEventActivity.this,
+                        getActivity(),
                         end_date_picker,
                         endDateCalendar.get(Calendar.YEAR),
                         endDateCalendar.get(Calendar.MONTH),
@@ -114,7 +117,18 @@ public class AddEventActivity extends AppCompatActivity  {
             }
         });
 
-        Button saveButton = findViewById(R.id.savebutton);
+
+        Button inviteButton = rootView.findViewById(R.id.invitebutton);
+        inviteButton.setOnClickListener(view -> {
+            Bundle newBundle = new Bundle();
+            newBundle.putString("type", "friends");
+            SidebarFragment sidebarFragment = new SidebarFragment();
+            sidebarFragment.setArguments(newBundle);
+            getFragmentManager().beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "sidebar").addToBackStack(null).commit();
+
+        });
+
+        Button saveButton = rootView.findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             if (allDataEntered()) {
 
@@ -133,32 +147,36 @@ public class AddEventActivity extends AppCompatActivity  {
                                 new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                         dataBaseAPI.addEventToUser(e);
-                        //TODO: return the event id?
-                        finish();
+
+                        Bundle newBundle = new Bundle();
+                        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+                        newBundle.putString("key", e.getId());
+                        startActivity(intent);
                     }
 
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Please fill in all the data",
+                Toast.makeText(getActivity(), "Please fill in all the data",
                         Toast.LENGTH_LONG).show();
             }
         });
 
         options.add("Public");
         options.add("Private");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
-        visibility = findViewById(R.id.visibility);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, options);
+        visibility = rootView.findViewById(R.id.visibility);
         visibility.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return rootView;
     }
 
 
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
                                   final Calendar calendarMin) {
         TimePickerDialog timePickerDialog;
-        timePickerDialog = new TimePickerDialog(AddEventActivity.this,
+        timePickerDialog = new TimePickerDialog(getActivity(),
                 (timePicker, selectedHour, selectedMinute) -> {
                     if (calendarMin != null) {
                         updateCalendarTime(calendar, selectedHour, selectedMinute);
@@ -167,7 +185,7 @@ public class AddEventActivity extends AppCompatActivity  {
                                     selectedMinute);
                             updateCalendarTime(calendar, selectedHour, selectedMinute);
                         } else {
-                            Toast.makeText(getApplicationContext(),
+                            Toast.makeText(getActivity(),
                                     "End time cannot be before start time",
                                     Toast.LENGTH_LONG).show();
                         }

@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="220dp"
+        android:layout_height="300dp"
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -23,54 +23,54 @@
             android:id="@+id/InputName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_marginBottom="24dp"
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
-            android:layout_marginBottom="24dp"
+            android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/Name"
             android:inputType="textPersonName"
-            android:fontFamily="@font/josefin_sans_semibold"
             android:paddingBottom="15dp"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/InputEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
+            android:ems="10"
+            android:fontFamily="@font/segoeuil"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:paddingBottom="15dp"
-            android:fontFamily="@font/josefin_sans_semibold"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/InputPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:layout_marginEnd="42dp"
             android:layout_marginStart="42dp"
-            android:hint="@string/password"
+            android:ems="10"
+            android:fontFamily="@font/segoeuil"
 
+            android:hint="@string/password"
             android:inputType="textPassword"
-            android:fontFamily="@font/josefin_sans_semibold"
             android:paddingBottom="15dp"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/SignUp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="61dp"
             android:background="@null"
-            android:fontFamily="@font/josefin_sans_semibold"
+            android:fontFamily="@font/segoeuil"
+            android:paddingTop="15dp"
             android:text="Sign Up"
             android:textAllCaps="false"
-            android:paddingTop="15dp"
-            />
+            android:textStyle="bold" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

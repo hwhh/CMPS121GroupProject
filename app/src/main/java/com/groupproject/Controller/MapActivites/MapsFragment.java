@@ -3,7 +3,6 @@ package com.groupproject.Controller.MapActivites;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -35,7 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.groupproject.Controller.EventActivities.AddEventActivity;
+import com.groupproject.Controller.EventActivities.CreateEventActivity;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
@@ -80,24 +78,26 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             e.printStackTrace();
         }
 
-        FloatingActionButton createEvent
-                = (FloatingActionButton) rootView.findViewById(R.id.create_event_fab);
-        createEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Tap to add a pin!", Toast.LENGTH_LONG).show();
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng point) {
-                        googleMap.setOnMapClickListener(null);
-                        Intent intent = new Intent(getActivity(), AddEventActivity.class);
-                        intent.putExtra("event_location",
-                                new LatLng(point.latitude, point.longitude));
-                        startActivity(intent);
-                        //TODO: get id of created event?
-                    }
-                });
-            }
+        FloatingActionButton createEvent = rootView.findViewById(R.id.create_event_fab);
+        createEvent.setOnClickListener(v -> {
+            Toast.makeText(getActivity(), "Tap to add a pin!", Toast.LENGTH_LONG).show();
+            googleMap.setOnMapClickListener(point -> {
+                googleMap.setOnMapClickListener(null);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("event_location",  new LatLng(point.latitude, point.longitude));
+                CreateEventActivity createEventActivity = new CreateEventActivity();
+                createEventActivity.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.dashboard_content, createEventActivity, "sidebar").addToBackStack(null).commitAllowingStateLoss();
+
+
+
+//                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+//                intent.putExtra("event_location",
+//                        new LatLng(point.latitude, point.longitude));
+//                startActivity(intent);
+                //TODO: get id of created event?
+            });
         });
 
 
@@ -156,13 +156,15 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     }
 
     public void addPinsToMap() {
-        googleMap.clear();
-        for (Event event : DataBaseAPI.getEventMap().values()) {
-            Marker marker = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
-                    .title(event.getName())
-                    .snippet(event.getEndDate().toString()));
-            marker.setTag(event.getId());
+        if(googleMap != null) {
+            googleMap.clear();
+            for (Event event : DataBaseAPI.getEventMap().values()) {
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
+                        .title(event.getName())
+                        .snippet(event.getEndDate().toString()));
+                marker.setTag(event.getId());
+            }
         }
     }
 
@@ -171,22 +173,15 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         super.onResume();
         rootView.requestFocus();
         mMapView.onResume();
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
+        mMapView.getMapAsync(mMap -> {
+            googleMap = mMap;
 
-                googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() { //THIS DEALS WITH THE FIRST TIME THE MAP IS LOADED
-                        addPinsToMap();
-                    }
-                });
+            googleMap.setOnMapLoadedCallback(() -> {
+                addPinsToMap();
+            });
 
-                askForLocationPermissions();
-                googleMap.setOnMarkerClickListener(MapsFragment.this);
-            }
-
+            askForLocationPermissions();
+            googleMap.setOnMarkerClickListener(MapsFragment.this);
         });
     }
 

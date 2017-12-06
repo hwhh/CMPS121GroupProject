@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.google.firebase.database.Query;
-import com.groupproject.Controller.EventActivities.AddEventActivity;
 import com.groupproject.Controller.GroupActivities.NewGroup;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
@@ -34,8 +33,8 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-//        setHasOptionsMenu(true);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 
         View rootView = inflater.inflate(R.layout.search_results, container, false);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -49,6 +48,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
         Bundle bundle = getArguments();
         String type = bundle.getString("type");
         FloatingActionButton create  = rootView.findViewById(R.id.new_group);
+
         Query query;
 
         assert type != null;
@@ -61,7 +61,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 break;
             case "events":
                 searchType = Type.EVENTS;
-                //intent = new Intent(getActivity(), AddEventActivity.class);
+                //intent = new Intent(getActivity(), CreateEventActivity.class);
                 create.setVisibility(View.GONE);
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("goingEventsIDs");
                 dataBaseAPI.executeQuery(query, this, Type.EVENTS);
@@ -83,7 +83,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 break;
         }
 
-        mSearchAdapter = new SidebarAdapter(this, searchType);
+        mSearchAdapter = new SidebarAdapter(this.getActivity(), searchType, null);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView mRecyclerView = rootView.findViewById(R.id.search_fragment);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -134,8 +134,5 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
         mSearchAdapter.getFilter().filter(string);
     }
 
-    @Override
-    public void createUserList(List<User> userList) {
 
-    }
 }

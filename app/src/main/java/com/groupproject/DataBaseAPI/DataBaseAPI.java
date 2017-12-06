@@ -35,11 +35,9 @@ import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTE
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
 
-interface UserIDCallBack{
-    void cascadeDelete(List<String> result, String child, String idToBeRemoved);
-}
 
-public class DataBaseAPI implements UserIDCallBack{
+
+public class DataBaseAPI {
 
 
 
@@ -232,14 +230,14 @@ public class DataBaseAPI implements UserIDCallBack{
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
     }
 
-    public void sendEventInvite(String userID, Event event){
-        getmEventRef().child(event.getId()).child("invitedIDs").child(userID).setValue(true);
-        getmUserRef().child(userID).child("invitedEventsIDs").child(event.getId()).setValue(true);
+    public void sendEventInvite(String userID, String eventID){
+        getmEventRef().child(eventID).child("invitedIDs").child(userID).setValue(true);
+        getmUserRef().child(userID).child("invitedEventsIDs").child(eventID).setValue(true);
     }
 
-    public void sendGroupInvite(String userID, Group group){
-        getmGroupRef().child(group.getId()).child("invitedIDs").child(userID).setValue(true);
-        getmUserRef().child(userID).child("invitedGroupIDs").child(group.getId()).setValue(true);
+    public void sendGroupInvite(String userID, String groupID){
+        getmGroupRef().child(groupID).child("invitedIDs").child(userID).setValue(true);
+        getmUserRef().child(userID).child("invitedGroupIDs").child(groupID).setValue(true);
     }
 
 
@@ -428,8 +426,7 @@ public class DataBaseAPI implements UserIDCallBack{
     }
 
 
-    @Override
-    public void cascadeDelete(List<String> result, String child, String idToBeRemoved) {
+    private void cascadeDelete(List<String> result, String child, String idToBeRemoved) {
         Query query;
         if(!result.isEmpty()) {
             for (String id : result) {

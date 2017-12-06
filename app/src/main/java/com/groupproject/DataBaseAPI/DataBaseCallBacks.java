@@ -19,6 +19,4 @@ public interface DataBaseCallBacks<T> {
 
     void executeQuery(List<T> result, SearchType.Type type);
 
-    void createUserList(List<User> userList);
-
 }
