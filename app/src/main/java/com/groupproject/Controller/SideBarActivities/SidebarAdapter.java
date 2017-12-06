@@ -99,27 +99,40 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                 break;
             case INVITE:
                 User user = (User) dataBaseItem;
-                if(user.invitedEventsIDs.contains(dataBaseItemID)
-                        || user.invitedGroupIDs.contains(dataBaseItemID)){
+                boolean userInvited =user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID);
+                if(userInvited){
                     holder.selected.setChecked(true);
                 }else {
-
-                    holder.interact.setImageDrawable(null);
-                    holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
-                        if (b) {
-                            invited.add(dataBaseItem.getId());
-                        } else {
-                            invited.remove(dataBaseItem.getId());
-                            univited.add(dataBaseItem.getId());
-                        }
-                    });
+                    holder.selected.setChecked(false);
                 }
+                holder.interact.setImageDrawable(null);
+                holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
+                    if (b && !userInvited) {
+                        invited.add(dataBaseItem.getId());
+                        if(univited.contains(dataBaseItem.getId()))
+                            univited.remove(dataBaseItem.getId());
+                    }else if(b && userInvited){
+                        holder.selected.setChecked(false);
+                        univited.add(dataBaseItem.getId());
+                        if(invited.contains(dataBaseItem.getId()))
+                            invited.remove(dataBaseItem.getId());
+                    } else {
+//                        invited.remove(dataBaseItem.getId());
+                    }
+                });
         }
     }
 
     public Set<String> getInvited() {
         return invited;
     }
+
+
+    public Set<String> getUnivited() {
+        return univited;
+    }
+
+
 
     @Override
     public int getItemCount() {
