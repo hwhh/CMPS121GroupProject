@@ -8,6 +8,7 @@ public interface SearchType {
         USERS,
         EVENTS,
         GROUPS,
-        NOTIFICATIONS
+        NOTIFICATIONS,
+        INVITE
     }
 }
