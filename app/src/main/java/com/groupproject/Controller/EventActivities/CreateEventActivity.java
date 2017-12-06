@@ -1,5 +1,6 @@
 package com.groupproject.Controller.EventActivities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CreateEventActivity extends Fragment {
+public class CreateEventActivity extends AppCompatActivity {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -49,19 +50,23 @@ public class CreateEventActivity extends Fragment {
     ArrayList<String> options = new ArrayList<>();
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.event_create, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final LatLng eventLocation;
 
-        Bundle bundle = getArguments();
-        LatLng eventLocation = bundle.getParcelable("event_location");
-
+        if (getIntent().hasExtra("event_location")) {
+            eventLocation = getIntent().getExtras().getParcelable("event_location");
+        } else {
+            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
+        }
+        setContentView(R.layout.event_create);
 
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
-        name = rootView.findViewById(R.id.name);
-        description = rootView.findViewById(R.id.desc);
-        startDate = rootView.findViewById(R.id.start_date);
-        endDate = rootView.findViewById(R.id.end_date);
+        name =findViewById(R.id.name);
+        description =findViewById(R.id.desc);
+        startDate =findViewById(R.id.start_date);
+        endDate =findViewById(R.id.end_date);
 
 
         start_date_picker = (view, year, monthOfYear, dayOfMonth) -> {
@@ -74,7 +79,7 @@ public class CreateEventActivity extends Fragment {
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                  getActivity(),
+                  this,
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -107,7 +112,7 @@ public class CreateEventActivity extends Fragment {
                     endDateCalendar.setTime(date);
                 long minDate = endDateCalendar.getTimeInMillis();
                 DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                        getActivity(),
+                        this,
                         end_date_picker,
                         endDateCalendar.get(Calendar.YEAR),
                         endDateCalendar.get(Calendar.MONTH),
@@ -118,7 +123,7 @@ public class CreateEventActivity extends Fragment {
         });
 
 
-        Button inviteButton = rootView.findViewById(R.id.invitebutton);
+        Button inviteButton =findViewById(R.id.invitebutton);
         inviteButton.setOnClickListener(view -> {
             Bundle newBundle = new Bundle();
             newBundle.putString("type", "friends");
@@ -128,7 +133,7 @@ public class CreateEventActivity extends Fragment {
 
         });
 
-        Button saveButton = rootView.findViewById(R.id.savebutton);
+        Button saveButton =findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             if (allDataEntered()) {
 
@@ -149,7 +154,7 @@ public class CreateEventActivity extends Fragment {
                         dataBaseAPI.addEventToUser(e);
 
                         Bundle newBundle = new Bundle();
-                        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+                        Intent intent = new Intent(this, EventInfoActivity.class);
                         newBundle.putString("key", e.getId());
                         startActivity(intent);
                     }
@@ -158,15 +163,15 @@ public class CreateEventActivity extends Fragment {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(getActivity(), "Please fill in all the data",
+                Toast.makeText(this, "Please fill in all the data",
                         Toast.LENGTH_LONG).show();
             }
         });
 
         options.add("Public");
         options.add("Private");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, options);
-        visibility = rootView.findViewById(R.id.visibility);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
+        visibility =findViewById(R.id.visibility);
         visibility.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return rootView;
@@ -176,7 +181,7 @@ public class CreateEventActivity extends Fragment {
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
                                   final Calendar calendarMin) {
         TimePickerDialog timePickerDialog;
-        timePickerDialog = new TimePickerDialog(getActivity(),
+        timePickerDialog = new TimePickerDialog(this,
                 (timePicker, selectedHour, selectedMinute) -> {
                     if (calendarMin != null) {
                         updateCalendarTime(calendar, selectedHour, selectedMinute);
@@ -185,7 +190,7 @@ public class CreateEventActivity extends Fragment {
                                     selectedMinute);
                             updateCalendarTime(calendar, selectedHour, selectedMinute);
                         } else {
-                            Toast.makeText(getActivity(),
+                            Toast.makeText(this,
                                     "End time cannot be before start time",
                                     Toast.LENGTH_LONG).show();
                         }
