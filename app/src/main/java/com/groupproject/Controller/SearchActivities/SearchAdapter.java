@@ -11,6 +11,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
+import com.groupproject.Controller.GroupActivities.ViewGroupActivity;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
@@ -69,7 +70,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
             dataBaseAPI.getGroup(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
+                Intent intent = new Intent(fragment.getActivity(), ViewGroupActivity.class);
                 intent.putExtra("key", model.getId());
                 fragment.getActivity().startActivity(intent);
             });

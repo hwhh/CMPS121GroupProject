@@ -82,7 +82,7 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Controller.GroupActivities.NewGroup" />
-        <activity android:name=".Controller.GroupActivities.ViewGroup" />
+        <activity android:name=".Controller.GroupActivities.ViewGroupActivity" />
         <activity android:name=".Controller.EventActivities.CreateEventActivity" />
         <activity android:name=".Controller.EventActivities.EventInfoActivity" />
         <activity android:name=".Controller.ViewProfileActivity"></activity>

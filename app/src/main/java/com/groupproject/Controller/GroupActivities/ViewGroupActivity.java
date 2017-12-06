@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Group> {
+public class ViewGroupActivity extends AppCompatActivity implements DataBaseCallBacks<Group> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
     TextView groupName;
@@ -40,10 +40,11 @@ public class ViewGroup extends AppCompatActivity implements DataBaseCallBacks<Gr
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle b = getIntent().getExtras();
-        String id = b.getString("key");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_group);
+
+        Bundle b = getIntent().getExtras();
+        String id = b.getString("key");
         dataBaseAPI.getGroup(id, this, null);
         groupName = findViewById(R.id.groupName);
         members = findViewById(R.id.memberInfo);

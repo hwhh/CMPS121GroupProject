@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -54,8 +55,7 @@ public class ImageStorage extends AppCompatActivity {
                 return;
             }
             try {
-                //TODO make this into separate class, in the arguments to on create, find out which activity called it
-                //e.g. create user, then chnage "images" to where i was called from
+                //e.g. create user, then change "images" to where i was called from
                 InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
                 StorageReference groupRef = mStorageRef.child(id+".jpg");
                 UploadTask uploadTask = groupRef.putStream(inputStream);
@@ -65,6 +65,7 @@ public class ImageStorage extends AppCompatActivity {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 });
+                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
