@@ -100,7 +100,8 @@ public class SearchFragment extends Fragment implements SearchType{
         this.q = q;
         if(reference != null) {
             Query query = reference.orderByChild("nameLower").startAt(q).endAt(q + "\uf8ff");
-
+            if (searchType.equals(Type.EVENTS))
+                query = reference.orderByChild("nameLower_expired").startAt(q).endAt(q + "\uf8ff"+"_false");
             mSearchAdapter = new SearchAdapter(query, this);
             mRecyclerView.swapAdapter(mSearchAdapter, true);
             mSearchAdapter.startListening();

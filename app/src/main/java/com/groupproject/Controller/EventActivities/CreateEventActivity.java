@@ -129,11 +129,11 @@ public class CreateEventActivity extends AppCompatActivity {
             newBundle.putString("type", "friends");
             SidebarFragment sidebarFragment = new SidebarFragment();
             sidebarFragment.setArguments(newBundle);
-            getFragmentManager().beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "sidebar").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "sidebar").addToBackStack(null).commit();
 
         });
 
-        Button saveButton =findViewById(R.id.savebutton);
+        Button saveButton = findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             if (allDataEntered()) {
 
@@ -174,7 +174,6 @@ public class CreateEventActivity extends AppCompatActivity {
         visibility =findViewById(R.id.visibility);
         visibility.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return rootView;
     }
 
 
