@@ -87,14 +87,23 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_menu_done:
-                Set<String> ids = mSearchAdapter.getInvited();
-                for (String userID : ids) {
+                Set<String> invited = mSearchAdapter.getInvited();
+                Set<String> uninvited = mSearchAdapter.getUnivited();
+                for (String userID : invited) {
                     if(type.equals("group")){
                         dataBaseAPI.sendGroupInvite(userID, id);
                     }else if(type.equals("event")){
                         dataBaseAPI.sendEventInvite(userID, id);
                     }
                 }
+                for (String userID : uninvited) {
+                    if(type.equals("group")){
+                        dataBaseAPI.cancelEventInvite(userID, id);
+                    }else if(type.equals("event")){
+                        dataBaseAPI.cancelGroupInvite(userID, id);
+                    }
+                }
+
                 Toast.makeText(this, "Invites sent", Toast.LENGTH_LONG).show();
                 super.onBackPressed();
                 return true;
