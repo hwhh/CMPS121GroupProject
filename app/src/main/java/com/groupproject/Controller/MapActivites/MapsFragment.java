@@ -84,18 +84,18 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             googleMap.setOnMapClickListener(point -> {
                 googleMap.setOnMapClickListener(null);
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("event_location",  new LatLng(point.latitude, point.longitude));
-                CreateEventActivity createEventActivity = new CreateEventActivity();
-                createEventActivity.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.dashboard_content, createEventActivity, "sidebar").addToBackStack(null).commitAllowingStateLoss();
+//                Bundle bundle = new Bundle();
+//                bundle.putParcelable("event_location",  new LatLng(point.latitude, point.longitude));
+//                CreateEventActivity createEventActivity = new CreateEventActivity();
+//                createEventActivity.setArguments(bundle);
+//                getFragmentManager().beginTransaction().replace(R.id.dashboard_content, createEventActivity, "sidebar").addToBackStack(null).commitAllowingStateLoss();
 
 
 
-//                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
-//                intent.putExtra("event_location",
-//                        new LatLng(point.latitude, point.longitude));
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), CreateEventActivity.class);
+                intent.putExtra("event_location",
+                        new LatLng(point.latitude, point.longitude));
+                startActivity(intent);
                 //TODO: get id of created event?
             });
         });
