@@ -148,6 +148,11 @@ public class Group extends DataBaseItem{
         this.id = id;
     }
 
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
 
 

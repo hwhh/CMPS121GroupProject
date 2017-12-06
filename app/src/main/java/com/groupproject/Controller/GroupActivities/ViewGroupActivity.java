@@ -45,7 +45,6 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_group);
-
         Bundle b = getIntent().getExtras();
         String id = b.getString("key");
         dataBaseAPI.getGroup(id, this, null);
@@ -55,8 +54,6 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         events = findViewById(R.id.eventsGroup);
         groupPic = findViewById(R.id.groupPic);
         joinGroup = findViewById(R.id.joinGroup);
-
-
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
     }

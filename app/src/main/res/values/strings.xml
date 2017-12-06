@@ -194,6 +194,7 @@
     <string name="pinned">Pinned</string>
     <string name="done">done</string>
     <string name="invite_friends">Invite Friends</string>
+    <string name="todo">TODO</string>
 
 
 </resources>

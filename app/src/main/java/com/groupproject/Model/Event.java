@@ -20,6 +20,7 @@ public class Event extends DataBaseItem {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
+    private String groupName;
     private String hostID;
     private String nameLower;
     private String name;
@@ -74,8 +75,6 @@ public class Event extends DataBaseItem {
     }
 
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingIDs(Map<String, Object> map) {
         goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
@@ -103,6 +102,15 @@ public class Event extends DataBaseItem {
 
     public void setNameLower_expired(String nameLower_expired) {
         this.nameLower_expired = nameLower_expired;
+    }
+
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public long calculateTimeRemaining(){

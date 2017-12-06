@@ -66,16 +66,15 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
         numOfPeopleText = findViewById(R.id.numOfPeopleText);
-        joinButton = findViewById(R.id.btn_join);
-
+        Bundle b = getIntent().getExtras();
+        String id = b.getString("key");
         dataBaseAPI.getEvent((id), this, null);
         dataBaseAPI.getUser(dataBaseAPI.getCurrentUserID(), this, null);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         eventPic = findViewById(R.id.eventPic);
         interact = findViewById(R.id.btn_join);
         builder = new AlertDialog.Builder(this);
-        Bundle b = getIntent().getExtras();
-        String id = b.getString("key");
+
     }
 
 
@@ -87,14 +86,12 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
-        display(event);
         StorageReference storageReference = mStorageRef.child(event.getId()+".jpg");
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(storageReference)
                 .into(eventPic);
         display(event);
-        assignButton();
         ListView goingEvents = findViewById( R.id.goingUsers);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, goingEventsLists);
         goingEvents.setAdapter(adapter);
