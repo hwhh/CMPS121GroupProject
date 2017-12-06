@@ -9,7 +9,6 @@ import android.text.Html;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,7 +31,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
@@ -43,9 +41,9 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private TextView startTimeText;
     private TextView endTimeText;
     private TextView numOfPeopleText;
-    private Button joinButton;
+    private Button button;
     private Event event;
-    private User user;
+    private String userID;
     private StorageReference mStorageRef;
     private ImageView eventPic;
     List<String> goingEventsLists = new ArrayList<>();
@@ -61,14 +59,14 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
         numOfPeopleText = findViewById(R.id.numOfPeopleText);
-        joinButton = findViewById(R.id.btn_join);
+        button = findViewById(R.id.btn_join_leave_del);
+        userID = dataBaseAPI.getCurrentUserID();
         resetEvent();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         eventPic = findViewById(R.id.eventPic);
-        dataBaseAPI.getUser(dataBaseAPI.getCurrentUserID(), this, null);
 
-        joinButton.setOnClickListener(v -> {
-            if (event != null && user != null) {
+        button.setOnClickListener(v -> {
+            if (event != null && userID != null) {
                 if (userIsHost()) {
                     DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                         if (which == DialogInterface.BUTTON_POSITIVE) {
@@ -119,33 +117,33 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     private boolean userGoingToEvent() {
-        return event.goingIDs != null && event.goingIDs.contains(dataBaseAPI.getCurrentUserID());
+        return event.goingIDs != null && userID != null && event.goingIDs.contains(userID);
     }
 
     private boolean userIsHost() {
-        return event != null && event.getHostID().equals(dataBaseAPI.getCurrentUserID());
+        return event != null && userID != null && event.getHostID().equals(userID);
     }
 
     private void assignButton() {
-        if (event != null && user != null && !userIsHost()) {
+        if (event != null && userID != null && !userIsHost()) {
             if (userGoingToEvent()) {
-                joinButton.setBackgroundColor(getResources().getColor(R.color.red));
-                joinButton.setText(R.string.leave);
+                button.setBackgroundColor(getResources().getColor(R.color.red));
+                button.setText(R.string.leave);
             } else {
-                joinButton.setBackgroundColor(getResources().getColor(R.color.green));
-                joinButton.setText(R.string.join);
+                button.setBackgroundColor(getResources().getColor(R.color.green));
+                button.setText(R.string.join);
             }
         }
     }
 
     private void switchButton() {
-        if (event != null && user != null && !userIsHost()) {
+        if (event != null && userID != null && !userIsHost()) {
             if (userGoingToEvent()) {
-                joinButton.setBackgroundColor(getResources().getColor(R.color.green));
-                joinButton.setText(R.string.join);
+                button.setBackgroundColor(getResources().getColor(R.color.green));
+                button.setText(R.string.join);
             } else {
-                joinButton.setBackgroundColor(getResources().getColor(R.color.red));
-                joinButton.setText(R.string.leave);
+                button.setBackgroundColor(getResources().getColor(R.color.red));
+                button.setText(R.string.leave);
             }
         }
     }
@@ -165,23 +163,23 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
             numOfPeople = "" + event.goingIDs.size();
         numOfPeopleText.setText(numOfPeople);
         if (userIsHost()) {
-            joinButton.setText(R.string.Delete);
-            joinButton.setBackgroundColor(getResources().getColor(R.color.red));
+            button.setText(R.string.Delete);
+            button.setBackgroundColor(getResources().getColor(R.color.red));
         }
     }
 
     @Override
     public void getUser(User user, ViewHolder holder) {
-        this.user = user;
-        assignButton();
-        goingEventsLists.add(user.getName());
-        adapter.notifyDataSetChanged();
-
+        if (!goingEventsLists.contains(user.getName())) {
+            goingEventsLists.add(user.getName());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
         this.event = event;
+        goingEventsLists.clear();
         StorageReference storageReference = mStorageRef.child(event.getId()+".jpg");
         Glide.with(this)
                 .using(new FirebaseImageLoader())
@@ -189,13 +187,13 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
                 .into(eventPic);
         display(event);
         assignButton();
-        ListView goingEvents = findViewById( R.id.goingUsers);
+        ListView goingEvents = findViewById(R.id.goingUsers);
+        goingEvents.setAdapter(null);
         adapter = new ArrayAdapter<>
                 (this, android.R.layout.simple_spinner_item, goingEventsLists);
         goingEvents.setAdapter(adapter);
         Query query = dataBaseAPI.getmEventRef().child(event.getId()).child("goingIDs");
         dataBaseAPI.executeQuery(query, this, SearchType.Type.EVENTS);
-
     }
 
     @Override

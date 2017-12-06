@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,17 +62,11 @@ public class CreateEventActivity extends AppCompatActivity {
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
         } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
+            throw new IllegalArgumentException("Activity cannot find  extras event_location");
         }
         setContentView(R.layout.event_create);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
-
-        if (getIntent().hasExtra("event_location")) {
-            eventLocation = getIntent().getExtras().getParcelable("event_location");
-        } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
-        }
         setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
@@ -164,19 +157,19 @@ public class CreateEventActivity extends AppCompatActivity {
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                         dataBaseAPI.addEventToUser(e);
 
-                        Bundle newBundle = new Bundle();
                         Intent intent = new Intent(this, EventInfoActivity.class);
-                        newBundle.putString("key", e.getId());
+                        intent.putExtra("key", e.getId());
                         startActivity(intent);
                         StorageReference groupRef = mStorageRef.child(e.getId()+".jpg");
-                        UploadTask uploadTask = groupRef.putStream(image);
-                        uploadTask.addOnFailureListener(exception -> {
-                            // Handle unsuccessful uploads
-                        }).addOnSuccessListener(taskSnapshot -> {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        });
-                        //TODO: return the event id?
+                        if (image != null) {
+                            UploadTask uploadTask = groupRef.putStream(image);
+                            uploadTask.addOnFailureListener(exception -> {
+                                // Handle unsuccessful uploads
+                            }).addOnSuccessListener(taskSnapshot -> {
+                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            });
+                        }
                         finish();
                     }
 

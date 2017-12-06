@@ -88,12 +88,12 @@ public class Event extends DataBaseItem {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setInvitedIDs(Map<String, Object> map) {
-        goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+        invitedIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getInvitedIDs() {
-        return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+        return invitedIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
 
