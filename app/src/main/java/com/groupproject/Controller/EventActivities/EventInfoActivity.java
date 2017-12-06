@@ -66,11 +66,9 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
                     if (userGoingToEvent()) {
                         database.leaveEvent(event);
                         resetEvent();
-                        switchButton();
                     } else {
                         database.acceptEventInvite(event);
                         resetEvent();
-                        switchButton();
                     }
                 }
             }
