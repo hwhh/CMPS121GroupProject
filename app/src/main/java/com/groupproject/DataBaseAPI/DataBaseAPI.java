@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -57,6 +58,7 @@ public class DataBaseAPI {
     }
 
     public enum STATUS {
+        HOST,
         JOINED,
         INVITED,
         PUBLIC,
@@ -204,7 +206,9 @@ public class DataBaseAPI {
     }
 
     public STATUS getEventRelationShip(Event event){
-        if (event.goingIDs.contains(getCurrentUserID()))
+        if(Objects.equals(event.getHostID(), getCurrentUserID()))
+            return STATUS.HOST;
+        else if (event.goingIDs.contains(getCurrentUserID()))
             return STATUS.JOINED;
         else if (event.invitedIDs.contains(getCurrentUserID()))
             return STATUS.INVITED;
@@ -215,7 +219,9 @@ public class DataBaseAPI {
     }
 
     public STATUS getGroupRelationShip(Group group){
-        if (group.membersIDs.contains(getCurrentUserID()))
+        if(Objects.equals(group.getHost(), getCurrentUserID()))
+            return STATUS.HOST;
+        else if (group.membersIDs.contains(getCurrentUserID()))
             return STATUS.JOINED;
         else if (group.invitedIDs.contains(getCurrentUserID()))
             return STATUS.INVITED;

@@ -24,6 +24,7 @@ import com.groupproject.Controller.ViewProfileActivity;
 import java.util.List;
 
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HOST;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.INVITED;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.JOINED;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.PUBLIC;
@@ -105,7 +106,9 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getEvent(Event event, ViewHolder holder) {
         DataBaseAPI.STATUS status = dataBaseAPI.getEventRelationShip(event);
-        if(status == HIDDEN) {
+        if(status == HOST){
+            holder.interact.setImageDrawable(null);
+        } else if(status == HIDDEN) {
             holder.cardView.setVisibility(View.GONE);
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
@@ -125,7 +128,9 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getGroup(Group group, ViewHolder holder) {
         DataBaseAPI.STATUS status = dataBaseAPI.getGroupRelationShip(group);
-        if(status == HIDDEN) {
+        if(status == HOST){
+            holder.interact.setImageDrawable(null);
+        } else if(status == HIDDEN) {
             holder.cardView.setVisibility(View.GONE);
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
