@@ -196,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onSuccessfulSignUp(){
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            databaseAPI.getmUserRef().addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseAPI.getmUserRef().child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Intent intent = new Intent(getApplication(), BaseActivity.class);
@@ -211,7 +211,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-
 
         }
 

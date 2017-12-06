@@ -26,6 +26,8 @@ public class Event extends DataBaseItem {
     private String description;
     private String id;
 
+    private String nameLower_expired;
+
     private Date startDate;
     private Date endDate;
 
@@ -53,6 +55,7 @@ public class Event extends DataBaseItem {
         this.nameLower = name.toLowerCase();
         this.description = description;
         this.hostID = hostID;
+        this.nameLower_expired = nameLower+"_"+isExpired();
         goingIDs.add(hostID);
         dataBaseAPI.writeNewEvent(this);
     }
@@ -72,6 +75,7 @@ public class Event extends DataBaseItem {
 
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingIDs(Map<String, Object> map) {
         goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
@@ -84,19 +88,26 @@ public class Event extends DataBaseItem {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setInvitedIDs(Map<String, Object> map) {
-        goingIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+        invitedIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getInvitedIDs() {
-        return goingIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+        return invitedIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
+
+    public String getNameLower_expired() {
+        return this.nameLower_expired = nameLower+"_"+isExpired();
+    }
+
+    public void setNameLower_expired(String nameLower_expired) {
+        this.nameLower_expired = nameLower_expired;
+    }
 
     public long calculateTimeRemaining(){
         return endDate.getTime() - System.currentTimeMillis();
     }
-
 
     public String getHostID() {
         return hostID;

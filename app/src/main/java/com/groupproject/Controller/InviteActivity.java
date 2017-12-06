@@ -97,9 +97,9 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
                     }
                 }
                 for (String userID : uninvited) {
-                    if(type.equals("group")){
+                    if(type.equals("event")){
                         dataBaseAPI.cancelEventInvite(userID, id);
-                    }else if(type.equals("event")){
+                    }else if(type.equals("group")){
                         dataBaseAPI.cancelGroupInvite(userID, id);
                     }
                 }

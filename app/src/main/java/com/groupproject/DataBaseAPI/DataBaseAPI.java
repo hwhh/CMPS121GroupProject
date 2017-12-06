@@ -70,6 +70,7 @@ public class DataBaseAPI {
         eventMap = ExpiringMap.builder().variableExpiration().build();
         eventMap.addExpirationListener((key, e) -> {
             e.setExpired(true);
+            e.setNameLower_expired(e.getNameLower()+"_"+true);
             HashMap<String, Object> result = new HashMap<>();
             result.put(e.getId(), e);
             mEventRef.updateChildren(result);
