@@ -2,6 +2,7 @@ package com.groupproject.Controller;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -139,10 +141,11 @@ public class BaseActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        int minutes = prefs.getInt("interval", -1);
+//        int minutes = prefs.getInt("interval", -1);
+        int minutes = 2;
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent i = new Intent(this, NotificationService.class);
-        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+        Intent intent = new Intent(this, NotificationService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, intent, 0);
         if (am != null) {
             am.cancel(pi);
             if (minutes > 0) {
