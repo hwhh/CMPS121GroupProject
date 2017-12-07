@@ -31,6 +31,7 @@ public class Group extends DataBaseItem{
     private String nameLower;
 
     private String id;
+    private String vis_nameLower;
 
 
     private Visibility.VISIBILITY visibility;
@@ -48,6 +49,7 @@ public class Group extends DataBaseItem{
         this.visibility = visibility;
         membersIDs.add(host);
         this.host = host;
+        this.vis_nameLower = visibility+"_"+nameLower;
         dataBaseAPI.writeNewGroup(this);
     }
 
@@ -63,6 +65,14 @@ public class Group extends DataBaseItem{
         invitedIDs = new ArrayList<>();
     }
 
+
+    public String getVis_nameLower() {
+        return vis_nameLower;
+    }
+
+    public void setVis_nameLower(String vis_nameLower) {
+        this.vis_nameLower = vis_nameLower;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMembersIDs(Map<String, Object> map) {

@@ -110,9 +110,11 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
+                Event event = dataSnapshot.getValue(com.groupproject.Model.Event.class);
+                if (event != null) {
+                    addPinsToMap();
+                }
             }
-
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {

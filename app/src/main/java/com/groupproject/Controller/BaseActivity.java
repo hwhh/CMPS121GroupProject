@@ -58,7 +58,10 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        DataBaseAPI.removeExpiredEvents();
 
         setContentView(R.layout.navigation_base);
         Toolbar toolbar = findViewById(R.id.toolbar);
