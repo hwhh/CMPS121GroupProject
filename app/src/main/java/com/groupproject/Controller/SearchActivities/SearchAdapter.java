@@ -11,6 +11,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
+import com.groupproject.Controller.GroupActivities.ViewGroupActivity;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
@@ -24,6 +25,7 @@ import com.groupproject.Controller.ViewProfileActivity;
 import java.util.List;
 
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HOST;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.INVITED;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.JOINED;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.PUBLIC;
@@ -70,7 +72,7 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         }else if (((SearchFragment) fragment).getSearchType() == SearchType.Type.GROUPS) {
             dataBaseAPI.getGroup(model.getId(), this, holder);
             holder.cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(fragment.getActivity(), ViewProfileActivity.class);
+                Intent intent = new Intent(fragment.getActivity(), ViewGroupActivity.class);
                 intent.putExtra("key", model.getId());
                 fragment.getActivity().startActivity(intent);
             });
@@ -86,9 +88,9 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(userRelationship == FRIENDS) {
             holder.interact.setImageDrawable(null); //TODO go to profile to remove
         } else if(userRelationship == REQUESTED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_cancel));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.cancel_button));
         }else if(userRelationship == NONE) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.button_add));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button));
         }
         holder.interact.setOnClickListener(view -> {
             if(userRelationship == FRIENDS) {
@@ -105,7 +107,9 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getEvent(Event event, ViewHolder holder) {
         DataBaseAPI.STATUS status = dataBaseAPI.getEventRelationShip(event);
-        if(status == HIDDEN) {
+        if(status == HOST){
+            holder.interact.setImageDrawable(null);
+        } else if(status == HIDDEN) {
             holder.cardView.setVisibility(View.GONE);
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
@@ -125,7 +129,9 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
     @Override
     public void getGroup(Group group, ViewHolder holder) {
         DataBaseAPI.STATUS status = dataBaseAPI.getGroupRelationShip(group);
-        if(status == HIDDEN) {
+        if(status == HOST){
+            holder.interact.setImageDrawable(null);
+        } else if(status == HIDDEN) {
             holder.cardView.setVisibility(View.GONE);
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);

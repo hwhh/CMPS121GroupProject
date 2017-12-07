@@ -19,6 +19,27 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
+        <ImageButton
+            android:id="@+id/upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/eventpic" />
+
+        <TextView
+            android:id="@+id/clickText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="42dp"
+            android:layout_marginStart="42dp"
+            android:fontFamily="@font/segoeuil"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp"
+            android:text="Click icon to add group picture"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/groupNameText"
             android:layout_width="match_parent"
@@ -91,21 +112,23 @@
             android:id="@+id/GroupVisibilitySpinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:fontFamily="@font/josefin_sans_semibold" />
+            android:fontFamily="@font/segoeuil" />
 
         <Button
             android:id="@+id/createGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@null"
             android:fontFamily="@font/segoeuil"
             android:text="Create"
-            android:textAllCaps="false"
 
+            android:textAllCaps="false"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="192dp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

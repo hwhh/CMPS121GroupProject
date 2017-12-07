@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -56,7 +57,9 @@ public class DataBaseAPI {
         NONE
     }
 
+
     public enum STATUS {
+        HOST,
         JOINED,
         INVITED,
         PUBLIC,
@@ -70,7 +73,7 @@ public class DataBaseAPI {
         eventMap = ExpiringMap.builder().variableExpiration().build();
         eventMap.addExpirationListener((key, e) -> {
             e.setExpired(true);
-            e.setNameLower_expired(e.getNameLower()+"_"+true);
+            e.setNameLower_expired_vis(e.getNameLower()+"_"+true+"_"+e.getVisibility());
             HashMap<String, Object> result = new HashMap<>();
             result.put(e.getId(), e);
             mEventRef.updateChildren(result);
@@ -204,7 +207,9 @@ public class DataBaseAPI {
     }
 
     public STATUS getEventRelationShip(Event event){
-        if (event.goingIDs.contains(getCurrentUserID()))
+        if(Objects.equals(event.getHostID(), getCurrentUserID()))
+            return STATUS.HOST;
+        else if (event.goingIDs.contains(getCurrentUserID()))
             return STATUS.JOINED;
         else if (event.invitedIDs.contains(getCurrentUserID()))
             return STATUS.INVITED;
@@ -215,7 +220,9 @@ public class DataBaseAPI {
     }
 
     public STATUS getGroupRelationShip(Group group){
-        if (group.membersIDs.contains(getCurrentUserID()))
+        if(Objects.equals(group.getHost(), getCurrentUserID()))
+            return STATUS.HOST;
+        else if (group.membersIDs.contains(getCurrentUserID()))
             return STATUS.JOINED;
         else if (group.invitedIDs.contains(getCurrentUserID()))
             return STATUS.INVITED;
@@ -252,6 +259,7 @@ public class DataBaseAPI {
         getmUserRef().child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).removeValue();
     }
 
+    //TODO implement
     public void leaveGroup(Group group){
         getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
@@ -448,9 +456,6 @@ public class DataBaseAPI {
             }
         }
     }
-
-
-
 
 }
 
