@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="0dp"
+        android:layout_width="146dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="100dp"
         android:layout_marginStart="8dp"
@@ -150,8 +150,22 @@
     <ListView
         android:id="@+id/goingUsers"
         android:layout_width="368dp"
-        android:layout_height="wrap_content"
+        android:layout_height="191dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goingText" />
+        app:layout_constraintTop_toBottomOf="@+id/goingText" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/done"
+        tools:layout_editor_absoluteX="219dp"
+        tools:layout_editor_absoluteY="503dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goingUsers" />
 
 </android.support.constraint.ConstraintLayout>
