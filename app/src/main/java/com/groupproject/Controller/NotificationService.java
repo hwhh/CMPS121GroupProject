@@ -1,19 +1,25 @@
 package com.groupproject.Controller;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.support.v4.app.NotificationCompat;
+
+import com.groupproject.R;
 
 public class NotificationService extends Service {
     private PowerManager.WakeLock mWakeLock;
 
     /**
      * Simply return null, since our Service will not be communicating with
-     * any other components. It just does its work silently.
-     *
+     * any other components. It just does its work silently.     *
      */
     @Override public IBinder onBind(Intent intent) {
         return null;
@@ -47,7 +53,11 @@ public class NotificationService extends Service {
          * separate thread
          */
         @Override protected Void doInBackground(Void... params) {
-            // do stuff!
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -63,8 +73,8 @@ public class NotificationService extends Service {
          * can go to sleep again and save precious battery.
          */
         @Override protected void onPostExecute(Void result) {
-            // handle your data
-             stopSelf();
+            sendNotification();
+            stopSelf();
         }
     }
 
@@ -86,5 +96,20 @@ public class NotificationService extends Service {
      public void onDestroy() {
          super.onDestroy();
          mWakeLock.release();
+     }
+
+     private void sendNotification() {
+         NotificationCompat.Builder mBuilder =
+                 new NotificationCompat.Builder(this)
+                         .setContentTitle("My notification")
+                         .setContentText("Hello World!");
+         // Sets an ID for the notification
+         int mNotificationId = 1;
+         // Gets an instance of the NotificationManager service
+         NotificationManager mNotifyMgr =
+                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+         // Builds the notification and issues it.
+         mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
      }
 }
