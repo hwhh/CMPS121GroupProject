@@ -23,6 +23,8 @@ public class User extends DataBaseItem{
     public List<String> invitedEventsIDs;
     public List<String> joinedGroupIDs;
     public List<String> invitedGroupIDs;
+    public List<String> unSeenNotifications;
+
 
 
 //    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
@@ -54,6 +56,7 @@ public class User extends DataBaseItem{
         invitedGroupIDs = new ArrayList<>();
         invitedEventsIDs = new ArrayList<>();
         joinedGroupIDs = new ArrayList<>();
+        unSeenNotifications = new ArrayList<>();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -84,11 +87,11 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getRequestsID() {
-        return requestsID.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+        return requestsID.stream().collect(Collectors.toMap(Function.identity(), id -> !unSeenNotifications.contains(id)));
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+       @RequiresApi(api = Build.VERSION_CODES.N)
     public void setJoinedGroupIDs(Map<String, Object> map) {
         joinedGroupIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
@@ -106,7 +109,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getInvitedGroupIDs() {
-        return invitedGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+        return invitedGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> !unSeenNotifications.contains(id)));
     }
 
 
@@ -117,8 +120,20 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getInvitedEventsIDs() {
-        return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+        return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> !unSeenNotifications.contains(id)));
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void seSeenNotifications(Map<String, Object> map) {
+        unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Object> getsSenNotifications() {
+        return unSeenNotifications.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
 
     public CustomLocation getLocation() {
         return location;

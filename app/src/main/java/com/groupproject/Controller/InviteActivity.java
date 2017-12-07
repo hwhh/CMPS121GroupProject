@@ -88,7 +88,7 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
         switch (item.getItemId()) {
             case R.id.action_menu_done:
                 Set<String> invited = mSearchAdapter.getInvited();
-                Set<String> uninvited = mSearchAdapter.getUnivited();
+                Set<String> uninvited = mSearchAdapter.getUninvited();
                 for (String userID : invited) {
                     if(type.equals("group")){
                         dataBaseAPI.sendGroupInvite(userID, id);

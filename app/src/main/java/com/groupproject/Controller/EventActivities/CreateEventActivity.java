@@ -221,8 +221,8 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                     newBundle.putString("key", event.getId());
                     startActivity(intent);
                     finish();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                } catch (ParseException ignored) {
+
                 }
             } else {
                 Toast.makeText(this, "Please fill in all the data",

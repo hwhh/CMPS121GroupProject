@@ -61,15 +61,17 @@ public class NewGroup extends AppCompatActivity {
             if (name.getText() != null && description.getText() != null) {
                 g = new Group(name.getText().toString(), description.getText().toString(), groupVis, dataBaseAPI.getCurrentUserID());
                 dataBaseAPI.addGroupToUser(g);//TODO fix this and use a callback
-                StorageReference groupRef = mStorageRef.child(g.getId()+".jpg");
-                UploadTask uploadTask = groupRef.putStream(image);
-                uploadTask.addOnFailureListener(exception -> {
-                    // Handle unsuccessful uploads
-                }).addOnSuccessListener(taskSnapshot -> {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                });
-                finish();
+                if(image != null) {
+                    StorageReference groupRef = mStorageRef.child(g.getId() + ".jpg");
+                    UploadTask uploadTask = groupRef.putStream(image);
+                    uploadTask.addOnFailureListener(exception -> {
+                        // Handle unsuccessful uploads
+                    }).addOnSuccessListener(taskSnapshot -> {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    });
+                    finish();
+                }
             } else {
                 Toast.makeText(getApplicationContext(), "Please fill in all the data",
                         Toast.LENGTH_LONG).show();

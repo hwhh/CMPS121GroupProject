@@ -101,6 +101,7 @@ public class BaseActivity extends AppCompatActivity
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
 
+
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.dashboard_content, mapsFrag, "maps");
         currentFragment = mapsFrag;
