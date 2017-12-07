@@ -16,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -25,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,6 +40,7 @@ import com.groupproject.Controller.EventActivities.CreateEventActivity;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
+import com.groupproject.Model.Visibility;
 import com.groupproject.R;
 
 import java.util.Calendar;
@@ -161,11 +165,25 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         if(googleMap != null) {
             googleMap.clear();
             for (Event event : DataBaseAPI.getEventMap().values()) {
-                Marker marker = googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
-                        .title(event.getName())
-                        .snippet(event.getEndDate().toString()));
-                marker.setTag(event.getId());
+                DataBaseAPI.STATUS status = dataBaseAPI.getEventRelationShip(event);
+                if(status != DataBaseAPI.STATUS.HIDDEN) {
+                    BitmapDescriptor descriptor = null;
+                    if(status == DataBaseAPI.STATUS.HOST){
+                        descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+                    } else if(status == DataBaseAPI.STATUS.PUBLIC){
+                        descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+                    }else if(event.getVisibility() == Visibility.VISIBILITY.INVITE_ONLY && event.invitedIDs.contains(dataBaseAPI.getCurrentUserID())  ){
+                        descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                    }else if(event.getVisibility() == Visibility.VISIBILITY.INVITE_ONLY && event.goingIDs.contains(dataBaseAPI.getCurrentUserID())  ){
+                        descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                    }
+                        Marker marker = googleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
+                                .title(event.getName())
+                                .snippet(event.getEndDate().toString())
+                                .icon(descriptor));
+                        marker.setTag(event.getId());
+                }
             }
         }
     }

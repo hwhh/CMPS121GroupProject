@@ -57,11 +57,7 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         events = findViewById(R.id.eventsGroup);
         groupPic = findViewById(R.id.groupPic);
         joinGroup = findViewById(R.id.joinGroup);
-
         mStorageRef = FirebaseStorage.getInstance().getReference();
-
-
-
     }
 
     @Override

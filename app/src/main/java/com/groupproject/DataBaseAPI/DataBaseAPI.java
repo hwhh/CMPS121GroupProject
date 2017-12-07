@@ -235,16 +235,19 @@ public class DataBaseAPI {
     //TODO ON USER PROFILE INVITE TO EVENTS OR GROUPS ***
     public void sendFriendRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
+        getmUserRef().child(user.getId()).child("unSeenNotifications").child(user.getId()).setValue(true);
     }
 
     public void sendEventInvite(String userID, String eventID){
         getmEventRef().child(eventID).child("invitedIDs").child(userID).setValue(true);
         getmUserRef().child(userID).child("invitedEventsIDs").child(eventID).setValue(true);
+        getmUserRef().child(userID).child("unSeenNotifications").child(eventID).setValue(true);
     }
 
     public void sendGroupInvite(String userID, String groupID){
         getmGroupRef().child(groupID).child("invitedIDs").child(userID).setValue(true);
         getmUserRef().child(userID).child("invitedGroupIDs").child(groupID).setValue(true);
+        getmUserRef().child(userID).child("unSeenNotifications").child(groupID).setValue(true);
     }
 
 
@@ -261,6 +264,38 @@ public class DataBaseAPI {
     public void leaveGroup(Group group){
         getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
+    }
+
+    public void setNotificationAsSeen(String id, String notificationID,  SearchType.Type type){
+        getmUserRef().child(getCurrentUserID()).child("unSeenNotifications").child(id).removeValue();
+        if(type == SearchType.Type.USERS){
+            getmUserRef().child(getCurrentUserID()).child("requestsID").child(notificationID).setValue(false);
+        } else if(type == SearchType.Type.EVENTS){
+            getmUserRef().child(getCurrentUserID()).child("invitedEventsIDs").child(notificationID).setValue(false);
+        }else if(type == SearchType.Type.GROUPS){
+            getmUserRef().child(getCurrentUserID()).child("invitedGroupIDs").child(notificationID).setValue(false);
+        }
+    }
+
+    public List<String> getNotifications(){
+        List<String> notifications = new ArrayList<>();
+        Query query = getmUserRef().child(getCurrentUserID()).child("unSeenNotifications");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        notifications.add(snapshot.getValue(String.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return notifications;
     }
 
     public void deleteEvent(Event event){
