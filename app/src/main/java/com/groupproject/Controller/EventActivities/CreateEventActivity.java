@@ -83,7 +83,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
         } else {
-            throw new IllegalArgumentException("Activity cannot find  extras event_location"); //TODO WTF IS THIS - Dont crash the app
+            throw new IllegalArgumentException("Activity cannot find  extras event_location");
         }
         setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
@@ -95,7 +95,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
         groupSelector =findViewById(R.id.groupSelectorSpinner);
 
 
-         groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups);
+        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups);
         groupSelector.setAdapter(groupAdapter);
         groupSelector.setVisibility(View.INVISIBLE);
 
@@ -117,10 +117,6 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
 
 
 
-        name = findViewById(R.id.name);
-        description = findViewById(R.id.desc);
-        startDate = findViewById(R.id.start_date);
-        endDate = findViewById(R.id.end_date);
         upload = findViewById(R.id.uploadEvent);
         upload.setOnClickListener(view -> {
             pickImage();
@@ -136,7 +132,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                  this,
+                    this,
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -179,6 +175,17 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
             }
         });
 
+
+//        Button inviteButton =findViewById(R.id.invitebutton);
+//        inviteButton.setOnClickListener(view -> {
+//            Bundle newBundle = new Bundle();
+//            newBundle.putString("type", "friends");
+//            SidebarFragment sidebarFragment = new SidebarFragment();
+//            sidebarFragment.setArguments(newBundle);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "sidebar").addToBackStack(null).commit();
+//
+//        });
+
         Button saveButton = findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             if (allDataEntered()) {
@@ -187,7 +194,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                 try {
                     Date sDate = sdf.parse(startDate.getText().toString());
                     Date fDate = sdf.parse(endDate.getText().toString());
-
+//                    Event e;
                     Visibility.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
                             Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
 
@@ -195,6 +202,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                         event = new Event(sDate, fDate,
                                 new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
+                        dataBaseAPI.addEventToUser(event);
 
                         if (asGroup) {
                             Group group = (Group) groupSelector.getSelectedItem();
@@ -216,10 +224,19 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                             });
                         }
                     }
-                    Bundle newBundle = new Bundle();
                     Intent intent = new Intent(this, EventInfoActivity.class);
-                    newBundle.putString("key", event.getId());
+                    intent.putExtra("key", event.getId());
                     startActivity(intent);
+                    StorageReference groupRef = mStorageRef.child(event.getId()+".jpg");
+                    if (image != null) {
+                        UploadTask uploadTask = groupRef.putStream(image);
+                        uploadTask.addOnFailureListener(exception -> {
+                            // Handle unsuccessful uploads
+                        }).addOnSuccessListener(taskSnapshot -> {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        });
+                    }
                     finish();
                 } catch (ParseException ignored) {
 

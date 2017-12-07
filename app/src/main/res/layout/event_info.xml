@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="0dp"
+        android:layout_width="146dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="100dp"
         android:layout_marginStart="8dp"
@@ -27,7 +27,6 @@
         android:id="@+id/startsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/segoeuil"
@@ -40,7 +39,6 @@
         android:id="@+id/startDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="92dp"
         android:layout_marginStart="92dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/segoeuil"
@@ -109,8 +107,8 @@
         app:srcCompat="@drawable/defaultpic" />
 
     <Button
-        android:id="@+id/btn_join"
-        android:layout_width="100dp"
+        android:id="@+id/btn_join_leave_del"
+        android:layout_width="126dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="140dp"
@@ -164,5 +162,17 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goingText" />
+
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/done"
+        tools:layout_editor_absoluteX="219dp"
+        tools:layout_editor_absoluteY="503dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goingUsers" />
 
 </android.support.constraint.ConstraintLayout>
