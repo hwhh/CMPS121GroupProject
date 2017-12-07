@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -136,7 +135,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
 
         startDate.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog =  new DatePickerDialog(
-                    CreateEventActivity.this,
+                  this,
                     start_date_picker,
                     startDateCalendar.get(Calendar.YEAR),
                     startDateCalendar.get(Calendar.MONTH),
@@ -214,16 +213,13 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             });
-                            //TODO: return the event id?
-                            finish();
-
-                            Bundle newBundle = new Bundle();
-                            Intent intent = new Intent(this, EventInfoActivity.class);
-                            newBundle.putString("key", event.getId());
-                            startActivity(intent);
                         }
                     }
-
+                    Bundle newBundle = new Bundle();
+                    Intent intent = new Intent(this, EventInfoActivity.class);
+                    newBundle.putString("key", event.getId());
+                    startActivity(intent);
+                    finish();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -236,7 +232,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
         options.add("Public");
         options.add("Private");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
-        visibility =findViewById(R.id.visibility);
+        visibility = findViewById(R.id.visibility);
         visibility.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }

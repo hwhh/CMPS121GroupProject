@@ -84,7 +84,7 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                 break;
             case NOTIFICATIONS:
                 holder.selected.setVisibility(View.GONE);
-                holder.interact.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.button_accept));
+                holder.interact.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.accept_button));
                 holder.interact.setOnClickListener(view -> {
                     if(dataBaseItem instanceof User) {
                         databaseAPI.acceptRequestUser((User) dataBaseItem);
