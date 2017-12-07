@@ -52,7 +52,8 @@ public class NotificationService extends Service {
          * you have to do to get your updates in here, because this is run in a
          * separate thread
          */
-        @Override protected Void doInBackground(Void... params) {
+        @Override
+        protected Void doInBackground(Void... params) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
