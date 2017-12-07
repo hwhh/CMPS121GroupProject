@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
-        android:layout_height="366dp"
+        android:layout_height="500dp"
         android:layout_marginEnd="41dp"
         android:layout_marginStart="41dp"
         android:orientation="vertical"
@@ -23,7 +23,8 @@
             android:id="@+id/upload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/eventpic" />
+            android:background="@null"
+            app:srcCompat="@drawable/defaultpic" />
 
         <TextView
             android:id="@+id/clickText2"

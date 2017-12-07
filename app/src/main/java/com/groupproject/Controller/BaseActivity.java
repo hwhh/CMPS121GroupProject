@@ -68,6 +68,8 @@ public class BaseActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DataBaseAPI.removeExpiredEvents();
+
         setContentView(R.layout.navigation_base);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -156,7 +158,7 @@ public class BaseActivity extends AppCompatActivity
         }
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         String currentUserID = dataBaseAPI.getCurrentUserID();
         dataBaseAPI.getUser(currentUserID, this, null);

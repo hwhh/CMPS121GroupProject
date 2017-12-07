@@ -29,23 +29,18 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
 
+
             <ImageButton
-
                 android:id="@+id/uploadEvent"
-                android:paddingTop="10sp"
-                android:layout_width="129dp"
-                android:layout_height="65dp"
-                android:layout_marginEnd="130dp"
-                android:layout_marginStart="130dp"
-                android:adjustViewBounds="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@null"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/defaultpic"
-
-                />
+                android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
+                app:srcCompat="@drawable/defaultpic" />
 
             <TextView
                 android:id="@+id/clickText"
@@ -68,12 +63,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
+                android:paddingLeft="4dp"
                 android:text="Create as Group" />
 
             <Spinner
                 android:id="@+id/groupSelectorSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="38dp"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:fontFamily="@font/josefin_sans_semibold" />
@@ -85,7 +81,6 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:fontFamily="@font/segoeuil"
-                android:paddingBottom="4dp"
                 android:paddingLeft="4dp"
                 android:text="@string/name"
                 android:textColor="@android:color/black"
@@ -116,7 +111,7 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:fontFamily="@font/segoeuil"
-                android:padding="4dp"
+                android:paddingLeft="4dp"
                 android:text="@string/description"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
@@ -124,7 +119,7 @@
             <EditText
                 android:id="@+id/desc"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:ems="10"
@@ -139,14 +134,15 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:fontFamily="@font/segoeuil"
-                android:padding="4dp"
+                android:paddingLeft="4dp"
                 android:text="@string/start_date"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/start_date"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:clickable="true"
@@ -162,14 +158,15 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:fontFamily="@font/segoeuil"
-                android:padding="4dp"
+                android:paddingLeft="4dp"
                 android:text="End date"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/end_date"
                 android:layout_width="match_parent"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:clickable="true"
@@ -185,38 +182,32 @@
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
                 android:fontFamily="@font/segoeuil"
-                android:padding="4dp"
+                android:paddingLeft="4dp"
                 android:text="Visibility"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/visibility"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="38dp"
                 android:layout_marginEnd="42dp"
                 android:layout_marginStart="42dp"
-                android:fontFamily="@font/josefin_sans_semibold" />
+                android:fontFamily="@font/segoeuil" />
 
-            <LinearLayout
+            <Button
+                android:id="@+id/savebutton"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="42dp"
+                android:layout_marginEnd="42dp"
+                android:background="@null"
+                android:fontFamily="@font/segoeuil"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
 
-                <Button
-                    android:id="@+id/savebutton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="42dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:fontFamily="@font/segoeuil"
-                    android:text="Save"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
 
         </LinearLayout>
 

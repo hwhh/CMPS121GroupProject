@@ -57,7 +57,6 @@ public class DataBaseAPI {
         NONE
     }
 
-
     public enum STATUS {
         HOST,
         JOINED,
@@ -73,7 +72,7 @@ public class DataBaseAPI {
         eventMap = ExpiringMap.builder().variableExpiration().build();
         eventMap.addExpirationListener((key, e) -> {
             e.setExpired(true);
-            e.setNameLower_expired_vis(e.getNameLower()+"_"+true+"_"+e.getVisibility());
+            e.setExpired_vis_nameLower(true+"_"+e.getVisibility()+"_"+e.getNameLower());
             HashMap<String, Object> result = new HashMap<>();
             result.put(e.getId(), e);
             mEventRef.updateChildren(result);
@@ -259,7 +258,6 @@ public class DataBaseAPI {
         getmUserRef().child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).removeValue();
     }
 
-    //TODO implement
     public void leaveGroup(Group group){
         getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
@@ -408,6 +406,37 @@ public class DataBaseAPI {
         return eventMap;
     }
 
+    public static void removeExpiredEvents() {
+        Query activeEvents = mEventRef.orderByChild("expired").equalTo(false);
+        activeEvents.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Event event = snapshot.getValue(com.groupproject.Model.Event.class);
+                        if (event != null) {
+                            if (event.getEndDate().before(new Date())){
+                                event.setExpired(true);
+                                event.setExpired_vis_nameLower(true+"_"+event.getVisibility()+"_"+event.getNameLower());
+                                HashMap<String, Object> result = new HashMap<>();
+                                result.put(event.getId(), event);
+                                mEventRef.updateChildren(result);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+
+        });
+    }
+
+
 
     public static void loadActiveEvents() {
         Date date = new Date();
@@ -456,7 +485,6 @@ public class DataBaseAPI {
             }
         }
     }
-
 }
 
 

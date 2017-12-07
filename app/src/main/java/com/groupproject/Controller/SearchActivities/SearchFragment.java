@@ -13,9 +13,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.Event;
 import com.groupproject.R;
 
 
@@ -101,7 +105,11 @@ public class SearchFragment extends Fragment implements SearchType{
         if(reference != null) {
             Query query = reference.orderByChild("nameLower").startAt(q).endAt(q + "\uf8ff");
             if (searchType.equals(Type.EVENTS))
-                query = reference.orderByChild("nameLower_expired_vis").startAt(q).endAt(q + "\uf8ff_false_PUBLIC");
+                query = reference.orderByChild("expired_vis_nameLower").startAt("false_PUBLIC_"+q).endAt("false_PUBLIC_"+q + "\uf8ff");
+            else if (searchType.equals(Type.GROUPS))
+                query = reference.orderByChild("vis_nameLower").startAt("PUBLIC_"+q).endAt("PUBLIC_"+q + "\uf8ff");
+
+
             mSearchAdapter = new SearchAdapter(query, this);
             mRecyclerView.swapAdapter(mSearchAdapter, true);
             mSearchAdapter.startListening();

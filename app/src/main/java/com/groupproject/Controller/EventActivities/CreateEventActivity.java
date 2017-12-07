@@ -7,20 +7,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Query;
+import com.groupproject.Controller.SearchActivities.SearchType;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.CustomLocation;
 import com.groupproject.Model.Event;
+import com.groupproject.Model.Group;
+import com.groupproject.Model.User;
 import com.groupproject.Model.Visibility;
 import com.groupproject.R;
 
@@ -32,9 +40,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class CreateEventActivity extends AppCompatActivity {
+public class CreateEventActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
@@ -46,18 +56,29 @@ public class CreateEventActivity extends AppCompatActivity {
     private Calendar endDateCalendar;
     private DatePickerDialog.OnDateSetListener start_date_picker;
     private DatePickerDialog.OnDateSetListener end_date_picker;
-    private Spinner visibility;
+    private Spinner visibility, groupSelector;
     private ImageButton upload;
     private StorageReference mStorageRef;
     private InputStream image;
     private static final int PICK_PHOTO_FOR_AVATAR = 0;
 
+    private boolean asGroup;
+
     ArrayList<String> options = new ArrayList<>();
+    ArrayList<Group> groups = new ArrayList<>();
+    ArrayList<String> groupNames = new ArrayList<>();
+    private ArrayAdapter<Group> groupAdapter;
+    private Switch aSwitch;
+    private Event event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final LatLng eventLocation;
+
+        setContentView(R.layout.event_create);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         if (getIntent().hasExtra("event_location")) {
             eventLocation = getIntent().getExtras().getParcelable("event_location");
@@ -65,20 +86,37 @@ public class CreateEventActivity extends AppCompatActivity {
             throw new IllegalArgumentException("Activity cannot find  extras event_location");
         }
         setContentView(R.layout.event_create);
-
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        setContentView(R.layout.event_create);
         startDateCalendar = Calendar.getInstance();
         endDateCalendar = Calendar.getInstance();
         name =findViewById(R.id.name);
         description =findViewById(R.id.desc);
         startDate =findViewById(R.id.start_date);
         endDate =findViewById(R.id.end_date);
+        groupSelector =findViewById(R.id.groupSelectorSpinner);
 
-        name = findViewById(R.id.name);
-        description = findViewById(R.id.desc);
-        startDate = findViewById(R.id.start_date);
-        endDate = findViewById(R.id.end_date);
+
+        groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups);
+        groupSelector.setAdapter(groupAdapter);
+        groupSelector.setVisibility(View.INVISIBLE);
+
+        Query query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("joinedGroupIDs");
+        dataBaseAPI.executeQuery(query, this, SearchType.Type.GROUPS);
+//        groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        aSwitch = findViewById(R.id.createAsGroup);
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            asGroup = isChecked;
+            if(isChecked)
+                groupSelector.setVisibility(View.VISIBLE);
+            else
+                groupSelector.setVisibility(View.INVISIBLE);
+        });
+
+
+
+
+
         upload = findViewById(R.id.uploadEvent);
         upload.setOnClickListener(view -> {
             pickImage();
@@ -137,31 +175,46 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+
+//        Button inviteButton =findViewById(R.id.invitebutton);
+//        inviteButton.setOnClickListener(view -> {
+//            Bundle newBundle = new Bundle();
+//            newBundle.putString("type", "friends");
+//            SidebarFragment sidebarFragment = new SidebarFragment();
+//            sidebarFragment.setArguments(newBundle);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "sidebar").addToBackStack(null).commit();
+//
+//        });
+
         Button saveButton = findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             if (allDataEntered()) {
-
                 String myFormat = "MM/dd/yy hh:mm";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
                 try {
                     Date sDate = sdf.parse(startDate.getText().toString());
                     Date fDate = sdf.parse(endDate.getText().toString());
-                    Event e;
+//                    Event e;
                     Visibility.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
                             Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
 
                     if (eventLocation != null) {
-                        e = new Event(sDate, fDate,
+                        event = new Event(sDate, fDate,
                                 new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
                         dataBaseAPI.addEventToUser(e);
 
-                        Intent intent = new Intent(this, EventInfoActivity.class);
-                        intent.putExtra("key", e.getId());
-                        startActivity(intent);
-                        StorageReference groupRef = mStorageRef.child(e.getId()+".jpg");
+                        if (asGroup) {
+                            Group group = (Group) groupSelector.getSelectedItem();
+                            Query inviteGroup = dataBaseAPI.getmGroupRef().child(group.getId()).child("membersIDs");
+                            dataBaseAPI.executeQuery(inviteGroup, this, SearchType.Type.USERS);
+                            dataBaseAPI.getmGroupRef().child(group.getId()).child("eventsIDs").child(event.getId()).setValue(true);
+                            event.setGroupName(group.getName());
+                        }
+
+                        dataBaseAPI.addEventToUser(event);
                         if (image != null) {
+                            StorageReference groupRef = mStorageRef.child(event.getId() + ".jpg");
                             UploadTask uploadTask = groupRef.putStream(image);
                             uploadTask.addOnFailureListener(exception -> {
                                 // Handle unsuccessful uploads
@@ -170,7 +223,21 @@ public class CreateEventActivity extends AppCompatActivity {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             });
                         }
-                        finish();
+                    }
+                    Intent intent = new Intent(this, EventInfoActivity.class);
+                    intent.putExtra("key", event.getId());
+                    startActivity(intent);
+                    StorageReference groupRef = mStorageRef.child(e.getId()+".jpg");
+                    if (image != null) {
+                        UploadTask uploadTask = groupRef.putStream(image);
+                        uploadTask.addOnFailureListener(exception -> {
+                            // Handle unsuccessful uploads
+                        }).addOnSuccessListener(taskSnapshot -> {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        });
+                    }
+                    finish();
                     }
 
                 } catch (ParseException e) {
@@ -249,10 +316,6 @@ public class CreateEventActivity extends AppCompatActivity {
         return !editText.getText().toString().trim().isEmpty();
     }
 
-    public void dropdownOption(){
-
-
-    }
 
     public void pickImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -265,20 +328,46 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
             if (data == null) {
-                //Display an error
                 return;
             }
             try {
-                //e.g. create user, then change "images" to where i was called from
                 InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
                 image = inputStream;
                 Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
     }
 
+    @Override
+    public void getUser(User user, ViewHolder holder) {
+        if(!Objects.equals(user.getId(), dataBaseAPI.getCurrentUserID()))
+            dataBaseAPI.sendEventInvite(user.getId(), event.getId());
+    }
 
+    @Override
+    public void getEvent(Event event, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void getGroup(Group group, ViewHolder holder) {
+        groups.add(group);
+        groupNames.add(group.getName());
+        groupAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void executeQuery(List<String> result, SearchType.Type type) {
+        if(type == SearchType.Type.GROUPS) {
+            for (String id : result) {
+                dataBaseAPI.getGroup(id, this, null);
+            }
+        }else if(type == SearchType.Type.USERS){
+            for (String id : result) {
+                dataBaseAPI.getUser(id, this, null);
+            }
+        }
+    }
 }
