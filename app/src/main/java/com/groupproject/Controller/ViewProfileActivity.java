@@ -57,6 +57,8 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
         emailAddress = findViewById(R.id.emailAdd);
         upload = findViewById(R.id.profileUpload);
 
+
+
         upload.setOnClickListener(view -> {
             pickImage();
         });
@@ -81,22 +83,41 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
                 break;
             case FRIENDS:
                 profileButton.setText("Remove Friend");
-                dataBaseAPI.removeFriend(user);
                 upload.setClickable(false);
                 break;
             case REQUESTED:
                 profileButton.setText("Cancel Request");
-                dataBaseAPI.cancelFriendRequest(user);
                 upload.setClickable(false);
                 break;
             case NONE:
                 profileButton.setText("Send Request");
-                dataBaseAPI.sendFriendRequest(user);
                 upload.setClickable(false);
                 break;
         }
         userName.setText(user.getName());
         emailAddress.setText(user.getEmail());
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (userRelationship){
+                    case FRIENDS:
+                        profileButton.setText("Send Request");
+                        dataBaseAPI.removeFriend(user);
+                        upload.setClickable(false);
+                        break;
+                    case REQUESTED:
+                        profileButton.setText("Send Request");
+                        dataBaseAPI.cancelFriendRequest(user);
+                        upload.setClickable(false);
+                        break;
+                    case NONE:
+                        profileButton.setText("Cancel Request");
+                        dataBaseAPI.sendFriendRequest(user);
+                        upload.setClickable(false);
+                        break;
+                }
+            }
+        });
     }
 
     @Override

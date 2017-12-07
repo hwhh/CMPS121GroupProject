@@ -259,6 +259,7 @@ public class DataBaseAPI {
         getmUserRef().child(getCurrentUserID()).child("goingEventsIDs").child(event.getId()).removeValue();
     }
 
+    //TODO implement
     public void leaveGroup(Group group){
         getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).removeValue();
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
