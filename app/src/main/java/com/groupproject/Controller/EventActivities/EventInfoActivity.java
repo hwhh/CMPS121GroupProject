@@ -77,8 +77,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         Button button = findViewById(R.id.invite_friends);
         button.setOnClickListener(view -> {
             Intent intent = new Intent(this, InviteActivity.class);
-            intent.putExtra("type", "event");
-            intent.putExtra("id", event.getId());
+            intent.putExtra("type", "event");intent.putExtra("id", event.getId());
             startActivity(intent);
         });
 
