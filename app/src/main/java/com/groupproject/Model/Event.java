@@ -27,7 +27,7 @@ public class Event extends DataBaseItem {
     private String description;
     private String id;
 
-    private String nameLower_expired;
+    private String nameLower_expired_vis;
 
     private Date startDate;
     private Date endDate;
@@ -56,7 +56,7 @@ public class Event extends DataBaseItem {
         this.nameLower = name.toLowerCase();
         this.description = description;
         this.hostID = hostID;
-        this.nameLower_expired = nameLower+"_"+isExpired();
+        this.nameLower_expired_vis = nameLower+"_"+isExpired()+"_"+visibility;
         goingIDs.add(hostID);
         dataBaseAPI.writeNewEvent(this);
     }
@@ -96,12 +96,12 @@ public class Event extends DataBaseItem {
     }
 
 
-    public String getNameLower_expired() {
-        return this.nameLower_expired = nameLower+"_"+isExpired();
+    public String getNameLower_expired_vis() {
+        return this.nameLower_expired_vis = nameLower_expired_vis;
     }
 
-    public void setNameLower_expired(String nameLower_expired) {
-        this.nameLower_expired = nameLower_expired;
+    public void setNameLower_expired_vis(String nameLower_expired_vis) {
+        this.nameLower_expired_vis = nameLower_expired_vis;
     }
 
 

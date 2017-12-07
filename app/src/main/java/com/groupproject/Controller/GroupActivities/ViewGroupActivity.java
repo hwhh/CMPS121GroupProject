@@ -2,6 +2,7 @@ package com.groupproject.Controller.GroupActivities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.groupproject.Controller.InviteActivity;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -29,6 +31,16 @@ import com.groupproject.R;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HOST;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.INVITED;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.JOINED;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.PUBLIC;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
+import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
 public class ViewGroupActivity extends AppCompatActivity implements DataBaseCallBacks<Group> {
 
@@ -56,6 +68,8 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         joinGroup = findViewById(R.id.joinGroup);
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
+
+
     }
 
     @Override
@@ -65,6 +79,7 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
 
     @Override
     public void getUser(User user, ViewHolder holder) {
+
 
     }
 
@@ -88,6 +103,21 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
             dataBaseAPI.acceptGroupInvite(group);
             finish();
         });
+
+        DataBaseAPI.STATUS status = dataBaseAPI.getGroupRelationShip(group);
+        switch (status){
+            case HOST:
+                break;
+            case HIDDEN:
+                finish();
+                break;
+            case JOINED:
+                break;
+            case INVITED:
+                break;
+            case PUBLIC:
+                break;
+        }
     }
 
     @Override
