@@ -157,11 +157,11 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     }
 
     private void populateGoingUserList(Event event) {
-        ListView goingEvents = findViewById(R.id.goingUsers);
-        goingEvents.setAdapter(null);
+        ListView goingUsers = findViewById(R.id.goingUsers);
+        goingUsers.setAdapter(null);
         adapter = new ArrayAdapter<>
                 (this, android.R.layout.simple_spinner_item, goingEventsLists);
-        goingEvents.setAdapter(adapter);
+        goingUsers.setAdapter(adapter);
         Query query = dataBaseAPI.getmEventRef().child(event.getId()).child("goingIDs");
         dataBaseAPI.executeQuery(query, this, SearchType.Type.EVENTS);
     }

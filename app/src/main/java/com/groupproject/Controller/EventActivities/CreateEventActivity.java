@@ -202,7 +202,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                         event = new Event(sDate, fDate,
                                 new CustomLocation(eventLocation.latitude, eventLocation.longitude), eventVis,
                                 name.getText().toString(), description.getText().toString(), dataBaseAPI.getCurrentUserID());
-                        dataBaseAPI.addEventToUser(e);
+                        dataBaseAPI.addEventToUser(event);
 
                         if (asGroup) {
                             Group group = (Group) groupSelector.getSelectedItem();
@@ -227,7 +227,7 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                     Intent intent = new Intent(this, EventInfoActivity.class);
                     intent.putExtra("key", event.getId());
                     startActivity(intent);
-                    StorageReference groupRef = mStorageRef.child(e.getId()+".jpg");
+                    StorageReference groupRef = mStorageRef.child(event.getId()+".jpg");
                     if (image != null) {
                         UploadTask uploadTask = groupRef.putStream(image);
                         uploadTask.addOnFailureListener(exception -> {
@@ -238,10 +238,8 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                         });
                     }
                     finish();
-                    }
+                } catch (ParseException ignored) {
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
             } else {
                 Toast.makeText(this, "Please fill in all the data",
