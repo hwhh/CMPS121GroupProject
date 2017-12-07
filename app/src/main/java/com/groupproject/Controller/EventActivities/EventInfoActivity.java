@@ -64,9 +64,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         resetEvent();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         eventPic = findViewById(R.id.eventPic);
-
         inviteButton = findViewById(R.id.invite_friends);
-
         Button doneButton = findViewById(R.id.btn_done);
         doneButton.setOnClickListener(view -> finish());
     }
