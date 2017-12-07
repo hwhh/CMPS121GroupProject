@@ -15,7 +15,7 @@
             android:id="@+id/profileUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/eventpic"
+            app:srcCompat="@drawable/defaultpic"
             android:background="@null"
             android:paddingTop="5dp"
            />
