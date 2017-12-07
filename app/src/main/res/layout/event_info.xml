@@ -27,9 +27,7 @@
         android:id="@+id/startsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
         android:fontFamily="@font/segoeuil"
         android:text="@string/starts"
         android:textSize="18sp"
@@ -40,8 +38,6 @@
         android:id="@+id/startDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="92dp"
-        android:layout_marginStart="92dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/segoeuil"
         android:text="12/11/2017"
@@ -89,7 +85,6 @@
         android:id="@+id/endTimeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
         android:fontFamily="@font/segoeuil"
         android:text="16:00"
         android:textSize="18sp"
@@ -106,26 +101,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/eventName"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/defaultpic" />
+        app:srcCompat="@drawable/eventpic" />
 
     <Button
-        android:id="@+id/btn_join"
-        android:layout_width="100dp"
+        android:id="@+id/btn_join_leave_del"
+        android:layout_width="126dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="136dp"
         android:fontFamily="@font/segoeuil"
         android:text="..."
-        app:layout_constraintEnd_toEndOf="@+id/eventPic"
-        app:layout_constraintStart_toStartOf="@+id/eventPic"
-        app:layout_constraintTop_toBottomOf="@+id/eventPic" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/goingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
         android:fontFamily="@font/segoeuil"
         android:text="@string/going"
         android:textSize="18sp"
@@ -146,16 +139,12 @@
 
     <Button
         android:id="@+id/invite_friends"
-        android:background="@null"
-        android:layout_width="126dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginBottom="396dp"
+        android:layout_marginTop="16dp"
         android:text="@string/invite_friends"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textAllCaps="false"
-        android:fontFamily="@font/segoeuil"
         app:layout_constraintTop_toBottomOf="@+id/btn_join_leave_del" />
 
     <ListView
