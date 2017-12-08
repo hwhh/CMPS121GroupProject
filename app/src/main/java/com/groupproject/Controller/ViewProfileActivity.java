@@ -32,6 +32,9 @@ import java.util.List;
 
 public class ViewProfileActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
+    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private ArrayAdapter<String> adapter;
+
     TextView userName;
     TextView emailAddress;
     Button profileButton;
@@ -41,8 +44,6 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
 
     DataBaseAPI.UserRelationship userRelationship;
 
-    private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-    private ArrayAdapter<String> adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +60,7 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
 
 
 
-        upload.setOnClickListener(view -> {
-            pickImage();
-        });
+        upload.setOnClickListener(view -> pickImage());
 
         ListView goingEvents = findViewById( R.id.goingEventsLists);
         adapter = new ArrayAdapter<>

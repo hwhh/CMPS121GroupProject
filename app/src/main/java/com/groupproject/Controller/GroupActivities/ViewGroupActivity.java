@@ -2,12 +2,16 @@ package com.groupproject.Controller.GroupActivities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.groupproject.Controller.SearchActivities.SearchType;
@@ -19,28 +23,26 @@ import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HOST;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.INVITED;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.JOINED;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.PUBLIC;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
-
-public class ViewGroupActivity extends AppCompatActivity implements DataBaseCallBacks<Group> {
+public class ViewGroupActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
+    private ArrayAdapter<String> eventAdapter;
+    private ArrayAdapter<String> memberAdapter;
+
     TextView groupName;
-    TextView members;
+
     TextView groupDescription;
-    TextView events;
-    Button joinGroup;
+
+    Button groupInteract;
     ImageView groupPic;
+    List<String> eventList = new ArrayList<>();
+    List<String> memberList = new ArrayList<>();
+
+
     private StorageReference mStorageRef;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,20 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         String id = b.getString("key");
         dataBaseAPI.getGroup(id, this, null);
         groupName = findViewById(R.id.groupName);
-        members = findViewById(R.id.memberInfo);
-        groupDescription = findViewById(R.id.groupDescription);
-        events = findViewById(R.id.eventsGroup);
+//        groupDescription = findViewById(R.id.groupDescription);
         groupPic = findViewById(R.id.groupPic);
-        joinGroup = findViewById(R.id.joinGroup);
+        groupInteract = findViewById(R.id.groupInteract);
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        ListView eventListView = findViewById( R.id.eventListView);
+        ListView membersListView = findViewById( R.id.memberListView);
+        eventAdapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_spinner_item, eventList);
+        memberAdapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_spinner_item, memberList);
+        eventListView.setAdapter(eventAdapter);
+        membersListView.setAdapter(memberAdapter);
+
     }
 
     @Override
@@ -67,49 +77,64 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
 
     @Override
     public void getUser(User user, ViewHolder holder) {
-
-
+        memberList.add(user.getName());
+        memberAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
-
+        eventList.add(event.getName());
+        eventAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getGroup(Group group, ViewHolder holder) {
         groupName.setText(group.getName());
-        members.setText(group.getMembersIDs().toString());
-        groupDescription.setText(group.getDescription());
-        events.setText(group.getEventsIDs().toString());
+//        groupDescription.setText(group.getDescription());
+        Query query1 = dataBaseAPI.getmGroupRef().child(group.getId()).child("membersIDs");
+        dataBaseAPI.executeQuery(query1, this, SearchType.Type.USERS);
+        Query query2 = dataBaseAPI.getmGroupRef().child(group.getId()).child("eventsIDs");
+        dataBaseAPI.executeQuery(query2, this, SearchType.Type.EVENTS);
         StorageReference storageReference = mStorageRef.child(group.getId()+".jpg");
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(storageReference)
                 .into(groupPic);
-        joinGroup.setOnClickListener(view -> {
-            dataBaseAPI.acceptGroupInvite(group);
-            finish();
-        });
-
         DataBaseAPI.STATUS status = dataBaseAPI.getGroupRelationShip(group);
         switch (status){
             case HOST:
+                groupInteract.setText("Delete Group");
+                groupInteract.setOnClickListener(view -> dataBaseAPI.deleteGroup(group));
                 break;
             case HIDDEN:
                 finish();
                 break;
             case JOINED:
+                groupInteract.setText("Leave Group");
+                groupInteract.setOnClickListener(view -> dataBaseAPI.leaveGroup(group));
                 break;
             case INVITED:
+                groupInteract.setText("Accept Invite");
+                groupInteract.setOnClickListener(view -> dataBaseAPI.acceptGroupInvite(group));
                 break;
             case PUBLIC:
+                groupInteract.setText("Join Group");
+                groupInteract.setOnClickListener(view -> dataBaseAPI.acceptGroupInvite(group));
                 break;
         }
     }
 
     @Override
-    public void executeQuery(List<Group> result, SearchType.Type type) {
+    public void executeQuery(List<String> result, SearchType.Type type) {
+        if(type == SearchType.Type.USERS){
+            for (String id : result) {
+                dataBaseAPI.getUser(id, this, null);
+            }
+        }else if(type == SearchType.Type.EVENTS){
+            for (String id : result) {
+                dataBaseAPI.getEvent(id, this, null);
+            }
+        }
 
     }
 

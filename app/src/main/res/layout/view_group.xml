@@ -46,50 +46,14 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/memberInfo"
+            <ListView
+                android:id="@+id/memberListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/segoeuil"
-
-                android:paddingLeft="10dp"
-                android:text="Members here"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:layout_height="match_parent" />
 
 
         </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/descriptionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/segoeuil"
-                android:paddingLeft="10dp"
-                android:text="Group Description"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/groupDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/segoeuil"
-                android:paddingLeft="10dp"
-                android:text="Some bio here"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,26 +72,21 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/eventsGroup"
+            <ListView
+
+                android:id="@+id/eventListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/segoeuil"
-                android:paddingLeft="10dp"
-                android:text="Some events here"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:layout_height="match_parent" />
 
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/joinGroup"
+            android:id="@+id/groupInteract"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:fontFamily="@font/segoeuil"
-            android:text="Join Group"
             android:textAllCaps="false"
             android:textStyle="bold" />
 
