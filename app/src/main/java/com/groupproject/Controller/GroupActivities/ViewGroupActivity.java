@@ -54,7 +54,7 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         String id = b.getString("key");
         dataBaseAPI.getGroup(id, this, null);
         groupName = findViewById(R.id.groupName);
-//        groupDescription = findViewById(R.id.groupDescription);
+        groupDescription = findViewById(R.id.groupDescription);
         groupPic = findViewById(R.id.groupPic);
         groupInteract = findViewById(R.id.groupInteract);
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -90,7 +90,7 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
     @Override
     public void getGroup(Group group, ViewHolder holder) {
         groupName.setText(group.getName());
-//        groupDescription.setText(group.getDescription());
+        groupDescription.setText(group.getDescription());
         Query query1 = dataBaseAPI.getmGroupRef().child(group.getId()).child("membersIDs");
         dataBaseAPI.executeQuery(query1, this, SearchType.Type.USERS);
         Query query2 = dataBaseAPI.getmGroupRef().child(group.getId()).child("eventsIDs");
