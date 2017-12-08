@@ -235,19 +235,19 @@ public class DataBaseAPI {
     //TODO ON USER PROFILE INVITE TO EVENTS OR GROUPS ***
     public void sendFriendRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
-        getmUserRef().child(user.getId()).child("unSeenNotifications").child(user.getId()).setValue(true);
+        getmUserRef().child(user.getId()).child("unSeenNotifications").child(user.getId()).setValue("user");
     }
 
     public void sendEventInvite(String userID, String eventID){
         getmEventRef().child(eventID).child("invitedIDs").child(userID).setValue(true);
         getmUserRef().child(userID).child("invitedEventsIDs").child(eventID).setValue(true);
-        getmUserRef().child(userID).child("unSeenNotifications").child(eventID).setValue(true);
+        getmUserRef().child(userID).child("unSeenNotifications").child(eventID).setValue("event");
     }
 
     public void sendGroupInvite(String userID, String groupID){
         getmGroupRef().child(groupID).child("invitedIDs").child(userID).setValue(true);
         getmUserRef().child(userID).child("invitedGroupIDs").child(groupID).setValue(true);
-        getmUserRef().child(userID).child("unSeenNotifications").child(groupID).setValue(true);
+        getmUserRef().child(userID).child("unSeenNotifications").child(groupID).setValue("group");
     }
 
 

@@ -20,6 +20,12 @@
             android:paddingTop="5dp"
             app:srcCompat="@drawable/defaultpic" />
 
+        <Button
+            android:id="@+id/groupInvite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Invite Friends" />
+
         <TextView
             android:id="@+id/groupName"
             android:layout_width="match_parent"

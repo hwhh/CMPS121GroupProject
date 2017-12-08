@@ -1,5 +1,6 @@
 package com.groupproject.Controller.GroupActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.groupproject.Controller.InviteActivity;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
@@ -34,10 +36,10 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
     private ArrayAdapter<String> memberAdapter;
 
     TextView groupName;
-
     TextView groupDescription;
 
     Button groupInteract;
+    Button inviteButton;
     ImageView groupPic;
     List<String> eventList = new ArrayList<>();
     List<String> memberList = new ArrayList<>();
@@ -68,6 +70,8 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         eventListView.setAdapter(eventAdapter);
         membersListView.setAdapter(memberAdapter);
 
+        inviteButton = findViewById(R.id.groupInvite);
+
     }
 
     @Override
@@ -87,6 +91,7 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         eventAdapter.notifyDataSetChanged();
     }
 
+    //TODO Update the button on the view group
     @Override
     public void getGroup(Group group, ViewHolder holder) {
         groupName.setText(group.getName());
@@ -122,6 +127,20 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
                 groupInteract.setOnClickListener(view -> dataBaseAPI.acceptGroupInvite(group));
                 break;
         }
+
+        DataBaseAPI.STATUS userStatus = dataBaseAPI.getGroupRelationShip(group);
+        if(userStatus == DataBaseAPI.STATUS.JOINED || status == DataBaseAPI.STATUS.HOST) {
+            inviteButton.setVisibility(View.VISIBLE);
+            inviteButton.setOnClickListener(view -> {
+                Intent intent = new Intent(this, InviteActivity.class);
+                intent.putExtra("type", "group");
+                intent.putExtra("id", group.getId());
+                startActivity(intent);
+            });
+        }else{
+            inviteButton.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

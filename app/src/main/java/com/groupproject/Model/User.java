@@ -59,6 +59,14 @@ public class User extends DataBaseItem{
         unSeenNotifications = new ArrayList<>();
     }
 
+    public Map<String, Object> getUnSeenNotifications() {
+        return unSeenNotifications.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+    }
+
+    public void setUnSeenNotifications(Map<String, Object> map) {
+        this.unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setGoingEventsIDs(Map<String, Object> map) {
         goingEventsIDs = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
@@ -87,7 +95,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getRequestsID() {
-        return requestsID.stream().collect(Collectors.toMap(Function.identity(), id -> !unSeenNotifications.contains(id)));
+        return requestsID.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
 
@@ -109,7 +117,7 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getInvitedGroupIDs() {
-        return invitedGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> !unSeenNotifications.contains(id)));
+        return invitedGroupIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
 
@@ -120,19 +128,18 @@ public class User extends DataBaseItem{
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Map<String, Object> getInvitedEventsIDs() {
-        return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> !unSeenNotifications.contains(id)));
+        return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setSeenNotifications(Map<String, Object> map) {
-        unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<String, Object> getsSenNotifications() {
-        return unSeenNotifications.stream().collect(Collectors.toMap(Function.identity(), id -> true));
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public void setSeenNotifications(Map<String, Object> map) {
+//        unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public Map<String, Object> getsSenNotifications() {
+//        return unSeenNotifications.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+//    }
 
 
     public CustomLocation getLocation() {
