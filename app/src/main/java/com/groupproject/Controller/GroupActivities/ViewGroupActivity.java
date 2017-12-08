@@ -109,22 +109,37 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         switch (status){
             case HOST:
                 groupInteract.setText("Delete Group");
-                groupInteract.setOnClickListener(view -> dataBaseAPI.deleteGroup(group));
+                groupInteract.setOnClickListener(view -> {
+                    groupInteract.setText("Delete Group");
+                    dataBaseAPI.deleteGroup(group);
+                    finish();
+                });
+
+
                 break;
             case HIDDEN:
                 finish();
                 break;
             case JOINED:
                 groupInteract.setText("Leave Group");
-                groupInteract.setOnClickListener(view -> dataBaseAPI.leaveGroup(group));
+                groupInteract.setOnClickListener(view -> {
+                    groupInteract.setText("Join Group");
+                    dataBaseAPI.leaveGroup(group);
+                });
                 break;
             case INVITED:
                 groupInteract.setText("Accept Invite");
-                groupInteract.setOnClickListener(view -> dataBaseAPI.acceptGroupInvite(group));
+                groupInteract.setOnClickListener(view -> {
+                    groupInteract.setText("Leave Group");
+                    dataBaseAPI.acceptGroupInvite(group);
+                });
                 break;
             case PUBLIC:
                 groupInteract.setText("Join Group");
-                groupInteract.setOnClickListener(view -> dataBaseAPI.acceptGroupInvite(group));
+                groupInteract.setOnClickListener(view -> {
+                    groupInteract.setText("Leave Group");
+                    dataBaseAPI.acceptGroupInvite(group);
+                });
                 break;
         }
 
