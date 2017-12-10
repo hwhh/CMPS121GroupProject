@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.Query;
 import com.groupproject.Controller.GroupActivities.NewGroup;
@@ -51,15 +52,19 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
 
         Query query;
 
+
+
         assert type != null;
         switch (type) {
             case "friend":
+                create.setVisibility(View.INVISIBLE);
                 searchType = Type.USERS;
                 create.setVisibility(View.GONE);
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("friendsIDs");
                 dataBaseAPI.executeQuery(query, this, Type.USERS);
                 break;
             case "events":
+                create.setVisibility(View.INVISIBLE);
                 searchType = Type.EVENTS;
                 //intent = new Intent(getActivity(), CreateEventActivity.class);
                 create.setVisibility(View.GONE);
@@ -73,6 +78,7 @@ public class SidebarFragment extends Fragment implements SearchType, DataBaseCal
                 dataBaseAPI.executeQuery(query, this, Type.GROUPS);
                 break;
             case "notifications":
+                create.setVisibility(View.INVISIBLE);
                 searchType = Type.NOTIFICATIONS;
                 query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("requestsID");
                 dataBaseAPI.executeQuery(query, this, Type.USERS);

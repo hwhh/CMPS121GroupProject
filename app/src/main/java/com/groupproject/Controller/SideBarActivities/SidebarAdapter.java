@@ -1,6 +1,7 @@
 package com.groupproject.Controller.SideBarActivities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.groupproject.Controller.EventActivities.EventInfoActivity;
+import com.groupproject.Controller.GroupActivities.ViewGroupActivity;
+import com.groupproject.Controller.SearchActivities.SearchFragment;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
+import com.groupproject.Controller.ViewProfileActivity;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
@@ -25,12 +31,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements Filterable {
+public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements Filterable, DataBaseCallBacks<String>{
 
     private static final DataBaseAPI databaseAPI = DataBaseAPI.getDataBase();
     private final SearchType.Type type;
     private Set<String> invited = new HashSet<>();
-    private Set<String> univited = new HashSet<>();
+    private Set<String> uninvited = new HashSet<>();
     private List<DataBaseItem> items;
     private final List<DataBaseItem> filteredItemsList;
     private String dataBaseItemID;
@@ -65,22 +71,35 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
     public void onBindViewHolder(ViewHolder holder, int position) {
         DataBaseItem dataBaseItem = items.get(position);
         holder.vName.setText(dataBaseItem.getName());
+        String id = items.get(position).getId();
         switch (type){
             case USERS:
-                //On card click view User
+                databaseAPI.getUser(id, this, holder);
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, ViewProfileActivity.class);
+                    intent.putExtra("key", id);
+                    activity.startActivity(intent);
+                });
                 holder.interact.setImageDrawable(null);
                 holder.selected.setVisibility(View.GONE);
-
                 break;
             case EVENTS:
-                //On card click view Event
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, EventInfoActivity.class);
+                    intent.putExtra("key", id);
+                    activity.startActivity(intent);
+                });
                 holder.interact.setImageDrawable(null);
                 holder.selected.setVisibility(View.GONE);
                 break;
             case GROUPS:
+                holder.cardView.setOnClickListener(v -> {
+                    Intent intent = new Intent(activity, ViewGroupActivity.class);
+                    intent.putExtra("key", id);
+                    activity.startActivity(intent);
+                });
                 holder.interact.setImageDrawable(null);
                 holder.selected.setVisibility(View.GONE);
-                //On card click view Group
                 break;
             case NOTIFICATIONS:
                 holder.selected.setVisibility(View.GONE);
@@ -109,11 +128,11 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                     boolean userInvited =user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID);
                     if (b && !userInvited) {
                         invited.add(dataBaseItem.getId());
-                        if(univited.contains(dataBaseItem.getId()))
-                            univited.remove(dataBaseItem.getId());
+                        if(uninvited.contains(dataBaseItem.getId()))
+                            uninvited.remove(dataBaseItem.getId());
                     }else if(!b && userInvited){
                         holder.selected.setChecked(false);
-                        univited.add(dataBaseItem.getId());
+                        uninvited.add(dataBaseItem.getId());
                         if(invited.contains(dataBaseItem.getId()))
                             invited.remove(dataBaseItem.getId());
                     } else {
@@ -128,8 +147,8 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
     }
 
 
-    public Set<String> getUnivited() {
-        return univited;
+    public Set<String> getUninvited() {
+        return uninvited;
     }
 
 
@@ -147,6 +166,26 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
 
         }
         return filter;
+    }
+
+    @Override
+    public void getUser(User user, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void getEvent(Event event, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void getGroup(Group group, ViewHolder holder) {
+
+    }
+
+    @Override
+    public void executeQuery(List<String> result, SearchType.Type type) {
+
     }
 
     private static class UserFilter extends Filter {

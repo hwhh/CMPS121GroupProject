@@ -23,6 +23,8 @@ public class User extends DataBaseItem{
     public List<String> invitedEventsIDs;
     public List<String> joinedGroupIDs;
     public List<String> invitedGroupIDs;
+    public List<Notification> unSeenNotifications;
+
 
 
 //    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
@@ -54,6 +56,15 @@ public class User extends DataBaseItem{
         invitedGroupIDs = new ArrayList<>();
         invitedEventsIDs = new ArrayList<>();
         joinedGroupIDs = new ArrayList<>();
+        unSeenNotifications = new ArrayList<>();
+    }
+
+    public Map<String, Object> getUnSeenNotifications() {
+        return unSeenNotifications.stream().collect(Collectors.toMap(Notification::getId, Notification::getType));
+    }
+
+    public void setUnSeenNotifications(Map<String, Object> map) {
+        this.unSeenNotifications = map.entrySet().stream().map(n -> new Notification(n.getKey(), n.getValue().toString())).collect(Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -119,6 +130,17 @@ public class User extends DataBaseItem{
     public Map<String, Object> getInvitedEventsIDs() {
         return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
+
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public void setSeenNotifications(Map<String, Object> map) {
+//        unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public Map<String, Object> getsSenNotifications() {
+//        return unSeenNotifications.stream().collect(Collectors.toMap(Function.identity(), id -> true));
+//    }
+
 
     public CustomLocation getLocation() {
         return location;
