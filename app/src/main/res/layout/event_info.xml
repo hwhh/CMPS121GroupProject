@@ -211,14 +211,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btn_join_leave_del"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/segoeuil"
+                android:text="..."
                 android:textAllCaps="false"
-                android:text="..." />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/invite_friends"
@@ -229,9 +231,11 @@
                 android:fontFamily="@font/segoeuil"
                 android:paddingRight="10dp"
                 android:text="@string/invite_friends"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
         <Button
             android:id="@+id/btn_done"
             android:layout_width="match_parent"
@@ -241,7 +245,8 @@
             android:fontFamily="@font/segoeuil"
             android:text="@string/done"
             android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </LinearLayout>
 

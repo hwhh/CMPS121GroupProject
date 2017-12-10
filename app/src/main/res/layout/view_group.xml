@@ -125,10 +125,11 @@
             android:id="@+id/groupInvite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:fontFamily="@font/segoeuil"
             android:text="Invite Friends"
             android:textAllCaps="false"
-            android:background="@null"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 

@@ -199,14 +199,15 @@
                 android:id="@+id/savebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="42dp"
                 android:layout_marginEnd="42dp"
+                android:layout_marginStart="42dp"
                 android:background="@null"
                 android:fontFamily="@font/segoeuil"
                 android:text="Save"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
