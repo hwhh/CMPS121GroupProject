@@ -92,9 +92,6 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
     }
 
 
-
-
-    //TODO Update the button on the view group
     @Override
     public void getGroup(Group group, ViewHolder holder) {
         groupName.setText(group.getName());
@@ -138,16 +135,16 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
                     finish();
                     break;
                 case JOINED:
-                    groupInteract.setText("Join Group");
+                    resetGroup();
                     dataBaseAPI.leaveGroup(group);
                     break;
                 case INVITED:
+                    resetGroup();
                     inviteButton.setVisibility(View.VISIBLE);
-                    groupInteract.setText("Leave Group");
                     dataBaseAPI.acceptGroupInvite(group);
                     break;
                 case PUBLIC:
-                    groupInteract.setText("Leave Group");
+                    resetGroup();
                     dataBaseAPI.acceptGroupInvite(group);
                     break;
             }
@@ -168,6 +165,16 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         }
 
     }
+
+
+
+    private void resetGroup() {
+        if (getIntent().hasExtra("key")) {
+            String id = getIntent().getStringExtra("key");
+            dataBaseAPI.getGroup(id, this, null);
+        }
+    }
+
 
     @Override
     public void executeQuery(List<String> result, SearchType.Type type) {
