@@ -235,7 +235,7 @@ public class DataBaseAPI {
     //TODO ON USER PROFILE INVITE TO EVENTS OR GROUPS ***
     public void sendFriendRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
-        getmUserRef().child(user.getId()).child("unSeenNotifications").child(user.getId()).setValue(true);
+        getmUserRef().child(user.getId()).child("unSeenNotifications").child(getCurrentUserID()).setValue(true);
     }
 
     public void sendEventInvite(String userID, String eventID){
@@ -285,7 +285,7 @@ public class DataBaseAPI {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        notifications.add(snapshot.getValue(String.class));
+                        notifications.add(snapshot.getKey());
                     }
                 }
             }

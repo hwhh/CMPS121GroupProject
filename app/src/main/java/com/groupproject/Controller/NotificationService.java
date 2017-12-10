@@ -9,17 +9,20 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
+import com.google.firebase.database.Query;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationService extends Service implements DataBaseCallBacks {
+public class NotificationService extends Service implements DataBaseCallBacks<String> {
 
     private PowerManager.WakeLock mWakeLock;
     private DataBaseAPI dataBaseAPI;
@@ -60,8 +63,20 @@ public class NotificationService extends Service implements DataBaseCallBacks {
     }
 
     @Override
-    public void executeQuery(List result, SearchType.Type type) {
-
+    public void executeQuery(List<String> result, SearchType.Type type) {
+        if(type == SearchType.Type.USERS) {
+            for (String id : result) {
+                dataBaseAPI.getUser(id, this, null);
+            }
+        } else if(type == SearchType.Type.EVENTS) {
+            for (String id : result) {
+                dataBaseAPI.getEvent(id, this, null);
+            }
+        } else if(type == SearchType.Type.GROUPS) {
+            for (String id : result) {
+                dataBaseAPI.getGroup(id, this, null);
+            }
+        }
     }
 
     private class PollTask extends AsyncTask<Void, Void, Void> {
@@ -93,6 +108,15 @@ public class NotificationService extends Service implements DataBaseCallBacks {
     }
 
     private void sendNotification() {
+//        Query query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID())
+//                .child("unSeenNotifications");
+        List<String> notifications = dataBaseAPI.getNotifications();
+        for (int i = 0; i < notifications.size(); i++) {
+            String a = notifications.get(i);
+        }
+//        dataBaseAPI.executeQuery(query, this, SearchType.Type.USERS);
+//        dataBaseAPI.executeQuery(query, this, SearchType.Type.EVENTS);
+//        dataBaseAPI.executeQuery(query, this, SearchType.Type.GROUPS);
     }
 
     private void buildNotification(String type, String name, int id) {

@@ -125,7 +125,7 @@ public class User extends DataBaseItem{
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void seSeenNotifications(Map<String, Object> map) {
+    public void setSeenNotifications(Map<String, Object> map) {
         unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
     }
 
