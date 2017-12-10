@@ -20,12 +20,6 @@
             android:paddingTop="5dp"
             app:srcCompat="@drawable/defaultpic" />
 
-        <Button
-            android:id="@+id/groupInvite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Invite Friends" />
-
         <TextView
             android:id="@+id/groupName"
             android:layout_width="match_parent"
@@ -124,6 +118,16 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:fontFamily="@font/segoeuil"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/groupInvite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:fontFamily="@font/segoeuil"
+            android:text="Invite Friends"
             android:textAllCaps="false"
             android:textStyle="bold" />
 
