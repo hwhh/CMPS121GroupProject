@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.LoginActivities.LoginActivity;
+import com.groupproject.Controller.NotificationCallBack;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Model.Event;
@@ -30,24 +31,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
 import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
-
-
-
 public class DataBaseAPI {
-
-
 
     private static DatabaseReference mEventRef;
     private static DatabaseReference mUserRef;
     private static DatabaseReference mGroupRef;
     private DataBaseCallBacks dataBaseCallBacks;
-
     private static DataBaseAPI single_instance = null;
     private static ExpiringMap<String, Event> eventMap;
 
@@ -120,7 +114,6 @@ public class DataBaseAPI {
             }
         });
     }
-
 
     public void getEvent(String id, DataBaseCallBacks callBacks, @Nullable ViewHolder holder){
         Query query = getmEventRef().child(id);
@@ -201,6 +194,8 @@ public class DataBaseAPI {
             return FRIENDS;
         }else if(user.requestsID.contains(getCurrentUserID())){
             return REQUESTED;
+        }else if(false){ //TODO Check if the user requested you
+            return REQUESTED;
         }else{
             return NONE;
         }
@@ -267,8 +262,8 @@ public class DataBaseAPI {
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).removeValue();
     }
 
-    public void setNotificationAsSeen(String id, String notificationID,  SearchType.Type type){
-        getmUserRef().child(getCurrentUserID()).child("unSeenNotifications").child(id).removeValue();
+    public void setNotificationAsSeen(String notificationID, SearchType.Type type){
+        getmUserRef().child(getCurrentUserID()).child("unSeenNotifications").child(notificationID).removeValue();
         if(type == SearchType.Type.USERS){
             getmUserRef().child(getCurrentUserID()).child("requestsID").child(notificationID).setValue(false);
         } else if(type == SearchType.Type.EVENTS){
@@ -278,7 +273,7 @@ public class DataBaseAPI {
         }
     }
 
-    public List<Notification> getNotifications(){
+    public void getNotifications(NotificationCallBack notificationCallBack){
         List<Notification> notifications = new ArrayList<>();
         Query query = getmUserRef().child(getCurrentUserID()).child("unSeenNotifications");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -286,8 +281,11 @@ public class DataBaseAPI {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        notifications.add(snapshot.getValue(com.groupproject.Model.Notification.class));
+                        String id = snapshot.getKey();
+                        String type = snapshot.getValue(String.class);
+                        notifications.add(new Notification(id, type));
                     }
+                    notificationCallBack.getNotifications(notifications);
                 }
             }
 
@@ -296,7 +294,6 @@ public class DataBaseAPI {
 
             }
         });
-        return notifications;
     }
 
     public void deleteEvent(Event event){
@@ -368,8 +365,6 @@ public class DataBaseAPI {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-
     }
 
     public void cancelFriendRequest(User user){
@@ -388,7 +383,6 @@ public class DataBaseAPI {
         getmUserRef().child(groupID).child("invitedIDs").child(userID).removeValue();
     }
 
-
     public void acceptRequestUser (User user){
         getmUserRef().child(getCurrentUserID()).child("friendsIDs").child(user.getId()).setValue(true);
         getmUserRef().child(getCurrentUserID()).child("requestsID").child(user.getId()).removeValue();//Remove request
@@ -404,17 +398,12 @@ public class DataBaseAPI {
         getmUserRef().child(getCurrentUserID()).child("invitedEventsIDs").child(event.getId()).removeValue();//Remove request
     }
 
-
     public void acceptGroupInvite (Group group){
         getmGroupRef().child(group.getId()).child("membersIDs").child(getCurrentUserID()).setValue(true);
         getmEventRef().child(group.getId()).child("invitedIDs").child(getCurrentUserID()).removeValue();
-
-
         getmUserRef().child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).setValue(true);
         getmUserRef().child(getCurrentUserID()).child("invitedGroupIDs").child(group.getId()).removeValue();//Remove request
     }
-
-
 
     public void writeNewUser(User user) {
         mUserRef.child(user.getId()).setValue(user);
@@ -438,7 +427,6 @@ public class DataBaseAPI {
     public void addGroupToUser(Group group) {
         mUserRef.child(getCurrentUserID()).child("joinedGroupIDs").child(group.getId()).setValue(true);
     }
-
 
     public static ExpiringMap<String, Event> getEventMap() {
         return eventMap;
@@ -469,12 +457,8 @@ public class DataBaseAPI {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
-
         });
     }
-
-
 
     public static void loadActiveEvents() {
         Date date = new Date();
@@ -497,11 +481,8 @@ public class DataBaseAPI {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
-
         });
     }
-
 
     private void cascadeDelete(List<String> result, String child, String idToBeRemoved) {
         Query query;
@@ -519,7 +500,6 @@ public class DataBaseAPI {
 
                     }
                 });
-
             }
         }
     }

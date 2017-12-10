@@ -9,34 +9,34 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
-import com.google.firebase.database.Query;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.DataBaseAPI.DataBaseAPI;
 import com.groupproject.DataBaseAPI.DataBaseCallBacks;
-import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
+import com.groupproject.Model.Notification;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationService extends Service implements DataBaseCallBacks<String> {
+public class NotificationService extends Service implements DataBaseCallBacks<String>, NotificationCallBack {
 
     private PowerManager.WakeLock mWakeLock;
     private DataBaseAPI dataBaseAPI;
+    private int notifCounter;
 
     @Override public IBinder onBind(Intent intent) {
         return null;
     }
 
     private void handleIntent(Intent intent) {
-        // obtain the wake lock
+         // obtain the wake lock
          PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
          mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "wakelock");
          mWakeLock.acquire(10*60*1000L /*10 minutes*/);
          dataBaseAPI = DataBaseAPI.getDataBase();
+         notifCounter = 1;
          // check the global background data setting
          ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
          if (cm == null || cm.getActiveNetworkInfo() == null) {
@@ -49,17 +49,20 @@ public class NotificationService extends Service implements DataBaseCallBacks<St
 
     @Override
     public void getUser(User user, ViewHolder holder) {
-
+        buildNotification("Friend Request!", user.getName(), notifCounter);
+        notifCounter++;
     }
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
-
+        buildNotification("Event Invite!", event.getName(), notifCounter);
+        notifCounter++;
     }
 
     @Override
     public void getGroup(Group group, ViewHolder holder) {
-
+        buildNotification("Group Invite!", group.getName(), notifCounter);
+        notifCounter++;
     }
 
     @Override
@@ -75,6 +78,26 @@ public class NotificationService extends Service implements DataBaseCallBacks<St
         } else if(type == SearchType.Type.GROUPS) {
             for (String id : result) {
                 dataBaseAPI.getGroup(id, this, null);
+            }
+        }
+    }
+
+    @Override
+    public void getNotifications(List<Notification> notifications) {
+        for (Notification notification: notifications) {
+            switch (notification.type) {
+                case "user":
+                    dataBaseAPI.getUser(notification.id, this, null);
+                    dataBaseAPI.setNotificationAsSeen(notification.id, SearchType.Type.USERS);
+                    break;
+                case "event":
+                    dataBaseAPI.getEvent(notification.id, this, null);
+                    dataBaseAPI.setNotificationAsSeen(notification.id, SearchType.Type.EVENTS);
+                    break;
+                case "group":
+                    dataBaseAPI.getGroup(notification.id, this, null);
+                    dataBaseAPI.setNotificationAsSeen(notification.id, SearchType.Type.GROUPS);
+                    break;
             }
         }
     }
@@ -108,15 +131,7 @@ public class NotificationService extends Service implements DataBaseCallBacks<St
     }
 
     private void sendNotification() {
-//        Query query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID())
-//                .child("unSeenNotifications");
-        List<String> notifications = dataBaseAPI.getNotifications();
-        for (int i = 0; i < notifications.size(); i++) {
-            String a = notifications.get(i);
-        }
-//        dataBaseAPI.executeQuery(query, this, SearchType.Type.USERS);
-//        dataBaseAPI.executeQuery(query, this, SearchType.Type.EVENTS);
-//        dataBaseAPI.executeQuery(query, this, SearchType.Type.GROUPS);
+        dataBaseAPI.getNotifications(this);
     }
 
     private void buildNotification(String type, String name, int id) {
