@@ -91,6 +91,9 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         eventAdapter.notifyDataSetChanged();
     }
 
+
+
+
     //TODO Update the button on the view group
     @Override
     public void getGroup(Group group, ViewHolder holder) {
@@ -105,46 +108,54 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
                 .using(new FirebaseImageLoader())
                 .load(storageReference)
                 .into(groupPic);
+
         DataBaseAPI.STATUS status = dataBaseAPI.getGroupRelationShip(group);
-        switch (status){
+        switch (status) {
             case HOST:
                 groupInteract.setText("Delete Group");
-                groupInteract.setOnClickListener(view -> {
-                    groupInteract.setText("Delete Group");
-                    dataBaseAPI.deleteGroup(group);
-                    finish();
-                });
-
-
                 break;
             case HIDDEN:
                 finish();
                 break;
             case JOINED:
                 groupInteract.setText("Leave Group");
-                groupInteract.setOnClickListener(view -> {
-                    groupInteract.setText("Join Group");
-                    dataBaseAPI.leaveGroup(group);
-                });
                 break;
             case INVITED:
                 groupInteract.setText("Accept Invite");
-                groupInteract.setOnClickListener(view -> {
-                    groupInteract.setText("Leave Group");
-                    dataBaseAPI.acceptGroupInvite(group);
-                });
                 break;
             case PUBLIC:
                 groupInteract.setText("Join Group");
-                groupInteract.setOnClickListener(view -> {
-                    groupInteract.setText("Leave Group");
-                    dataBaseAPI.acceptGroupInvite(group);
-                });
                 break;
         }
 
+        groupInteract.setOnClickListener(view -> {
+            switch (status) {
+                case HOST:
+                    dataBaseAPI.deleteGroup(group);
+                    finish();
+                    break;
+                case HIDDEN:
+                    finish();
+                    break;
+                case JOINED:
+                    groupInteract.setText("Join Group");
+                    dataBaseAPI.leaveGroup(group);
+                    break;
+                case INVITED:
+                    inviteButton.setVisibility(View.VISIBLE);
+                    groupInteract.setText("Leave Group");
+                    dataBaseAPI.acceptGroupInvite(group);
+                    break;
+                case PUBLIC:
+                    groupInteract.setText("Leave Group");
+                    dataBaseAPI.acceptGroupInvite(group);
+                    break;
+            }
+        });
+
+
         DataBaseAPI.STATUS userStatus = dataBaseAPI.getGroupRelationShip(group);
-        if(userStatus == DataBaseAPI.STATUS.JOINED || status == DataBaseAPI.STATUS.HOST) {
+        if(userStatus == DataBaseAPI.STATUS.JOINED || userStatus == DataBaseAPI.STATUS.HOST) {
             inviteButton.setVisibility(View.VISIBLE);
             inviteButton.setOnClickListener(view -> {
                 Intent intent = new Intent(this, InviteActivity.class);
