@@ -23,7 +23,7 @@ public class User extends DataBaseItem{
     public List<String> invitedEventsIDs;
     public List<String> joinedGroupIDs;
     public List<String> invitedGroupIDs;
-    public List<Notification> unSeenNotifications;
+    public List<PinnedNotification> unSeenNotifications;
 
 
 
@@ -60,11 +60,11 @@ public class User extends DataBaseItem{
     }
 
     public Map<String, Object> getUnSeenNotifications() {
-        return unSeenNotifications.stream().collect(Collectors.toMap(Notification::getId, Notification::getType));
+        return unSeenNotifications.stream().collect(Collectors.toMap(PinnedNotification::getId, PinnedNotification::getType));
     }
 
     public void setUnSeenNotifications(Map<String, Object> map) {
-        this.unSeenNotifications = map.entrySet().stream().map(n -> new Notification(n.getKey(), n.getValue().toString())).collect(Collectors.toList());
+        this.unSeenNotifications = map.entrySet().stream().map(n -> new PinnedNotification(n.getKey(), n.getValue().toString())).collect(Collectors.toList());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

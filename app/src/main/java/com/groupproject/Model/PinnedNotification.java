@@ -1,12 +1,12 @@
 package com.groupproject.Model;
 
 
-public class Notification {
+public class PinnedNotification {
 
     public String id;
     public String type;
 
-    public Notification(String id, String type) {
+    public PinnedNotification(String id, String type) {
         this.id = id;
         this.type = type;
     }

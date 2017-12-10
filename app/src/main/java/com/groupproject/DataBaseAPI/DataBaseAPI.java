@@ -18,7 +18,7 @@ import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
-import com.groupproject.Model.Notification;
+import com.groupproject.Model.PinnedNotification;
 import com.groupproject.Model.User;
 import com.groupproject.Model.Visibility;
 
@@ -274,7 +274,7 @@ public class DataBaseAPI {
     }
 
     public void getNotifications(NotificationCallBack notificationCallBack){
-        List<Notification> notifications = new ArrayList<>();
+        List<PinnedNotification> notifications = new ArrayList<>();
         Query query = getmUserRef().child(getCurrentUserID()).child("unSeenNotifications");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -283,7 +283,7 @@ public class DataBaseAPI {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         String id = snapshot.getKey();
                         String type = snapshot.getValue(String.class);
-                        notifications.add(new Notification(id, type));
+                        notifications.add(new PinnedNotification(id, type));
                     }
                     notificationCallBack.getNotifications(notifications);
                 }

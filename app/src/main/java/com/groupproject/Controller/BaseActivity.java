@@ -113,6 +113,10 @@ public class BaseActivity extends AppCompatActivity
         ft.replace(R.id.dashboard_content, mapsFrag, "maps");
         currentFragment = mapsFrag;
         ft.commit();
+
+        if (getIntent().getStringExtra("openNotifications") != null) {
+            openNotifications();
+        }
     }
 
 
@@ -143,19 +147,14 @@ public class BaseActivity extends AppCompatActivity
 
     public void onResume() {
         super.onResume();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//        int minutes = prefs.getInt("interval", -1);
-        int minutes = 2;
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, NotificationService.class);
         PendingIntent pi = PendingIntent.getService(this, 0, intent, 0);
         if (am != null) {
             am.cancel(pi);
-            if (minutes > 0) {
-                am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        SystemClock.elapsedRealtime() + minutes*60*1000,
-                        minutes*60*1000, pi);
-            }
+            am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + 60*1000,
+                    60*1000, pi);
         }
     }
 
@@ -252,13 +251,23 @@ public class BaseActivity extends AppCompatActivity
         return true;
     }
 
-
     public Fragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
         }
         String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         return getSupportFragmentManager().findFragmentByTag(tag);
+    }
+
+    private void openNotifications() {
+        sidebarFragment = new SidebarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "notifications");
+        sidebarFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(currentFragment.getId(), sidebarFragment, "sidebar").remove(searchFrag).commitAllowingStateLoss();
+        currentFragment = sidebarFragment;
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
