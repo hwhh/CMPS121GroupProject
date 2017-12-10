@@ -70,8 +70,8 @@ public class NewGroup extends AppCompatActivity {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     });
-                    finish();
                 }
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Please fill in all the data",
                         Toast.LENGTH_LONG).show();

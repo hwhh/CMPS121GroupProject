@@ -17,6 +17,7 @@ import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
+import com.groupproject.Model.Notification;
 import com.groupproject.Model.User;
 import com.groupproject.Model.Visibility;
 
@@ -235,19 +236,19 @@ public class DataBaseAPI {
     //TODO ON USER PROFILE INVITE TO EVENTS OR GROUPS ***
     public void sendFriendRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).setValue(true);
-        getmUserRef().child(user.getId()).child("unSeenNotifications").child(getCurrentUserID()).setValue(true);
+        getmUserRef().child(user.getId()).child("unSeenNotifications").child(getCurrentUserID()).setValue("user");
     }
 
     public void sendEventInvite(String userID, String eventID){
         getmEventRef().child(eventID).child("invitedIDs").child(userID).setValue(true);
         getmUserRef().child(userID).child("invitedEventsIDs").child(eventID).setValue(true);
-        getmUserRef().child(userID).child("unSeenNotifications").child(eventID).setValue(true);
+        getmUserRef().child(userID).child("unSeenNotifications").child(eventID).setValue("event");
     }
 
     public void sendGroupInvite(String userID, String groupID){
         getmGroupRef().child(groupID).child("invitedIDs").child(userID).setValue(true);
         getmUserRef().child(userID).child("invitedGroupIDs").child(groupID).setValue(true);
-        getmUserRef().child(userID).child("unSeenNotifications").child(groupID).setValue(true);
+        getmUserRef().child(userID).child("unSeenNotifications").child(groupID).setValue("group");
     }
 
 
@@ -277,15 +278,15 @@ public class DataBaseAPI {
         }
     }
 
-    public List<String> getNotifications(){
-        List<String> notifications = new ArrayList<>();
+    public List<Notification> getNotifications(){
+        List<Notification> notifications = new ArrayList<>();
         Query query = getmUserRef().child(getCurrentUserID()).child("unSeenNotifications");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        notifications.add(snapshot.getKey());
+                        notifications.add(snapshot.getValue(com.groupproject.Model.Notification.class));
                     }
                 }
             }
@@ -373,6 +374,8 @@ public class DataBaseAPI {
 
     public void cancelFriendRequest(User user){
         getmUserRef().child(user.getId()).child("requestsID").child(getCurrentUserID()).removeValue();
+        getmUserRef().child(user.getId()).child("unSeenNotifications").child(getCurrentUserID()).removeValue();
+
     }
 
     public void cancelEventInvite(String userID, String eventID){

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -90,14 +91,17 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         return event != null && userID != null && event.getHostID().equals(userID);
     }
 
+
     private void assignButtons(Event event) {
         if (event != null && userID != null && !userIsHost(event)) {
             if (userGoingToEvent(event)) {
                 button.setBackgroundColor(getResources().getColor(R.color.red));
                 button.setText(R.string.leave);
+                inviteButton.setVisibility(View.VISIBLE);
             } else {
                 button.setBackgroundColor(getResources().getColor(R.color.green));
                 button.setText(R.string.join);
+                inviteButton.setVisibility(View.GONE);
             }
         }
 
