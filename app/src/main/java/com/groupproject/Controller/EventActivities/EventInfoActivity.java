@@ -42,6 +42,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
     private TextView startTimeText;
     private TextView endTimeText;
     private TextView numOfPeopleText;
+    private TextView eventDescription;
     private Button button;
     private Button inviteButton;
     private String userID;
@@ -60,6 +61,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
         startTimeText = findViewById(R.id.startTimeText);
         endTimeText = findViewById(R.id.endTimeText);
         numOfPeopleText = findViewById(R.id.numOfPeopleText);
+        eventDescription = findViewById(R.id.eventDescription);
         button = findViewById(R.id.btn_join_leave_del);
         userID = dataBaseAPI.getCurrentUserID();
         resetEvent();
@@ -176,6 +178,7 @@ public class EventInfoActivity extends AppCompatActivity implements DataBaseCall
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
+        eventDescription.setText(event.getDescription());
         goingEventsLists.clear();
         StorageReference storageReference = mStorageRef.child(event.getId()+".jpg");
         Glide.with(this)

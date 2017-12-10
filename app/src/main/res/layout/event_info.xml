@@ -28,9 +28,12 @@
             android:paddingTop="5dp"
             app:srcCompat="@drawable/defaultpic" />
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -41,7 +44,39 @@
                 android:text="Event Name"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
-                android:textSize="30sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/eventDescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
+                android:paddingLeft="10dp"
+                android:text="Event Description"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/eventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
+                android:paddingLeft="10dp"
+                android:text="Some bio here"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
+                android:text="Time"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -119,6 +154,17 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/attendText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuil"
+                android:text="Attendants"
+                android:textColor="@android:color/black"
+                android:paddingLeft="10dp"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -126,9 +172,8 @@
 
                 <TextView
                     android:id="@+id/goingText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/segoeuil"
                     android:paddingLeft="10dp"
                     android:text="@string/going"
@@ -139,45 +184,59 @@
                     android:id="@+id/numOfPeopleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="8"
                     android:fontFamily="@font/segoeuil"
                     android:text="0"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <Button
-                    android:id="@+id/btn_join_leave_del"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/segoeuil"
-                    android:textAllCaps="false"
-                    android:text="..." />
-
-                <Button
-                    android:id="@+id/invite_friends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:fontFamily="@font/segoeuil"
-                    android:paddingRight="10dp"
-                    android:text="@string/invite_friends"
-                    android:textAllCaps="false" />
             </LinearLayout>
-
-            <ListView
-                android:id="@+id/goingUsers"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="346dp" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_join_leave_del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/segoeuil"
+                android:textAllCaps="false"
+                android:text="..." />
+
+            <Button
+                android:id="@+id/invite_friends"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:fontFamily="@font/segoeuil"
+                android:paddingRight="10dp"
+                android:text="@string/invite_friends"
+                android:textAllCaps="false" />
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/goingUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
         <Button
             android:id="@+id/btn_done"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@null"
             android:fontFamily="@font/segoeuil"
