@@ -23,8 +23,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.groupproject.Controller.ViewHolder;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.CustomLocation;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
@@ -94,15 +94,12 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
         endDate =findViewById(R.id.end_date);
         groupSelector =findViewById(R.id.groupSelectorSpinner);
 
-
         groupAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, groups);
         groupSelector.setAdapter(groupAdapter);
         groupSelector.setVisibility(View.INVISIBLE);
 
         Query query = dataBaseAPI.getmUserRef().child(dataBaseAPI.getCurrentUserID()).child("joinedGroupIDs");
         dataBaseAPI.executeQuery(query, this, SearchType.Type.GROUPS);
-//        groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
         aSwitch = findViewById(R.id.createAsGroup);
         aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -112,10 +109,6 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
             else
                 groupSelector.setVisibility(View.INVISIBLE);
         });
-
-
-
-
 
         upload = findViewById(R.id.uploadEvent);
         upload.setOnClickListener(view -> {
@@ -175,17 +168,6 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
             }
         });
 
-
-//        Button inviteButton =findViewById(R.id.invitebutton);
-//        inviteButton.setOnClickListener(view -> {
-//            Bundle newBundle = new Bundle();
-//            newBundle.putString("type", "friends");
-//            SidebarFragment sidebarFragment = new SidebarFragment();
-//            sidebarFragment.setArguments(newBundle);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.dashboard_content, sidebarFragment, "sidebar").addToBackStack(null).commit();
-//
-//        });
-
         Button saveButton = findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             if (allDataEntered()) {
@@ -194,7 +176,6 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
                 try {
                     Date sDate = sdf.parse(startDate.getText().toString());
                     Date fDate = sdf.parse(endDate.getText().toString());
-//                    Event e;
                     Visibility.VISIBILITY eventVis = (visibility.getSelectedItem().toString().equals("Public")) ?
                             Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
 
@@ -254,7 +235,6 @@ public class CreateEventActivity extends AppCompatActivity implements DataBaseCa
         visibility.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
-
 
     private void createTimePicker(final Calendar calendar, final EditText label, int hour, int min,
                                   final Calendar calendarMin) {

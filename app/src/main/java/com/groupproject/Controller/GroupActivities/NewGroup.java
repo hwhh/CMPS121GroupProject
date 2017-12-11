@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.Visibility;
 import com.groupproject.R;
@@ -46,7 +46,8 @@ public class NewGroup extends AppCompatActivity {
         ArrayList<String> options = new ArrayList<>();
         options.add("Public");
         options.add("Private");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, options);
         Spinner visibility = findViewById(R.id.GroupVisibilitySpinner);
         visibility.setAdapter(adapter);
 
@@ -56,10 +57,12 @@ public class NewGroup extends AppCompatActivity {
 
         createGroup.setOnClickListener(view -> {
             Group g;
-            Visibility.VISIBILITY groupVis = (visibility.getSelectedItem().toString().equals("Public")) ?
+            Visibility.VISIBILITY groupVis =
+                    (visibility.getSelectedItem().toString().equals("Public")) ?
                     Visibility.VISIBILITY.PUBLIC : Visibility.VISIBILITY.INVITE_ONLY;
             if (name.getText() != null && description.getText() != null) {
-                g = new Group(name.getText().toString(), description.getText().toString(), groupVis, dataBaseAPI.getCurrentUserID());
+                g = new Group(name.getText().toString(), description.getText().toString(), groupVis,
+                        dataBaseAPI.getCurrentUserID());
                 dataBaseAPI.addGroupToUser(g);//TODO fix this and use a callback
                 if(image != null) {
                     StorageReference groupRef = mStorageRef.child(g.getId() + ".jpg");
@@ -67,7 +70,8 @@ public class NewGroup extends AppCompatActivity {
                     uploadTask.addOnFailureListener(exception -> {
                         // Handle unsuccessful uploads
                     }).addOnSuccessListener(taskSnapshot -> {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        // taskSnapshot.getMetadata() contains file metadata such as size,
+                        // content-type, and download URL.
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     });
                 }
@@ -95,19 +99,18 @@ public class NewGroup extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
-            if (data == null) {
-                //Display an error
-                return;
+            if (data != null) {
+                try {
+                    //e.g. create user, then change "images" to where i was called from
+                    InputStream inputStream = getApplicationContext().getContentResolver()
+                            .openInputStream(data.getData());
+                    image = inputStream;
+                    Toast.makeText(getApplicationContext(), "Image uploaded.",
+                            Toast.LENGTH_LONG).show();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-            try {
-                //e.g. create user, then change "images" to where i was called from
-                InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
-                image = inputStream;
-                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
     }
 

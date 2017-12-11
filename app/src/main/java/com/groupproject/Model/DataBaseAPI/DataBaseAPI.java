@@ -1,4 +1,4 @@
-package com.groupproject.DataBaseAPI;
+package com.groupproject.Model.DataBaseAPI;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
 
 public class DataBaseAPI {
 

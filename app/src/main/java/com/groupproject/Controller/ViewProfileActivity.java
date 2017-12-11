@@ -10,16 +10,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.Query;
-import com.google.firebase.storage.StorageReference;
 import com.groupproject.Controller.SearchActivities.SearchType;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
@@ -57,9 +55,6 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
         userName = findViewById(R.id.userName);
         emailAddress = findViewById(R.id.emailAdd);
         upload = findViewById(R.id.profileUpload);
-
-
-
         upload.setOnClickListener(view -> pickImage());
 
         ListView goingEvents = findViewById( R.id.goingEventsLists);
@@ -153,14 +148,15 @@ public class ViewProfileActivity extends AppCompatActivity implements DataBaseCa
             }
             try {
                 //e.g. create user, then change "images" to where i was called from
-                InputStream inputStream = getApplicationContext().getContentResolver().openInputStream(data.getData());
+                InputStream inputStream = getApplicationContext().getContentResolver()
+                        .openInputStream(data.getData());
                 Drawable buttonBg = Drawable.createFromStream(inputStream, null);
                 upload.setImageDrawable(buttonBg);
-                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_LONG)
+                        .show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
     }
 

@@ -13,13 +13,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.Model.Event;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 import com.groupproject.R;
 
 

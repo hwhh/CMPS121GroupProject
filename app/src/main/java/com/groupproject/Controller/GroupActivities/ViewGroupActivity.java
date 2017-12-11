@@ -18,8 +18,8 @@ import com.google.firebase.storage.StorageReference;
 import com.groupproject.Controller.InviteActivity;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
@@ -43,7 +43,6 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
     ImageView groupPic;
     List<String> eventList = new ArrayList<>();
     List<String> memberList = new ArrayList<>();
-
 
     private StorageReference mStorageRef;
 
@@ -71,7 +70,6 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
         membersListView.setAdapter(memberAdapter);
 
         inviteButton = findViewById(R.id.groupInvite);
-
     }
 
     @Override
@@ -166,15 +164,12 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
 
     }
 
-
-
     private void resetGroup() {
         if (getIntent().hasExtra("key")) {
             String id = getIntent().getStringExtra("key");
             dataBaseAPI.getGroup(id, this, null);
         }
     }
-
 
     @Override
     public void executeQuery(List<String> result, SearchType.Type type) {
@@ -187,8 +182,5 @@ public class ViewGroupActivity extends AppCompatActivity implements DataBaseCall
                 dataBaseAPI.getEvent(id, this, null);
             }
         }
-
     }
-
-
 }

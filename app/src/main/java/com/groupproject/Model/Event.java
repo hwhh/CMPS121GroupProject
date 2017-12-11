@@ -3,7 +3,7 @@ package com.groupproject.Model;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,11 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
-
-
 public class Event extends DataBaseItem {
-
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 

@@ -1,6 +1,5 @@
-package com.groupproject.DataBaseAPI;
+package com.groupproject.Model.DataBaseAPI;
 
-import com.groupproject.Controller.SearchActivities.SearchAdapter;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Model.Event;

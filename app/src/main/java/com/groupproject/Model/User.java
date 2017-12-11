@@ -1,10 +1,9 @@
 package com.groupproject.Model;
 
-
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ public class User extends DataBaseItem{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
 
-
     public List<String> friendsIDs;
     public List<String> requestsID;
     public List<String> goingEventsIDs;
@@ -24,9 +22,6 @@ public class User extends DataBaseItem{
     public List<String> joinedGroupIDs;
     public List<String> invitedGroupIDs;
     public List<PinnedNotification> unSeenNotifications;
-
-
-
 //    private List<String> interestedEventsIDs;//TODO If interested cant be going and vice versa
 
     private String nameLower;
@@ -34,7 +29,6 @@ public class User extends DataBaseItem{
     private String name;
     private String email;
     private String id;
-
 
     public User() {
         init();
@@ -130,17 +124,6 @@ public class User extends DataBaseItem{
     public Map<String, Object> getInvitedEventsIDs() {
         return invitedEventsIDs.stream().collect(Collectors.toMap(Function.identity(), id -> true));
     }
-
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public void setSeenNotifications(Map<String, Object> map) {
-//        unSeenNotifications = map.keySet().stream().map(Object::toString).collect (Collectors.toList());
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public Map<String, Object> getsSenNotifications() {
-//        return unSeenNotifications.stream().collect(Collectors.toMap(Function.identity(), id -> true));
-//    }
-
 
     public CustomLocation getLocation() {
         return location;

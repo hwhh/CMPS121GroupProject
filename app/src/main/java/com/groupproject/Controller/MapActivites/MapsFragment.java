@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -27,7 +26,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,7 +36,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.groupproject.Controller.EventActivities.CreateEventActivity;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Visibility;
 import com.groupproject.R;
@@ -87,28 +85,15 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             Toast.makeText(getActivity(), "Tap to add a pin!", Toast.LENGTH_LONG).show();
             googleMap.setOnMapClickListener(point -> {
                 googleMap.setOnMapClickListener(null);
-
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("event_location",  new LatLng(point.latitude, point.longitude));
-//                CreateEventActivity createEventActivity = new CreateEventActivity();
-//                createEventActivity.setArguments(bundle);
-//                getFragmentManager().beginTransaction().replace(R.id.dashboard_content, createEventActivity, "sidebar").addToBackStack(null).commitAllowingStateLoss();
-
-
-
                 Intent intent = new Intent(getActivity(), CreateEventActivity.class);
                 intent.putExtra("event_location",
                         new LatLng(point.latitude, point.longitude));
                 startActivity(intent);
-                //TODO: get id of created event?
             });
         });
-
-
         setUpListener();
         return rootView;
     }
-
 
     private void setUpListener() {
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -150,10 +135,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         dataBaseAPI.addChildListener("events", childEventListener);
     }
 
-
-
-
-
     @Override
     public void onStop() {
         super.onStop();
@@ -172,17 +153,20 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                         descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
                     } else if(status == DataBaseAPI.STATUS.PUBLIC){
                         descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-                    }else if(event.getVisibility() == Visibility.VISIBILITY.INVITE_ONLY && event.invitedIDs.contains(dataBaseAPI.getCurrentUserID())  ){
+                    }else if(event.getVisibility() == Visibility.VISIBILITY.INVITE_ONLY &&
+                            event.invitedIDs.contains(dataBaseAPI.getCurrentUserID())  ){
                         descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                    }else if(event.getVisibility() == Visibility.VISIBILITY.INVITE_ONLY && event.goingIDs.contains(dataBaseAPI.getCurrentUserID())  ){
+                    }else if(event.getVisibility() == Visibility.VISIBILITY.INVITE_ONLY &&
+                            event.goingIDs.contains(dataBaseAPI.getCurrentUserID())  ){
                         descriptor = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                     }
-                        Marker marker = googleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(event.getCustomLocation().getLatitude(), event.getCustomLocation().getLongitude()))
-                                .title(event.getName())
-                                .snippet(event.getEndDate().toString())
-                                .icon(descriptor));
-                        marker.setTag(event.getId());
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(event.getCustomLocation().getLatitude(),
+                                    event.getCustomLocation().getLongitude()))
+                            .title(event.getName())
+                            .snippet(event.getEndDate().toString())
+                            .icon(descriptor));
+                    marker.setTag(event.getId());
                 }
             }
         }

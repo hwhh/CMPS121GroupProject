@@ -21,8 +21,8 @@ import com.google.firebase.database.Query;
 import com.groupproject.Controller.InviteActivity;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class EventInfoActivity extends AppCompatActivity implements DataBaseCallBacks<String> {
 

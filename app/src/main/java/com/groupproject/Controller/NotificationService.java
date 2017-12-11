@@ -12,8 +12,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.groupproject.Controller.SearchActivities.SearchType;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.PinnedNotification;
@@ -142,8 +142,7 @@ public class NotificationService extends Service implements DataBaseCallBacks<St
         Intent resultIntent = new Intent(this, BaseActivity.class);
         resultIntent.putExtra("openNotifications", "yes");
 
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
+        // The stack builder object will contain an artificial back stack for the started Activity.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(BaseActivity.class);

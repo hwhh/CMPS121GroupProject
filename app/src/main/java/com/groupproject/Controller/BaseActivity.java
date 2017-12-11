@@ -2,21 +2,17 @@ package com.groupproject.Controller;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,7 +20,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,8 +32,8 @@ import com.groupproject.Controller.MapActivites.MapsFragment;
 import com.groupproject.Controller.SearchActivities.SearchFragment;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.SideBarActivities.SidebarFragment;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
@@ -77,7 +72,8 @@ public class BaseActivity extends AppCompatActivity
         imm = (InputMethodManager) getApplication().getSystemService(BaseActivity.INPUT_METHOD_SERVICE);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -133,7 +129,8 @@ public class BaseActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (currentFragment != mapsFrag) {
-            fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+            fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag,
+                    "maps").remove(searchFrag).commitAllowingStateLoss();
             currentFragment = mapsFrag;
             if (searchView != null) {
                 searchView.setQuery("", true);
@@ -166,8 +163,6 @@ public class BaseActivity extends AppCompatActivity
         final MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
         searchView = (SearchView) myActionMenuItem.getActionView();
         searchView.clearFocus();
-//        TextView searchText = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-//        searchText.setOnClickListener(listener);
         searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
 
@@ -175,7 +170,8 @@ public class BaseActivity extends AppCompatActivity
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 if(currentFragment == mapsFrag) {
-                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag, "search").commit();
+                    fragmentManager.beginTransaction().replace(R.id.dashboard_content, searchFrag,
+                            "search").commit();
                     currentFragment = searchFrag;
                 }
                 searchView.findFocus();
@@ -184,7 +180,8 @@ public class BaseActivity extends AppCompatActivity
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+                fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag,
+                        "maps").remove(searchFrag).commitAllowingStateLoss();
                 currentFragment = mapsFrag;
                 searchView.setIconified(true);
                 searchView.clearFocus();
@@ -198,7 +195,8 @@ public class BaseActivity extends AppCompatActivity
         closeButton.setOnClickListener(v -> {
             searchView.setQuery("", true);
             imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-            fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag, "maps").remove(searchFrag).commitAllowingStateLoss();
+            fragmentManager.beginTransaction().replace(R.id.dashboard_content, mapsFrag,
+                    "maps").remove(searchFrag).commitAllowingStateLoss();
             currentFragment = mapsFrag;
             searchView.clearFocus();
         });
@@ -244,7 +242,8 @@ public class BaseActivity extends AppCompatActivity
             return true;
         }
         sidebarFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(currentFragment.getId(), sidebarFragment, "sidebar").remove(searchFrag).commitAllowingStateLoss();
+        fragmentManager.beginTransaction().replace(currentFragment.getId(), sidebarFragment,
+                "sidebar").remove(searchFrag).commitAllowingStateLoss();
         currentFragment = sidebarFragment;
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -255,7 +254,9 @@ public class BaseActivity extends AppCompatActivity
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             return null;
         }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        String tag = getSupportFragmentManager()
+                .getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1)
+                .getName();
         return getSupportFragmentManager().findFragmentByTag(tag);
     }
 
@@ -264,7 +265,8 @@ public class BaseActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putString("type", "notifications");
         sidebarFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(currentFragment.getId(), sidebarFragment, "sidebar").remove(searchFrag).commitAllowingStateLoss();
+        fragmentManager.beginTransaction().replace(currentFragment.getId(), sidebarFragment,
+                "sidebar").remove(searchFrag).commitAllowingStateLoss();
         currentFragment = sidebarFragment;
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -272,10 +274,10 @@ public class BaseActivity extends AppCompatActivity
 
     @Override
     public void onCreateContextMenu(ContextMenu var1, View var2, ContextMenu.ContextMenuInfo var3){
-        InputMethodManager inputMethodManager = (InputMethodManager)  this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
-
 
     @Override
     public void getUser(User user, ViewHolder holder) {

@@ -13,8 +13,8 @@ import com.google.firebase.database.Query;
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.Controller.GroupActivities.ViewGroupActivity;
 import com.groupproject.Controller.ViewHolder;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
@@ -24,15 +24,15 @@ import com.groupproject.Controller.ViewProfileActivity;
 
 import java.util.List;
 
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.HOST;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.INVITED;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.JOINED;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.STATUS.PUBLIC;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
-import static com.groupproject.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.STATUS.HIDDEN;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.STATUS.HOST;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.STATUS.INVITED;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.STATUS.JOINED;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.STATUS.PUBLIC;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.FRIENDS;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.ME;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.NONE;
+import static com.groupproject.Model.DataBaseAPI.DataBaseAPI.UserRelationship.REQUESTED;
 
 
 public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHolder> implements DataBaseCallBacks<String> {
@@ -88,9 +88,11 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(userRelationship == FRIENDS) {
             holder.interact.setImageDrawable(null); //TODO go to profile to remove
         } else if(userRelationship == REQUESTED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.cancel_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(),
+                    R.drawable.cancel_button));
         }else if(userRelationship == NONE) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(),
+                    R.drawable.add_button));
         }
         holder.interact.setOnClickListener(view -> {
             if(userRelationship == FRIENDS) {
@@ -136,7 +138,8 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         } else if(status == JOINED) {
             holder.interact.setImageDrawable(null);
         } else if(status == INVITED) {
-            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(), R.drawable.add_button));
+            holder.interact.setImageDrawable(ContextCompat.getDrawable(fragment.getActivity(),
+                    R.drawable.add_button));
         }else if(status == PUBLIC) {
             holder.interact.setImageDrawable(null);
         }
@@ -148,14 +151,8 @@ public class SearchAdapter extends FirebaseRecyclerAdapter<DataBaseItem, ViewHol
         holder.vName.setText(group.getName());
     }
 
-
-
     @Override
     public void executeQuery(List<String> result, SearchType.Type type) {
 
     }
-
-
-
-
 }

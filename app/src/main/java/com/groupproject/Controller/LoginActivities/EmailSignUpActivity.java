@@ -35,7 +35,6 @@ public class EmailSignUpActivity extends AppCompatActivity {
         mName = (EditText) findViewById(R.id.InputName);
         mAuth = FirebaseAuth.getInstance();
 
-
         Button createAccount = (Button) findViewById(R.id.SignUp);
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,48 +49,48 @@ public class EmailSignUpActivity extends AppCompatActivity {
             return;
         }
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                new User(user.getUid(), name, email);
-                            }
-                            sendEmailVerification();
-                            // Sign in success, update UI with the signed-in user's information
-
-                        } else {
-                            Toast.makeText(EmailSignUpActivity.this, "Authentication failed. " + task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            new User(user.getUid(), name, email);
                         }
-                    }
-                });
-    }
+                        sendEmailVerification();
+                        // Sign in success, update UI with the signed-in user's information
 
+                    } else {
+                        Toast.makeText(EmailSignUpActivity.this,
+                                "Authentication failed. " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+    }
 
     private void sendEmailVerification() {
         final FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             user.sendEmailVerification()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
 
-                                Toast.makeText(EmailSignUpActivity.this,
-                                        "Verification email sent to " + user.getEmail(),
-                                        Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplication(), BaseActivity
-                                        .class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(EmailSignUpActivity.this,
-                                        "Failed to send verification email.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(EmailSignUpActivity.this,
+                                    "Verification email sent to " + user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplication(), BaseActivity
+                                    .class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(EmailSignUpActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
+                });
         }
     }
 
@@ -122,7 +121,6 @@ public class EmailSignUpActivity extends AppCompatActivity {
         } else {
             mPasswordField.setError(null);
         }
-
         return valid;
     }
 }

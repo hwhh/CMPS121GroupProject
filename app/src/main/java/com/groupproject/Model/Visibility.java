@@ -6,6 +6,4 @@ public class Visibility {
         INVITE_ONLY,
         PUBLIC
     }
-
-
 }

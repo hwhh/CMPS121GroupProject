@@ -88,7 +88,6 @@
         <activity android:name=".Controller.EventActivities.EventInfoActivity" />
         <activity android:name=".Controller.ViewProfileActivity" />
         <activity android:name=".Controller.InviteActivity"></activity>
-        <activity android:name=".ImageStorage"></activity>
 
         <receiver android:name=".Controller.BootReceiver">
             <intent-filter>

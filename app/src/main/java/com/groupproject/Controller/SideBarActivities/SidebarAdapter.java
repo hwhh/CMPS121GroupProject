@@ -13,12 +13,11 @@ import android.widget.Filterable;
 
 import com.groupproject.Controller.EventActivities.EventInfoActivity;
 import com.groupproject.Controller.GroupActivities.ViewGroupActivity;
-import com.groupproject.Controller.SearchActivities.SearchFragment;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.ViewHolder;
 import com.groupproject.Controller.ViewProfileActivity;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.DataBaseItem;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
@@ -63,7 +62,8 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_result, viewGroup, false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_result,
+                viewGroup, false);
         return new ViewHolder(itemView);
     }
 
@@ -118,14 +118,16 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
                 break;
             case INVITE:
                 User user = (User) dataBaseItem;
-                if(user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID)){
+                if(user.invitedEventsIDs.contains(dataBaseItemID) ||
+                        user.invitedGroupIDs.contains(dataBaseItemID)){
                     holder.selected.setChecked(true);
                 }else {
                     holder.selected.setChecked(false);
                 }
                 holder.interact.setImageDrawable(null);
                 holder.selected.setOnCheckedChangeListener((compoundButton, b) -> {
-                    boolean userInvited =user.invitedEventsIDs.contains(dataBaseItemID)|| user.invitedGroupIDs.contains(dataBaseItemID);
+                    boolean userInvited =user.invitedEventsIDs.contains(dataBaseItemID) ||
+                            user.invitedGroupIDs.contains(dataBaseItemID);
                     if (b && !userInvited) {
                         invited.add(dataBaseItem.getId());
                         if(uninvited.contains(dataBaseItem.getId()))
@@ -146,18 +148,14 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
         return invited;
     }
 
-
     public Set<String> getUninvited() {
         return uninvited;
     }
-
-
 
     @Override
     public int getItemCount() {
         return items.size();
     }
-
 
     @Override
     public Filter getFilter() {
@@ -191,9 +189,7 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
     private static class UserFilter extends Filter {
 
         private final SidebarAdapter adapter;
-
         private final List<DataBaseItem> originalList;
-
         private final List<DataBaseItem> filteredList;
 
         private UserFilter(SidebarAdapter adapter, List<DataBaseItem> originalList) {
@@ -232,5 +228,4 @@ public class SidebarAdapter extends RecyclerView.Adapter<ViewHolder> implements 
             adapter.notifyDataSetChanged();
         }
     }
-
 }

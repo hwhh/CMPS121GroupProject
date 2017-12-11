@@ -3,21 +3,17 @@ package com.groupproject.Model;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.google.firebase.storage.StorageReference;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
 public class Group extends DataBaseItem{
 
     private static final DataBaseAPI dataBaseAPI = DataBaseAPI.getDataBase();
-
 
     private String host;
     public List<String> membersIDs;//

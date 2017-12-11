@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.groupproject.R;
@@ -24,7 +23,6 @@ public class ViewHolder extends RecyclerView.ViewHolder  {
             cardView = v.findViewById(R.id.card_view);
             interact = v.findViewById(R.id.interact);
             selected = v.findViewById(R.id.selected);
-
         }
 
 }

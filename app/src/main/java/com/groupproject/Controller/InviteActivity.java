@@ -14,8 +14,8 @@ import android.widget.Toast;
 import com.google.firebase.database.Query;
 import com.groupproject.Controller.SearchActivities.SearchType;
 import com.groupproject.Controller.SideBarActivities.SidebarAdapter;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
-import com.groupproject.DataBaseAPI.DataBaseCallBacks;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseCallBacks;
 import com.groupproject.Model.Event;
 import com.groupproject.Model.Group;
 import com.groupproject.Model.User;
@@ -31,7 +31,6 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
     private InputMethodManager imm;
     private String id;
     private String type;
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +58,6 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
         mRecyclerView.swapAdapter(mSearchAdapter, true);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.invite_bar, menu);
@@ -79,7 +76,6 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
                 return false;
             }
         });
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -122,7 +118,6 @@ public class InviteActivity extends AppCompatActivity implements SearchType, Dat
 
     @Override
     public void getEvent(Event event, ViewHolder holder) {
-
 
     }
 

@@ -35,7 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.groupproject.Controller.BaseActivity;
-import com.groupproject.DataBaseAPI.DataBaseAPI;
+import com.groupproject.Model.DataBaseAPI.DataBaseAPI;
 import com.groupproject.Model.User;
 import com.groupproject.R;
 
@@ -105,29 +105,26 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     private void setUpFaceBook(){
         AppEventsLogger.activateApp(getApplication());
         mCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mCallbackManager,
-                new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        signInFacebook(loginResult.getAccessToken());
-                    }
-                    @Override
-                    public void onCancel() {
-                        //TODO Deal with this
-                    }
-                    @Override
-                    public void onError(FacebookException exception) {
-                        exception.printStackTrace();
-                    }
-                });
+            new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    signInFacebook(loginResult.getAccessToken());
+                }
+                @Override
+                public void onCancel() {
+                    //TODO Deal with this
+                }
+                @Override
+                public void onError(FacebookException exception) {
+                    exception.printStackTrace();
+                }
+            });
     }
 
     private void setUpGoogle(){
@@ -141,37 +138,39 @@ public class LoginActivity extends AppCompatActivity {
 
     public void signInEmail(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            onSuccessfulSignUp();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed. "+task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        onSuccessfulSignUp();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(LoginActivity.this,
+                                "Authentication failed. " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            });
     }
 
     private void signInFacebook(AccessToken token) {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            onSuccessfulSignUp();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.. "+task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        onSuccessfulSignUp();
+                    } else {
+                        Toast.makeText(LoginActivity.this,
+                                "Authentication failed.. " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            });
     }
 
 
@@ -186,7 +185,8 @@ public class LoginActivity extends AppCompatActivity {
                             onSuccessfulSignUp();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Authentication failed. . "+task.getException().getMessage(),
+                            Toast.makeText(LoginActivity.this,
+                                    "Authentication failed. . " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -196,7 +196,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onSuccessfulSignUp(){
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            databaseAPI.getmUserRef().child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseAPI.getmUserRef().child(user.getUid()).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Intent intent = new Intent(getApplication(), BaseActivity.class);
@@ -211,13 +212,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-
         }
-
     }
-
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -225,19 +221,15 @@ public class LoginActivity extends AppCompatActivity {
         if(requestCode == 64206)
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                try {
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    singInGoogle(account);
-                } catch (ApiException ignored) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                singInGoogle(account);
+            } catch (ApiException ignored) {
 
-                }
             }
-
+        }
     }
-
-
-
 }
 
 
